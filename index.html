@@ -42,9 +42,11 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .sb-logo-t{font-size:11px;font-weight:700;color:var(--acc);letter-spacing:.12em;text-transform:uppercase}
 .sb-logo-s{font-size:10px;color:var(--txt3);margin-top:2px}
 .sb-nav{flex:1;padding:6px 0;overflow-y:auto}
-.nav-i{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;color:var(--txt2);font-size:12px;border-left:2px solid transparent;transition:all .13s;user-select:none}
+.nav-i{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;color:var(--txt2);font-size:12px;border-left:2px solid transparent;transition:background .13s,color .13s;user-select:none}
 .nav-i:hover{color:var(--txt);background:var(--bg3)}
 .nav-i.on{color:var(--acc);border-left-color:var(--acc);background:rgba(157,144,250,.07)}
+.nav-i.dragging{opacity:.35}
+.nav-i.drag-over{border-top:2px solid var(--acc)}
 .sb-foot{padding:10px 14px;border-top:1px solid var(--brd);font-size:10px;color:var(--txt3);line-height:1.6}
 /* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
@@ -183,6 +185,56 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.s{border-left:3px solid var(--grn)}.toast.e{border-left:3px solid var(--red)}.toast.i{border-left:3px solid var(--acc)}
 .miss{color:var(--red);font-size:10px;font-weight:600}
+
+/* ══════════════════════════════════════════════════════
+   МОБІЛЬНА АДАПТАЦІЯ (телефони, ширина екрана ≤768px)
+   Сайдбар стає висувним меню, панель угоди — одна колонка,
+   таблиці лишаються з горизонтальним скролом (повний редизайн
+   кожної таблиці під картки — окрема велика задача на майбутнє).
+   ══════════════════════════════════════════════════════ */
+@media (max-width:768px){
+  .hamburger-btn{display:inline-flex !important}
+  #sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:58}
+  #sb-overlay.show{display:block}
+  .sb{
+    position:fixed; top:0; left:0; bottom:0; z-index:59;
+    width:82vw; max-width:300px;
+    transform:translateX(-100%);
+    transition:transform .22s cubic-bezier(.4,0,.2,1);
+    box-shadow:2px 0 24px rgba(0,0,0,.5);
+  }
+  .sb.mobile-open{transform:translateX(0)}
+
+  .topbar{padding:6px 8px;gap:5px}
+  .topbar-title{font-size:12px;flex:1 1 auto}
+  .srch{min-width:0;flex:1 1 90px;padding:4px 7px}
+  .srch input{font-size:12px}
+  #last-saved-lbl,#current-user-lbl{display:none}
+  .topbar .btn{padding:5px 8px;font-size:11px}
+
+  /* Панель угоди — одна колонка замість бокової панелі + основного блоку */
+  .dp-panel{width:100vw;max-width:100vw}
+  .dp-split{flex-direction:column}
+  .dp-side{width:auto;border-right:none;border-bottom:1px solid var(--brd);margin-right:0;padding:12px 0 16px}
+  .dp-main{padding:12px 0}
+  .dp-grid,.dp-grid3,.dp-grid4{grid-template-columns:1fr 1fr}
+  .dp-head{padding:10px 12px}
+  .dp-body{padding:12px}
+
+  /* Модалки не мають ставати ширшими за екран */
+  .modal-box{min-width:0;width:92vw}
+
+  /* Таблиці — трохи компактніше, горизонтальний скрол лишається основним рішенням */
+  table{font-size:11px}
+  th,td{padding:5px 7px}
+  .tw{-webkit-overflow-scrolling:touch}
+
+  .sc{min-width:80px;padding:7px 10px}
+  .sc-v{font-size:13px}
+  .fbar{padding:6px 8px;gap:5px}
+
+  .toast{left:12px;right:12px;max-width:none;bottom:12px}
+}
 </style>
 </head>
 <body>
@@ -218,32 +270,35 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
   </div>
 </div>
 <div class="app">
+<div id="sb-overlay" onclick="toggleSidebar(false)"></div>
 <!-- SIDEBAR -->
 <div class="sb">
   <div class="sb-logo">
     <div class="sb-logo-t">ЖСМ</div>
     <div class="sb-logo-s">СПЕКТР МЕТАЛЛ ТД</div>
   </div>
-  <div class="sb-nav">
-    <div class="nav-i" onclick="nav('dashboard')"><span>📊</span>Дашборд</div>
-    <div class="nav-i on" onclick="nav('deals')"><span>📋</span>Журнал угод</div>
-    <div class="nav-i" onclick="nav('bank')"><span>🏦</span>Банк</div>
-    <div class="nav-i" onclick="nav('debts')"><span>💰</span>Заборгованість</div>
-    <div class="nav-i" onclick="nav('mid')"><span>📊</span>МИД / Дельти</div>
-    <div class="nav-i" onclick="nav('rentab')"><span>📈</span>Рентабельність</div>
-    <div class="nav-i" onclick="nav('svirka')"><span>🔍</span>Звірка (ПД)</div>
-    <div class="nav-i" onclick="nav('managers')"><span>👥</span>Менеджери</div>
-    <div class="nav-i" onclick="nav('archive')"><span>🗄</span>Архів угод</div>
-    <div class="nav-i" onclick="nav('closed-mid')"><span>📑</span>Закриті МИД</div>
-    <div class="nav-i" onclick="nav('patchnotes')"><span>📋</span>Версії / Патч-нот</div>
-    <div class="nav-i" onclick="nav('import')"><span>📂</span>Імпорт / Експорт</div>
-    <div class="nav-i" id="nav-admin" onclick="nav('admin')" style="display:none"><span>⚙</span>Адміністрування</div>
+  <div class="sb-nav" id="sb-nav">
+    <div class="nav-i" data-page="dashboard" onclick="nav('dashboard')"><span>📊</span>Дашборд</div>
+    <div class="nav-i on" data-page="deals" onclick="nav('deals')"><span>📋</span>Журнал угод</div>
+    <div class="nav-i" data-page="bank" onclick="nav('bank')"><span>🏦</span>Банк</div>
+    <div class="nav-i" data-page="debts" onclick="nav('debts')"><span>💰</span>Заборгованість</div>
+    <div class="nav-i" data-page="mid" onclick="nav('mid')"><span>📊</span>МИД / Дельти</div>
+    <div class="nav-i" data-page="rentab" onclick="nav('rentab')"><span>📈</span>Рентабельність</div>
+    <div class="nav-i" data-page="svirka" onclick="nav('svirka')"><span>🔍</span>Звірка (ПД)</div>
+    <div class="nav-i" data-page="managers" onclick="nav('managers')"><span>👥</span>Менеджери</div>
+    <div class="nav-i" data-page="archive" onclick="nav('archive')"><span>🗄</span>Архів угод</div>
+    <div class="nav-i" data-page="closed-mid" onclick="nav('closed-mid')"><span>📑</span>Закриті МИД</div>
+    <div class="nav-i" data-page="patchnotes" onclick="nav('patchnotes')"><span>📋</span>Версії / Патч-нот</div>
+    <div class="nav-i" data-page="import" onclick="nav('import')"><span>📂</span>Імпорт / Експорт</div>
+    <div class="nav-i" id="nav-admin" data-page="admin" onclick="nav('admin')" style="display:none"><span>⚙</span>Адміністрування</div>
   </div>
+  <div style="padding:4px 14px;font-size:9px;color:var(--txt3);opacity:.6">⠿ Перетягни розділ, щоб змінити порядок</div>
   <div class="sb-foot" id="sb-count"></div>
 </div>
 <!-- MAIN -->
 <div class="main">
   <div class="topbar">
+    <button class="btn sm hamburger-btn" onclick="toggleSidebar()" title="Меню" style="display:none">☰</button>
     <div class="topbar-title" id="ptitle">Журнал угод</div>
     <button id="theme-btn" class="btn sm" onclick="toggleTheme()">☀ Світла</button>
     <button class="btn sm" onclick="openQS()" title="Ctrl+K">🔍 Ctrl+K</button>
@@ -256,6 +311,11 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
       <span id="conn-text">Онлайн</span>
     </span>
     <button id="install-app-btn" class="btn sm" style="display:none;border-color:var(--pur);color:var(--pur)" onclick="installApp()" title="Встановити ЖСМ як окремий застосунок">📲 Встановити</button>
+    <span style="display:flex;align-items:center;gap:1px;background:var(--bg3);border-radius:var(--r);padding:2px;align-self:center" title="Розмір шрифту">
+      <button class="btn sm" style="padding:3px 7px;font-size:10px" onclick="adjustFontSize(-1)">A−</button>
+      <span id="font-size-label" style="font-size:9px;color:var(--txt3);min-width:30px;text-align:center">100%</span>
+      <button class="btn sm" style="padding:3px 7px;font-size:12px" onclick="adjustFontSize(1)">A+</button>
+    </span>
     <button id="float-save-btn" onclick="exportJSON()"
       style="background:var(--grn);border-color:var(--grn);color:#fff;font-weight:700;min-width:130px;transition:all .2s"
       class="btn">✓ Збережено</button>
@@ -302,17 +362,17 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         <button class="btn sm" style="margin-left:auto" onclick="bulkClearSelection()">✕ Скасувати вибір</button>
       </div>
       <div class="tw">
-        <table><thead><tr>
+        <table><thead id="deals-thead"><tr>
           <th style="width:26px"><input type="checkbox" id="bulk-sel-all" onchange="bulkToggleAll(this.checked)" title="Обрати всі на сторінці"></th>
-          <th onclick="srt('status')">Прапорці</th>
-          <th onclick="srt('id')">Індекс</th>
-          <th onclick="srt('date')">Дата</th>
-          <th onclick="srt('manager')">Менеджер</th>
-          <th onclick="srt('client')">Клієнт</th>
+          <th onclick="srt('status')" data-sort="status">Прапорці</th>
+          <th onclick="srt('id')" data-sort="id">Індекс</th>
+          <th onclick="srt('date')" data-sort="date">Дата</th>
+          <th onclick="srt('manager')" data-sort="manager">Менеджер</th>
+          <th onclick="srt('client')" data-sort="client">Клієнт</th>
           <th>Товари</th>
-          <th onclick="srt('sum_sell')" style="text-align:right">Сума прод.</th>
-          <th onclick="srt('delta_auto')" style="text-align:right">Δ авто</th>
-          <th onclick="srt('delta_plan')" style="text-align:right">Δ план</th>
+          <th onclick="srt('sum_sell')" data-sort="sum_sell" style="text-align:right">Сума прод.</th>
+          <th onclick="srt('delta_auto')" data-sort="delta_auto" style="text-align:right">Δ авто</th>
+          <th onclick="srt('delta_plan')" data-sort="delta_plan" style="text-align:right">Δ план</th>
           <th>Постачальники</th>
           <th>Оплата кл.</th>
           <th>Документи</th>
@@ -340,10 +400,10 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         <input class="fi" id="bf-s" oninput="applyBF()" placeholder="Пошук контрагента...">
         <button class="btn sm" onclick="openBTx()">+ Операція</button>
       </div>
-      <div class="tw"><table><thead><tr>
-        <th onclick="srtB('date')">Дата</th><th onclick="srtB('num')">№</th>
-        <th onclick="srtB('counterpart')">Контрагент</th><th>Призначення</th>
-        <th onclick="srtB('deal_id')">Угода</th>
+      <div class="tw"><table><thead id="bank-thead"><tr>
+        <th onclick="srtB('date')" data-sort="date">Дата</th><th onclick="srtB('num')" data-sort="num">№</th>
+        <th onclick="srtB('counterpart')" data-sort="counterpart">Контрагент</th><th>Призначення</th>
+        <th onclick="srtB('deal_id')" data-sort="deal_id">Угода</th>
         <th style="text-align:right">Прихід</th><th style="text-align:right">Витрата</th>
         <th style="text-align:right">Залишок</th>
       </tr></thead><tbody id="b-tbody"></tbody></table></div>
@@ -368,21 +428,20 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
           <option value="60+">60+ днів</option>
         </select>
         <input class="fi" id="df-s" oninput="renderDebts()" placeholder="Пошук...">
-        <select id="df-sort" onchange="renderDebts()">
-          <option value="sum_desc">Сума боргу ↓</option>
-          <option value="sum_asc">Сума боргу ↑</option>
-          <option value="date_desc">Дата ↓ (нові)</option>
-          <option value="date_asc">Дата ↑ (старі)</option>
-          <option value="days_desc">Днів прострочки ↓</option>
-          <option value="company">Підприємство А-Я</option>
-        </select>
+        <span style="font-size:10px;color:var(--txt3);align-self:center">Сортування — клік по заголовку колонки ↓</span>
       </div>
-      <div class="tw"><table><thead><tr>
-        <th>Тип</th><th>Підприємство</th><th>Угода</th><th>Менеджер</th>
-        <th style="text-align:right">Борг</th>
-        <th style="text-align:right">Оплачено</th>
-        <th style="text-align:right">Сума угоди</th>
-        <th>Статус</th><th>Дата</th><th style="text-align:right">Днів</th><th>Дії</th>
+      <div class="tw"><table><thead id="debts-thead"><tr>
+        <th onclick="dtSrt('kind')" data-sort="kind">Тип</th>
+        <th onclick="dtSrt('company')" data-sort="company">Підприємство</th>
+        <th onclick="dtSrt('id')" data-sort="id">Угода</th>
+        <th onclick="dtSrt('manager')" data-sort="manager">Менеджер</th>
+        <th onclick="dtSrt('ours')" data-sort="ours" style="text-align:right">Борг</th>
+        <th onclick="dtSrt('paid')" data-sort="paid" style="text-align:right">Оплачено</th>
+        <th onclick="dtSrt('sell')" data-sort="sell" style="text-align:right">Сума угоди</th>
+        <th onclick="dtSrt('payStatus')" data-sort="payStatus">Статус</th>
+        <th onclick="dtSrt('date')" data-sort="date">Дата</th>
+        <th onclick="dtSrt('days')" data-sort="days" style="text-align:right">Днів</th>
+        <th>Дії</th>
       </tr></thead><tbody id="dt-tbody"></tbody></table></div>
     </div>
 
@@ -405,14 +464,24 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
     <!-- RENTAB DYNAMICS -->
     <div class="pg" id="pg-rentab">
       <div class="fbar">
-        <select id="rt-view" onchange="renderRentab()">
-          <option value="month">По місяцях</option>
-          <option value="manager">По менеджерах</option>
-          <option value="client">По клієнтах</option>
+        <select id="rt-view" onchange="onRentabViewChange()">
+          <option value="company">🏢 По компанії (загальне закриття)</option>
+          <option value="manager">👤 По менеджерах</option>
+          <option value="client">🏬 По клієнтах</option>
         </select>
+        <select id="rt-period" onchange="renderRentab()">
+          <option value="month">Місяць</option>
+          <option value="quarter">Квартал</option>
+          <option value="year">Рік</option>
+        </select>
+        <select id="rt-client-range" onchange="onRentabClientRangeChange()" style="display:none">
+          <option value="all">За весь час</option>
+          <option value="month">За конкретний місяць</option>
+        </select>
+        <input type="month" id="rt-client-mo" onchange="renderRentab()" style="display:none">
         <span id="rt-tot" style="font-size:11px;color:var(--txt3)"></span>
       </div>
-      <div style="padding:0 16px 16px" id="rt-wrap"></div>
+      <div style="flex:1;overflow:auto;padding:0 16px 16px" id="rt-wrap"></div>
     </div>
 
     <!-- SVIRKA -->
@@ -1334,6 +1403,7 @@ async function enterApp(companyId){
   updateCompanyLabel();
   await init();
   startCloudPolling();
+  initNavDrag();
 }
 
 function updateCompanyLabel(){
@@ -1441,6 +1511,39 @@ function stopOfflineRetry(){
 // Миттєва реакція на подію браузера "з'явився інтернет" — не чекаємо 15 сек таймера
 window.addEventListener('online', ()=>{ if(pendingCloudSync) cloudPush(); });
 window.addEventListener('offline', ()=>{ if(pendingCloudSync) setConnStatus(false); });
+
+// ── РОЗМІР ШРИФТУ (A− / A+) ───────────────────────────
+// ВАЖЛИВО: CSS zoom тут не підходить — body має height:100vh;overflow:hidden,
+// і після зміни zoom внутрішні прокручувані блоки таблиць (.tw{overflow:auto})
+// неправильно рахують свою висоту, через що частина інтерфейсу ховається.
+// Натомість масштабуємо .app через transform:scale() і одночасно
+// компенсуємо його width/height в протилежну сторону (100/scale), щоб після
+// трансформації він знову рівно займав 100vw×100vh — це не ламає overflow/scroll.
+const FONT_STEPS=[85,90,95,100,110,120,130];
+let fontStepIdx=3; // 100% за замовчуванням
+try{
+  const savedStep=localStorage.getItem('jsm_font_step');
+  if(savedStep!==null) fontStepIdx=Math.min(FONT_STEPS.length-1,Math.max(0,+savedStep));
+}catch(e){}
+function adjustFontSize(dir){
+  fontStepIdx=Math.min(FONT_STEPS.length-1, Math.max(0, fontStepIdx+dir));
+  applyFontSize();
+}
+function applyFontSize(){
+  const pct=FONT_STEPS[fontStepIdx];
+  const scale=pct/100;
+  const appEl=document.querySelector('.app');
+  if(appEl){
+    appEl.style.transformOrigin='top left';
+    appEl.style.transform = scale===1 ? '' : 'scale('+scale+')';
+    appEl.style.width  = scale===1 ? '' : (100/scale)+'vw';
+    appEl.style.height = scale===1 ? '' : (100/scale)+'vh';
+  }
+  const lbl=document.getElementById('font-size-label');
+  if(lbl) lbl.textContent=pct+'%';
+  try{ localStorage.setItem('jsm_font_step', String(fontStepIdx)); }catch(e){}
+}
+applyFontSize();
 
 // ── PWA: встановлюваний застосунок ───────────────────
 // Маніфест і іконки вже вбудовані в <head> як data URI (без окремих файлів).
@@ -1683,10 +1786,69 @@ const PAGES=['dashboard','deals','bank','debts','mid','rentab','svirka','manager
 const TITLES={dashboard:'Дашборд',deals:'Журнал угод',bank:'Банк — виписка',debts:'Заборгованість',
   mid:'МИД / Дельти',rentab:'Рентабельність у динаміці',svirka:'Звірка (ПД)',managers:'Менеджери',
   archive:'Архів угод',['closed-mid']:'Закриті МИД',patchnotes:'Версії / Патч-нот',import:'Імпорт / Експорт',admin:'Адміністрування'};
+// ── ПЕРЕТЯГУВАННЯ РОЗДІЛІВ МЕНЮ ────────────────────────
+// Порядок розділів у сайдбарі можна міняти перетягуванням — зберігається
+// в цьому браузері (localStorage), у кожного може бути свій зручний порядок.
+// nav() матчить елементи за data-page, тому порядок в DOM не впливає на роботу застосунку.
+const NAV_ORDER_KEY='jsm_nav_order';
+let _navDragEl=null, _navDragInited=false;
+function initNavDrag(){
+  if(_navDragInited) return; // не навішуємо слухачі повторно при повторному вході
+  _navDragInited=true;
+  const container=document.getElementById('sb-nav');
+  if(!container) return;
+  // застосувати збережений порядок (якщо колись перетягували раніше)
+  try{
+    const saved=JSON.parse(localStorage.getItem(NAV_ORDER_KEY)||'null');
+    if(Array.isArray(saved)){
+      saved.forEach(pid=>{
+        const el=container.querySelector('.nav-i[data-page="'+pid+'"]');
+        if(el) container.appendChild(el);
+      });
+    }
+  }catch(e){}
+  container.querySelectorAll('.nav-i').forEach(el=>{
+    el.setAttribute('draggable','true');
+    el.addEventListener('dragstart', e=>{
+      _navDragEl=el;
+      el.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+    });
+    el.addEventListener('dragend', ()=>{
+      el.classList.remove('dragging');
+      container.querySelectorAll('.nav-i').forEach(x=>x.classList.remove('drag-over'));
+      _navDragEl=null;
+      saveNavOrder();
+    });
+    el.addEventListener('dragover', e=>{
+      e.preventDefault();
+      if(!_navDragEl || _navDragEl===el) return;
+      const rect=el.getBoundingClientRect();
+      const after=(e.clientY-rect.top) > rect.height/2;
+      container.insertBefore(_navDragEl, after ? el.nextSibling : el);
+    });
+  });
+}
+function saveNavOrder(){
+  const order=[...document.querySelectorAll('#sb-nav .nav-i')].map(el=>el.getAttribute('data-page')).filter(Boolean);
+  try{ localStorage.setItem(NAV_ORDER_KEY, JSON.stringify(order)); }catch(e){}
+}
+
+// ── МОБІЛЬНЕ МЕНЮ (гамбургер + висувний сайдбар) ─────
+function toggleSidebar(force){
+  const sb=document.querySelector('.sb');
+  const ov=document.getElementById('sb-overlay');
+  if(!sb||!ov) return;
+  const show = typeof force==='boolean' ? force : !sb.classList.contains('mobile-open');
+  sb.classList.toggle('mobile-open', show);
+  ov.classList.toggle('show', show);
+}
+
 function nav(id){
-  PAGES.forEach((p,i)=>{
+  PAGES.forEach(p=>{
     document.getElementById('pg-'+p).classList.toggle('on',p===id);
-    document.querySelectorAll('.nav-i')[i].classList.toggle('on',p===id);
+    const navEl=document.querySelector('.nav-i[data-page="'+p+'"]');
+    if(navEl) navEl.classList.toggle('on',p===id);
   });
   document.getElementById('ptitle').textContent=TITLES[id]||id;
   if(id==='import') updateImpInfo();
@@ -1696,6 +1858,7 @@ function nav(id){
   if(id==='dashboard') renderDashboard();
   if(id==='admin') renderAdminPage();
   if(id==='rentab') renderRentab();
+  if(window.innerWidth<=768) toggleSidebar(false); // на телефоні меню закривається після вибору розділу
 }
 
 // ── HELPERS ──────────────────────────────────────────
@@ -1941,12 +2104,35 @@ function applyF(){
     if(q){const hay=[d.client,d.id,d.manager,d.sf_client,d.notes,(d.lines||[]).map(l=>l.goods+' '+l.supplier).join(' ')].join(' ').toLowerCase();if(!hay.includes(q))return false;}
     return true;
   });
-  fil.sort((a,b)=>{let av=a[sCol]??'',bv=b[sCol]??'';if(!isNaN(+av)&&!isNaN(+bv))return sDir*(+av-+bv);return sDir*(String(av)<String(bv)?-1:String(av)>String(bv)?1:0);});
+  fil.sort((a,b)=>{
+    let av=a[sCol]??'', bv=b[sCol]??'';
+    // Порожній рядок раніше трактувався як 0 (числове), через що сортування "стрибало" —
+    // тепер числове порівняння лише коли ОБИДВА значення справді непорожні числа.
+    if(av!==''&&bv!==''&&!isNaN(+av)&&!isNaN(+bv)) return sDir*(+av-+bv);
+    // Порівняння рядків через < > не враховує кирилицю (І < А за кодом символу) —
+    // localeCompare('uk') дає справжній алфавітний порядок.
+    return sDir*String(av).localeCompare(String(bv),'uk');
+  });
   pg=0; renderDeals(); renderDSbar();
   document.getElementById('f-cnt').textContent=fil.length<deals.length?`${fil.length} з ${deals.length}`:'';
 }
 function clearF(){['f-mgr','f-st','f-mo','f-cl','f-sup'].forEach(id=>document.getElementById(id).value='');document.getElementById('gsearch').value='';applyF();}
-function srt(c){c===sCol?sDir=-sDir:(sCol=c,sDir=1);applyF();}
+function srt(c){c===sCol?sDir=-sDir:(sCol=c,sDir=1);applyF();updateSortArrows('deals-thead',sCol,sDir);}
+// ── Стрілка ▲▼ на активному заголовку сортованої таблиці ──
+function updateSortArrows(theadId,curCol,curDir){
+  const thead=document.getElementById(theadId);
+  if(!thead) return;
+  thead.querySelectorAll('th[data-sort]').forEach(th=>{
+    th.querySelectorAll('.sort-arrow').forEach(a=>a.remove());
+    if(th.getAttribute('data-sort')===curCol){
+      const s=document.createElement('span');
+      s.className='sort-arrow';
+      s.style.cssText='margin-left:4px;opacity:.85';
+      s.textContent=curDir===1?'▲':'▼';
+      th.appendChild(s);
+    }
+  });
+}
 
 // ── RENDER DEALS TABLE ────────────────────────────────
 function renderDeals(){
@@ -2931,7 +3117,7 @@ function addEmployee(){
   const name=(inp.value||'').trim();
   if(!name){toast('Введіть ім’я','e');return;}
   if(employees.some(e=>e.name===name)){toast('Такий співробітник вже є у відомості','e');return;}
-  employees.push({id:'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), name, salary:0, bonusPct: managers.includes(name)?40:0});
+  employees.push({id:'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), name, salary:0, bonusPct: managers.includes(name)?40:0, advance:0});
   inp.value='';
   markChanged();
   renderPayroll();
@@ -2970,15 +3156,19 @@ function renderPayroll(){
     const isMgr=managers.includes(e.name);
     const closed=isMgr?getClosedDeltaForManager(e.name,mo):0;
     const bonus=isMgr?r2(closed*((e.bonusPct||0)/100)):0;
-    const total=r2((+e.salary||0)+bonus);
-    totalAll+=total;
+    const gross=r2((+e.salary||0)+bonus);
+    const advance=+e.advance||0;
+    const net=r2(gross-advance);
+    totalAll+=net;
     return `<tr style="border-bottom:1px solid var(--brd)">
       <td style="padding:6px 9px">${esc(e.name)}${isMgr?' <span class="ba b" style="font-size:9px">менеджер</span>':''}</td>
       <td style="padding:6px 9px;text-align:right"><input type="number" value="${e.salary||0}" style="width:90px;text-align:right;background:var(--bg3);border:1px solid var(--brd);border-radius:4px;padding:3px 6px;color:var(--txt);font-family:inherit;font-size:11px" onchange="setEmpField('${e.id}','salary',this.value)"></td>
       <td style="padding:6px 9px;text-align:right;color:var(--txt3)">${isMgr?'₴'+f0(closed):'—'}</td>
       <td style="padding:6px 9px;text-align:right">${isMgr?`<input type="number" value="${e.bonusPct||0}" min="0" max="100" style="width:55px;text-align:right;background:var(--bg3);border:1px solid var(--brd);border-radius:4px;padding:3px 6px;color:var(--txt);font-family:inherit;font-size:11px" onchange="setEmpField('${e.id}','bonusPct',this.value)">%`:'—'}</td>
       <td style="padding:6px 9px;text-align:right;color:var(--pur)">${bonus?'₴'+f0(bonus):'—'}</td>
-      <td style="padding:6px 9px;text-align:right;font-weight:700">₴${f0(total)}</td>
+      <td style="padding:6px 9px;text-align:right;color:var(--txt3)">₴${f0(gross)}</td>
+      <td style="padding:6px 9px;text-align:right"><input type="number" value="${e.advance||0}" title="Аванс, вже виплачений цьому співробітнику — віднімається від суми до видачі" style="width:80px;text-align:right;background:var(--bg3);border:1px solid var(--amb);border-radius:4px;padding:3px 6px;color:var(--amb);font-family:inherit;font-size:11px" onchange="setEmpField('${e.id}','advance',this.value)"></td>
+      <td style="padding:6px 9px;text-align:right;font-weight:700">₴${f0(net)}</td>
       <td style="padding:6px 9px;text-align:center"><button class="btn sm danger" style="font-size:10px;padding:2px 6px" onclick="deleteEmployee('${e.id}')">✕</button></td>
     </tr>`;
   }).join('');
@@ -2989,12 +3179,14 @@ function renderPayroll(){
       <th style="padding:6px 9px;text-align:right;color:var(--txt3);font-weight:500">Δ закрита</th>
       <th style="padding:6px 9px;text-align:right;color:var(--txt3);font-weight:500">Бонус %</th>
       <th style="padding:6px 9px;text-align:right;color:var(--txt3);font-weight:500">Бонус</th>
-      <th style="padding:6px 9px;text-align:right;color:var(--txt3);font-weight:500">Разом</th>
+      <th style="padding:6px 9px;text-align:right;color:var(--txt3);font-weight:500">Нараховано</th>
+      <th style="padding:6px 9px;text-align:right;color:var(--amb);font-weight:500">Аванс</th>
+      <th style="padding:6px 9px;text-align:right;color:var(--txt3);font-weight:500">До видачі</th>
       <th></th>
     </tr></thead>
     <tbody>${rows}</tbody>
     <tfoot><tr style="background:var(--bg3);font-weight:700">
-      <td colspan="5" style="padding:6px 9px;text-align:right">Всього до виплати:</td>
+      <td colspan="7" style="padding:6px 9px;text-align:right">Всього до видачі (з урахуванням авансів):</td>
       <td style="padding:6px 9px;text-align:right">₴${f0(totalAll)}</td>
       <td></td>
     </tr></tfoot>
@@ -3005,18 +3197,20 @@ function exportPayrollExcel(){
   if(employees.length===0){toast('Відомість порожня','e');return;}
   const moEl=document.getElementById('pr-mo');
   const mo=moEl?moEl.value:'';
-  const sh=['Співробітник','Оклад','Δ закрита','Бонус %','Бонус','Разом'];
+  const sh=['Співробітник','Оклад','Δ закрита','Бонус %','Бонус','Нараховано','Аванс','До видачі'];
   const rows=employees.map(e=>{
     const isMgr=managers.includes(e.name);
     const closed=isMgr?getClosedDeltaForManager(e.name,mo):0;
     const bonus=isMgr?r2(closed*((e.bonusPct||0)/100)):0;
-    const total=r2((+e.salary||0)+bonus);
-    return [e.name, r2(+e.salary||0), isMgr?r2(closed):'', isMgr?(e.bonusPct||0):'', bonus, total];
+    const gross=r2((+e.salary||0)+bonus);
+    const advance=+e.advance||0;
+    const net=r2(gross-advance);
+    return [e.name, r2(+e.salary||0), isMgr?r2(closed):'', isMgr?(e.bonusPct||0):'', bonus, gross, advance, net];
   });
-  const totalAll=rows.reduce((s,r)=>s+r[5],0);
-  rows.push(['ВСЬОГО','','','','',r2(totalAll)]);
+  const totalAll=rows.reduce((s,r)=>s+r[7],0);
+  rows.push(['ВСЬОГО','','','','','','',r2(totalAll)]);
   const ws=XLSX.utils.aoa_to_sheet([sh,...rows]);
-  ws['!cols']=[{wch:24},{wch:12},{wch:14},{wch:10},{wch:12},{wch:14}];
+  ws['!cols']=[{wch:24},{wch:12},{wch:14},{wch:10},{wch:12},{wch:14},{wch:12},{wch:14}];
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Зарплата');
   XLSX.writeFile(wb,'Зарплатна_відомість_'+(mo||'усі_місяці')+'.xlsx');
@@ -3301,10 +3495,14 @@ function applyBF(){
     if(q&&!(t.counterpart||'').toLowerCase().includes(q)&&!(t.desc||'').toLowerCase().includes(q)) return false;
     return true;
   });
-  bfil.sort((a,b)=>{let av=a[bSCol]??'',bv=b[bSCol]??'';if(!isNaN(+av)&&!isNaN(+bv))return bSDir*(+av-+bv);return bSDir*(String(av)<String(bv)?-1:String(av)>String(bv)?1:0);});
+  bfil.sort((a,b)=>{
+    let av=a[bSCol]??'', bv=b[bSCol]??'';
+    if(av!==''&&bv!==''&&!isNaN(+av)&&!isNaN(+bv)) return bSDir*(+av-+bv);
+    return bSDir*String(av).localeCompare(String(bv),'uk');
+  });
   bpg=0; renderBank(); renderBSbar();
 }
-function srtB(c){c===bSCol?bSDir=-bSDir:(bSCol=c,bSDir=1);applyBF();}
+function srtB(c){c===bSCol?bSDir=-bSDir:(bSCol=c,bSDir=1);applyBF();updateSortArrows('bank-thead',bSCol,bSDir);}
 function renderBank(){
   const s=bpg*30, sl=bfil.slice(s,s+30);
   document.getElementById('b-tbody').innerHTML=sl.map(t=>{
@@ -3415,6 +3613,9 @@ function deleteBTx(){
 }
 
 // ── DEBTS ────────────────────────────────────────────
+// ── DEBTS: клікабельне сортування заголовків ──────────
+let dtSortCol='ours', dtSortDir=-1;
+function dtSrt(c){ c===dtSortCol ? dtSortDir=-dtSortDir : (dtSortCol=c, dtSortDir = (c==='company'||c==='manager'||c==='payStatus') ? 1 : -1); renderDebts(); }
 function daysAgo(dateStr){
   if(!dateStr) return null;
   const d=new Date(dateStr+'T00:00:00');
@@ -3474,16 +3675,25 @@ function renderDebts(){
   if(tp==='K') rows=rows.filter(r=>!r.writtenOff);
   if(q) rows=rows.filter(r=>(r.company||'').toLowerCase().includes(q)||(r.id||'').includes(q));
   if(agingF) rows=rows.filter(r=>r.kind==='K' && !r.writtenOff && r.ours>0 && agingBucket(r.days)===agingF);
-  const sortMode = document.getElementById('df-sort')?.value || 'sum_desc';
-  const sortFns = {
-    sum_desc: (a,b)=>(b.ours+b.theirs)-(a.ours+a.theirs),
-    sum_asc:  (a,b)=>(a.ours+a.theirs)-(b.ours+b.theirs),
-    date_desc:(a,b)=>(b.date||'').localeCompare(a.date||''),
-    date_asc: (a,b)=>(a.date||'').localeCompare(b.date||''),
-    days_desc:(a,b)=>(b.days??-1)-(a.days??-1),
-    company:  (a,b)=>(a.company||'').localeCompare(b.company||'', 'uk'),
+  const sortMeta = {
+    kind:      {type:'str', get:r=>r.kind},
+    company:   {type:'str', get:r=>r.company||''},
+    id:        {type:'str', get:r=>r.id||''},
+    manager:   {type:'str', get:r=>r.manager||''},
+    ours:      {type:'num', get:r=>r.ours||0},
+    paid:      {type:'num', get:r=>r.paid||0},
+    sell:      {type:'num', get:r=>r.sell||0},
+    payStatus: {type:'str', get:r=>r.payStatus||''},
+    date:      {type:'str', get:r=>r.date||''},
+    days:      {type:'num', get:r=>r.days??-1},
   };
-  rows.sort(sortFns[sortMode] || sortFns.sum_desc);
+  const meta=sortMeta[dtSortCol]||sortMeta.ours;
+  rows.sort((a,b)=>{
+    const av=meta.get(a), bv=meta.get(b);
+    if(meta.type==='num') return dtSortDir*(av-bv);
+    return dtSortDir*String(av).localeCompare(String(bv),'uk');
+  });
+  updateSortArrows('debts-thead',dtSortCol,dtSortDir);
   const tk=rows.filter(r=>r.kind==='K'&&!r.writtenOff).reduce((s,r)=>s+r.ours,0);
   const tp2=rows.filter(r=>r.kind==='P').reduce((s,r)=>s+r.ours,0);
   const totalPaid = rows.filter(r=>r.kind==='K').reduce((s,r)=>s+r.paid,0);
@@ -3674,49 +3884,117 @@ function toggleMgr(el){
 }
 
 // ── РЕНТАБЕЛЬНІСТЬ У ДИНАМІЦІ ────────────────────────
+function periodKey(dateStr, period){
+  if(!dateStr || dateStr.length<7) return '—';
+  const y=dateStr.slice(0,4), m=+dateStr.slice(5,7);
+  if(period==='year') return y;
+  if(period==='quarter') return y+' · Q'+Math.ceil(m/3);
+  return dateStr.slice(0,7); // місяць YYYY-MM
+}
+// ── RENTAB: клікабельне сортування заголовків ──────────
+let rtSortCol=null, rtSortDir=1; // null = типове сортування (по періоду / за рейтингом Δ)
+function rtSrt(c){
+  c===rtSortCol ? rtSortDir=-rtSortDir : (rtSortCol=c, rtSortDir = (c==='label') ? 1 : -1);
+  renderRentab();
+}
+function onRentabViewChange(){
+  const view=document.getElementById('rt-view').value;
+  document.getElementById('rt-period').style.display = view==='client' ? 'none' : '';
+  document.getElementById('rt-client-range').style.display = view==='client' ? '' : 'none';
+  const rangeSel=document.getElementById('rt-client-range');
+  document.getElementById('rt-client-mo').style.display = (view==='client' && rangeSel.value==='month') ? '' : 'none';
+  rtSortCol=null; rtSortDir=1; // розріз змінився — колонки означають інше, скидаємо ручне сортування
+  renderRentab();
+}
+function onRentabClientRangeChange(){
+  const r=document.getElementById('rt-client-range').value;
+  const moEl=document.getElementById('rt-client-mo');
+  moEl.style.display = r==='month' ? '' : 'none';
+  if(r==='month' && !moEl.value) moEl.value=new Date().toISOString().slice(0,7);
+  renderRentab();
+}
 function renderRentab(){
-  const view=document.getElementById('rt-view')?.value||'month';
+  const view=document.getElementById('rt-view')?.value||'company';
+  const period=document.getElementById('rt-period')?.value||'month';
+  const clientRange=document.getElementById('rt-client-range')?.value||'all';
+  const clientMo=document.getElementById('rt-client-mo')?.value||'';
   const wrap=document.getElementById('rt-wrap');
   if(!wrap) return;
-  const src=deals.filter(d=>d.manager!=='борги');
-  const keyFn = view==='month'
-    ? d=>(d.date||'').slice(0,7)||'—'
-    : view==='manager'
-      ? d=>d.manager||'—'
-      : d=>d.client||'—';
+  let src=deals.filter(d=>d.manager!=='борги');
+  if(view==='client' && clientRange==='month' && clientMo) src=src.filter(d=>(d.date||'').slice(0,7)===clientMo);
+
   const groups={};
   src.forEach(d=>{
-    const k=keyFn(d);
-    if(!groups[k]) groups[k]={key:k,sell:0,delta:0,cnt:0};
-    groups[k].sell+=getDealSell(d);
-    groups[k].delta+= isFullyClosed(d) ? getDeltaClosed(d) : (+d.delta_auto||0);
-    groups[k].cnt++;
+    let gKey, gPeriod=null, gManager=null, gClient=null;
+    if(view==='company'){
+      gPeriod=periodKey(d.date,period);
+      gKey=gPeriod;
+    } else if(view==='manager'){
+      gPeriod=periodKey(d.date,period);
+      gManager=d.manager||'—';
+      gKey=gPeriod+'||'+gManager;
+    } else {
+      gClient=d.client||'—';
+      gKey=gClient;
+    }
+    if(!groups[gKey]) groups[gKey]={period:gPeriod, manager:gManager, client:gClient, sell:0, delta:0, cnt:0};
+    groups[gKey].sell+=getDealSell(d);
+    groups[gKey].delta+= isFullyClosed(d) ? getDeltaClosed(d) : (+d.delta_auto||0);
+    groups[gKey].cnt++;
   });
   let rows=Object.values(groups).map(g=>({...g, rent: g.sell>0 ? r2(g.delta/g.sell*100) : 0}));
-  rows.sort((a,b)=> view==='month' ? a.key.localeCompare(b.key) : b.delta-a.delta);
+
+  const periodLabel = period==='year'?'Рік':period==='quarter'?'Квартал':'Місяць';
+  let col1Hdr, rowLabelFn;
+  if(view==='company'){ col1Hdr=periodLabel; rowLabelFn=r=>r.period; }
+  else if(view==='manager'){ col1Hdr=periodLabel+' / Менеджер'; rowLabelFn=r=>r.period+' — '+r.manager; }
+  else { col1Hdr='Клієнт'; rowLabelFn=r=>r.client; }
+
+  if(rtSortCol){
+    const rtSortMeta={
+      label:{type:'str', get:r=>rowLabelFn(r)},
+      cnt:  {type:'num', get:r=>r.cnt},
+      sell: {type:'num', get:r=>r.sell},
+      delta:{type:'num', get:r=>r.delta},
+      rent: {type:'num', get:r=>r.rent},
+    };
+    const meta=rtSortMeta[rtSortCol];
+    if(meta) rows.sort((a,b)=>{
+      const av=meta.get(a), bv=meta.get(b);
+      if(meta.type==='num') return rtSortDir*(av-bv);
+      return rtSortDir*String(av).localeCompare(String(bv),'uk');
+    });
+  } else if(view==='company'){ rows.sort((a,b)=>(a.period||'').localeCompare(b.period||''));
+  } else if(view==='manager'){ rows.sort((a,b)=>(a.period||'').localeCompare(b.period||'') || b.delta-a.delta);
+  } else { rows.sort((a,b)=>b.delta-a.delta); }
+
   const totSell=rows.reduce((s,r)=>s+r.sell,0);
   const totDelta=rows.reduce((s,r)=>s+r.delta,0);
   const totRent = totSell>0 ? r2(totDelta/totSell*100) : 0;
+  const rangeLabel = view==='client' ? (clientRange==='month' ? ' · за '+(clientMo||'—') : ' · за весь час') : '';
   document.getElementById('rt-tot').innerHTML=
-    `Продаж: <strong>₴${f0(totSell)}</strong> &nbsp;|&nbsp; Δ: <strong style="color:${totDelta>=0?'var(--grn)':'var(--red)'}">₴${f0(totDelta)}</strong> &nbsp;|&nbsp; Рентаб.: <strong style="color:${totRent>=0?'var(--grn)':'var(--red)'}">${totRent.toFixed(1)}%</strong>`;
+    `Продаж: <strong>₴${f0(totSell)}</strong> &nbsp;|&nbsp; Δ: <strong style="color:${totDelta>=0?'var(--grn)':'var(--red)'}">₴${f0(totDelta)}</strong> &nbsp;|&nbsp; Рентаб.: <strong style="color:${totRent>=0?'var(--grn)':'var(--red)'}">${totRent.toFixed(1)}%</strong>${esc(rangeLabel)}`;
+
   const maxAbsRent=Math.max(1,...rows.map(r=>Math.abs(r.rent)));
-  const hdr = view==='month'?'Місяць':view==='manager'?'Менеджер':'Клієнт';
+  const arrow=c=>rtSortCol===c ? (rtSortDir===1?' ▲':' ▼') : '';
+  const th=(c,label,align)=>`<th onclick="rtSrt('${c}')" style="padding:6px 9px;text-align:${align||'left'};color:var(--txt3);font-weight:500;cursor:pointer;user-select:none">${esc(label)}${arrow(c)}</th>`;
+
   wrap.innerHTML = rows.length===0
     ? '<div style="padding:16px;color:var(--txt3);font-size:12px">Немає даних для обраного розрізу</div>'
     : `<table style="width:100%;border-collapse:collapse;font-size:12px">
       <thead><tr style="background:var(--bg3)">
-        <th style="padding:6px 9px;text-align:left;color:var(--txt3);font-weight:500">${hdr}</th>
-        <th style="padding:6px 9px;text-align:right;color:var(--txt3);font-weight:500">Угод</th>
-        <th style="padding:6px 9px;text-align:right;color:var(--txt3);font-weight:500">Продаж</th>
-        <th style="padding:6px 9px;text-align:right;color:var(--txt3);font-weight:500">Δ</th>
-        <th style="padding:6px 9px;text-align:right;color:var(--txt3);font-weight:500">Рентаб. %</th>
+        ${th('label',col1Hdr,'left')}
+        ${th('cnt','Угод','right')}
+        ${th('sell','Продаж','right')}
+        ${th('delta','Δ','right')}
+        ${th('rent','Рентаб. %','right')}
         <th style="padding:6px 9px;text-align:left;color:var(--txt3);font-weight:500;width:160px">Візуалізація</th>
       </tr></thead>
       <tbody>${rows.map(r=>{
         const barW=Math.round(Math.abs(r.rent)/maxAbsRent*100);
         const barColor=r.rent>=0?'var(--grn)':'var(--red)';
         return `<tr style="border-bottom:1px solid var(--brd)">
-          <td style="padding:6px 9px">${esc(r.key)}</td>
+          <td style="padding:6px 9px">${esc(rowLabelFn(r))}</td>
           <td style="padding:6px 9px;text-align:right">${r.cnt}</td>
           <td style="padding:6px 9px;text-align:right">₴${f0(r.sell)}</td>
           <td style="padding:6px 9px;text-align:right;color:${r.delta>=0?'var(--grn)':'var(--red)'}">₴${f0(r.delta)}</td>
@@ -4503,6 +4781,34 @@ const PATCHNOTES=[
     "НОВА вкладка в Адмін-панелі \"🧪 Автотести\" — 20+ перевірок ключових формул (Δ закрита, борг, рентабельність, aging-терміни, бонус) на фіктивних угодах, не чіпають реальні дані. Раніше кожен тест писався одноразово і викидався — тепер лишається в проєкті, можна перезапускати після будь-якої зміни коду",
     "НОВА вкладка \"🐞 Моніторинг помилок\": JS-збої в браузері колеги тепер не губляться — локальний лог (останні 50) видно кожному, і best-effort відправка в хмарну таблицю error_logs, якщо її створено (SQL нижче)",
     "Щоб увімкнути збір помилок з УСІХ колег в адмінці — треба один раз виконати в Supabase SQL Editor:\\n\\ncreate table if not exists error_logs (\\n  id bigint generated always as identity primary key,\\n  created_at timestamptz not null default now(),\\n  company_id bigint,\\n  user_email text,\\n  message text,\\n  stack text,\\n  source text,\\n  app_version text\\n);\\nalter table error_logs enable row level security;\\ncreate policy \\\"insert own errors\\\" on error_logs for insert to authenticated with check (true);\\ncreate policy \\\"admin reads all errors\\\" on error_logs for select to authenticated using (exists (select 1 from profiles where id = auth.uid() and is_admin = true));\\n\\nБез цієї таблиці все одно працює локальний лог помилок в кожному браузері окремо."
+  ]},
+  {v:'4.37',date:'09.07.2026',title:"Рентабельність по періодах, аванс у відомості, виправлено сортування, перетягування розділів, розмір шрифту",notes:[
+    "📈 Рентабельність: НОВИЙ розріз \"🏢 По компанії\" — загальне закриття по місяцях/кварталах/роках (раніше було тільки по місяцях і без вибору періоду)",
+    "По менеджерах тепер теж можна дивитись по місяцях, кварталах чи роках — з кількістю угод на кожен період поруч",
+    "По клієнтах — перемикач \"За весь час\" / \"За конкретний місяць\" замість тільки загального рейтингу",
+    "ВИПРАВЛЕНО прихований баг сортування: клік по заголовку \"Менеджер\"/\"Клієнт\" в Журналі угод технічно сортував, але кирилицю порівнював як коди символів (\"І\" менше за \"А\"), тому порядок виглядав хаотичним — тепер справжнє українське алфавітне сортування",
+    "НОВЕ: заголовки таблиці в \"Заборгованість\" тепер теж клікабельні для сортування (тип, підприємство, менеджер, борг, оплата, дата, днів прострочки) — раніше сортував лише випадний список",
+    "Стрілка ▲▼ на заголовку показує, за якою колонкою і в якому напрямку зараз сортовано",
+    "Зарплатна відомість: НОВА колонка \"Аванс\" (редагується) — \"Нараховано\" (оклад+бонус) лишається окремо, \"До видачі\" рахується як нараховано мінус аванс, підсумок внизу тепер теж \"до видачі\"",
+    "НОВЕ: розділи в лівому сайдбарі можна перетягувати мишкою, щоб змінити порядок — зручний для одного порядок необов'язково зручний для іншого, кожен налаштовує під себе (зберігається в браузері)",
+    "НОВЕ: регулятор розміру шрифту \"A− / A+\" в шапці (85–130%, компактно, займає мінімум місця) — масштабує весь застосунок разом, зберігається між сесіями"
+  ]},
+  {v:'4.38',date:'09.07.2026',title:"Виправлено регулятор розміру шрифту — таблиці більше не ховаються",notes:[
+    "ВИПРАВЛЕНО: попередній спосіб (CSS zoom) конфліктував з overflow:hidden на body — після зміни розміру внутрішні блоки прокрутки таблиць неправильно рахували свою висоту, і частина інтерфейсу ставала невидимою",
+    "Замінено на transform:scale() з компенсацією ширини/висоти в протилежну сторону — після трансформації застосунок завжди рівно займає весь екран, без ховання чи обрізання",
+    "Побічний плюс: тепер масштабується не тільки текст, а весь інтерфейс цілком (і сайдбар теж) — виглядає природніше",
+    "Панель редагування угоди та спливаючі вікна (швидкий пошук, вхід) поки НЕ масштабуються цим регулятором — це свідомий компроміс заради стабільності, можна допрацювати окремо за потреби"
+  ]},
+  {v:'4.39',date:'09.07.2026',title:"Мобільна адаптація + виправлено \"зависання\" сторінки Рентабельність + аудит коду",notes:[
+    "ВИПРАВЛЕНО справжню причину бага в Рентабельності: блок з таблицею не мав overflow:auto, тому при великій кількості рядків сторінка просто обрізалась знизу і не прокручувалась — тепер працює як усі інші вкладки",
+    "Рентабельність: заголовки таблиці тепер клікабельні для сортування (Угод/Продаж/Δ/Рентаб. %) — раніше сортування не було зовсім",
+    "Мобільна версія: сайдбар став висувним меню (кнопка ☰ зліва вгорі) замість того, щоб постійно займати половину вузького екрана",
+    "Панель редагування угоди на телефоні тепер в одну колонку замість бокової панелі+основного блоку впритул",
+    "Топбар, таблиці, картки статистики трохи компактніші на вузьких екранах; спливаючі вікна більше не вилазять за межі екрана",
+    "Таблиці на телефоні лишаються з горизонтальним прокручуванням (не card-режим) — повний редизайн кожної таблиці під телефон це окрема велика задача, тут — практичний робочий мінімум",
+    "Аудит коду (пройшовся автоматизованими перевірками + вручну): ВИПРАВЛЕНО той самий баг \"кирилиця сортується як коди символів\" — тепер і в таблиці Банк (раніше пофіксив тільки Журнал угод)",
+    "Перевірено на відсутність: дублікатів функцій, розбитих посилань на видалені елементи, викликів неіснуючих id/функцій з onclick — по всьому файлу жодної розбіжності не знайдено",
+    "Відомий нюанс: перетягування розділів меню (з версії 4.37) працює мишкою; на сенсорному екрані телефону цю конкретну дію (drag) поки не реалізовано — сама навігація тапом працює нормально"
   ]},
 ];
 
