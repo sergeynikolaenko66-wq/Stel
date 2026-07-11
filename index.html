@@ -1740,19 +1740,33 @@ function init(){
     let cloudRow=null, cloudOk=false;
     try{ cloudRow=await cloudPull(); cloudOk=true; }catch(e){ cloudOk=false; }
 
-    if(cloudOk && cloudRow && cloudRow.data && (cloudRow.data.deals||[]).length>0){
+    // ── КРИТИЧНО: перевірка "чи є реальні дані" ──────────────────────
+    // Раніше дивились ЛИШЕ на deals.length>0 — але після закриття МІД усі
+    // угоди переїжджають в archiveDeals і deals стає порожнім! Через це
+    // застосунок міг вирішити "хмара порожня" і ЗАТЕРТИ реальні дані (архів
+    // угод, закриті МІД, зарплатну відомість, П&L) чистим аркушем. Тепер
+    // дивимось на ВСІ значущі масиви разом.
+    const hasRealData = d => !!d && (
+      (d.deals&&d.deals.length>0) || (d.archiveDeals&&d.archiveDeals.length>0) ||
+      (d.closedMIDs&&d.closedMIDs.length>0) || (d.employees&&d.employees.length>0) ||
+      (d.payrollArchive&&d.payrollArchive.length>0) || (d.pnlArchive&&d.pnlArchive.length>0) ||
+      (d.pnlRecurring&&d.pnlRecurring.length>0) ||
+      (d.bank&&d.bank.transactions&&d.bank.transactions.length>0)
+    );
+
+    if(cloudOk && cloudRow && cloudRow.data && hasRealData(cloudRow.data)){
       // Хмара — джерело істини, якщо в ній вже є дані
       const d=cloudRow.data;
-      deals=d.deals; bank=d.bank; managers=d.managers||[];
+      deals=d.deals||[]; bank=d.bank||{opening:0,transactions:[]}; managers=d.managers||[];
       archiveDeals=d.archiveDeals||[]; closedMIDs=d.closedMIDs||[]; employees=d.employees||[]; payrollAdvances=d.payrollAdvances||{}; payrollArchive=d.payrollArchive||[]; pnlRecurring=d.pnlRecurring||[]; pnlOneOff=d.pnlOneOff||{}; pnlArchive=d.pnlArchive||[];
       lastCloudUpdatedAt=cloudRow.updated_at;
       idbSave(); // кешуємо локально про всяк випадок (офлайн-фолбек)
-      showToastIDB('Дані завантажено з хмари ('+deals.length+' угод)');
+      showToastIDB('Дані завантажено з хмари ('+deals.length+' угод, '+archiveDeals.length+' в архіві)');
     } else if(cloudOk){
-      // Хмара доступна, але порожня — перше використання: беремо локальний кеш, або стартуємо з чистого аркуша
+      // Хмара доступна, але СПРАВДІ порожня — перше використання: беремо локальний кеш, або стартуємо з чистого аркуша
       const saved=await idbLoad();
-      if(saved && saved.deals && saved.deals.length>0){
-        deals=saved.deals; bank=saved.bank; managers=saved.managers||[];
+      if(hasRealData(saved)){
+        deals=saved.deals||[]; bank=saved.bank||{opening:0,transactions:[]}; managers=saved.managers||[];
         archiveDeals=saved.archiveDeals||[]; closedMIDs=saved.closedMIDs||[]; employees=saved.employees||[]; payrollAdvances=saved.payrollAdvances||{}; payrollArchive=saved.payrollArchive||[]; pnlRecurring=saved.pnlRecurring||[]; pnlOneOff=saved.pnlOneOff||{}; pnlArchive=saved.pnlArchive||[];
       } else {
         deals=[]; bank={opening:0,transactions:[]}; managers=[];
@@ -1763,8 +1777,8 @@ function init(){
     } else {
       // Хмара недоступна (немає мережі) — працюємо з локального кешу, попереджаємо
       const saved=await idbLoad();
-      if(saved && saved.deals && saved.deals.length>0){
-        deals=saved.deals; bank=saved.bank; managers=saved.managers||[];
+      if(hasRealData(saved)){
+        deals=saved.deals||[]; bank=saved.bank||{opening:0,transactions:[]}; managers=saved.managers||[];
         archiveDeals=saved.archiveDeals||[]; closedMIDs=saved.closedMIDs||[]; employees=saved.employees||[]; payrollAdvances=saved.payrollAdvances||{}; payrollArchive=saved.payrollArchive||[]; pnlRecurring=saved.pnlRecurring||[]; pnlOneOff=saved.pnlOneOff||{}; pnlArchive=saved.pnlArchive||[];
         if(saved.ts) lastSavedAt=new Date(saved.ts);
       } else {
@@ -5375,6 +5389,12 @@ const PATCHNOTES=[
     "Виправлено в трьох місцях: попередній розрахунок в картці угоди, збереження угоди, і — найважливіше — відкриття угоди тепер завжди рахує оплату наживо з банку+ручних платежів, ІГНОРУЮЧИ старе зіпсоване значення. Це означає, що вже зіпсовані угоди самі полагодяться, щойно відкриєш і збережеш їх ще раз",
     "ВИПРАВЛЕНО той самий баг 'зникають угоди після архівації', що й у Зарплатній відомості (v4.45) — тепер і в П&L: Валовий прибуток і кількість угод рахувались 0, якщо МІД вже закрито (угоди в архіві). Тепер П&L так само бере офіційну суму із закриття МІД",
     "У П&L з'явився той самий індикатор \"🔒 МІД закрито — офіційно\" / \"⏳ ще не закрито — попередньо\", що й у Зарплатній відомості"
+  ]},
+  {v:'4.47',date:'13.07.2026',title:"🔴 КРИТИЧНО: виправлено втрату даних при перезаході в застосунок",notes:[
+    "ЗНАЙДЕНО ТЯЖКИЙ БАГ: при заході в застосунок перевірка \"чи є дані в хмарі\" дивилась ЛИШЕ на кількість активних угод (deals). Але після закриття МІД усі угоди переїжджають в архів (archiveDeals) — і якщо закритих було багато, активних могло лишитись 0",
+    "Через це застосунок міг ПОМИЛКОВО вирішити, що хмара порожня, і затерти реальні дані (архів угод, закриті МІД, зарплатну відомість, П&L) чистим аркушем — саме це і сталось: закрив МІД, нарахував ЗП, сформував П&L, перезайшов — і все зникло",
+    "ВИПРАВЛЕНО: тепер перевіряється наявність даних одразу по ВСІХ значущих розділах (активні угоди, архів, закриті МІД, співробітники, архів зарплати, архів П&L, банк) — якщо хоч десь є реальні дані, вони більше не затираються",
+    "Це найсерйозніший бг з усіх, що траплялись — перепрошую за це. Детальний розбір і що робити з даними, які вже могли постраждати — в чаті"
   ]},
 ];
 
