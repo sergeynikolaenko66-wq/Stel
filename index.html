@@ -1343,7 +1343,7 @@ async function admLoadReport(){
   const rows=[];
   for(const c of companies){
     try{
-      const r=await sbFetch(SB_URL+'/rest/v1/jsm_state?company_id=eq.'+c.id+'&select=data');
+      const r=await sbFetch(SB_URL+'/rest/v1/jsm_state?company_id=eq.'+c.id+'&select=data&order=updated_at.desc&limit=1');
       const arr=r.ok?await r.json():[];
       const d=(arr[0]&&arr[0].data)||{};
       const cdeals=d.deals||[];
@@ -1381,7 +1381,7 @@ async function admLoadAuditLog(){
   const entries=[];
   for(const c of companies){
     try{
-      const r=await sbFetch(SB_URL+'/rest/v1/jsm_state?company_id=eq.'+c.id+'&select=data');
+      const r=await sbFetch(SB_URL+'/rest/v1/jsm_state?company_id=eq.'+c.id+'&select=data&order=updated_at.desc&limit=1');
       const arr=r.ok?await r.json():[];
       const d=(arr[0]&&arr[0].data)||{};
       (d.deals||[]).forEach(deal=>{
@@ -1489,7 +1489,9 @@ function setConnStatus(online){
 async function cloudPull(){
   if(!currentCompanyId) return null;
   try{
-    const r=await sbFetch(SB_URL+'/rest/v1/jsm_state?company_id=eq.'+currentCompanyId+'&select=data,updated_at,updated_by');
+    // order+limit — захист навіть якщо в базі випадково лишились дублікати рядків
+    // (через стару помилку upsert без on_conflict) — завжди береться НАЙНОВІШИЙ запис.
+    const r=await sbFetch(SB_URL+'/rest/v1/jsm_state?company_id=eq.'+currentCompanyId+'&select=data,updated_at,updated_by&order=updated_at.desc&limit=1');
     if(!r.ok){ setConnStatus(false); return null; }
     const rows=await r.json();
     setConnStatus(true);
@@ -1500,8 +1502,10 @@ async function cloudPush(){
   if(!currentCompanyId) return false;
   const payload={company_id:currentCompanyId, data:{deals,bank,managers,archiveDeals,closedMIDs,employees,payrollAdvances,payrollArchive,pnlRecurring,pnlOneOff,pnlArchive}, updated_at:new Date().toISOString(), updated_by:currentUserEmail};
   try{
-    // upsert: якщо рядка для цієї компанії ще нема (нова компанія) — створюється, інакше оновлюється
-    const r=await sbFetch(SB_URL+'/rest/v1/jsm_state',{
+    // upsert: on_conflict=company_id ЯВНО вказує, яку колонку вважати "тим самим записом" —
+    // без цього параметра запис міг замість ОНОВЛЕННЯ створювати ЩЕ ОДИН рядок щоразу,
+    // а зчитування потім могло діставати старий/випадковий рядок замість щойно збереженого.
+    const r=await sbFetch(SB_URL+'/rest/v1/jsm_state?on_conflict=company_id',{
       method:'POST', headers:{'Prefer':'return=representation,resolution=merge-duplicates'},
       body:JSON.stringify(payload)
     });
@@ -5395,6 +5399,13 @@ const PATCHNOTES=[
     "Через це застосунок міг ПОМИЛКОВО вирішити, що хмара порожня, і затерти реальні дані (архів угод, закриті МІД, зарплатну відомість, П&L) чистим аркушем — саме це і сталось: закрив МІД, нарахував ЗП, сформував П&L, перезайшов — і все зникло",
     "ВИПРАВЛЕНО: тепер перевіряється наявність даних одразу по ВСІХ значущих розділах (активні угоди, архів, закриті МІД, співробітники, архів зарплати, архів П&L, банк) — якщо хоч десь є реальні дані, вони більше не затираються",
     "Це найсерйозніший бг з усіх, що траплялись — перепрошую за це. Детальний розбір і що робити з даними, які вже могли постраждати — в чаті"
+  ]},
+  {v:'4.48',date:'13.07.2026',title:"🔴 КРИТИЧНО: справжній корінь проблеми — збереження створювало ДУБЛІКАТИ рядків у базі",notes:[
+    "Виправлення 4.47 було правильним, але не єдиною причиною — знайшов ще глибшу: збереження в хмару (cloudPush) робилось як 'upsert' БЕЗ явної вказівки on_conflict=company_id",
+    "Без цього параметра Postgres міг не розуміти, який рядок оновлювати, і замість ОНОВЛЕННЯ існуючого запису — створював ЩЕ ОДИН новий рядок при кожному збереженні",
+    "А зчитування даних (cloudPull) бралось просто 'перший рядок з бази' без сортування — і при кількох рядках на одну компанію могло діставати СТАРИЙ/випадковий замість щойно збереженого. Це і є причина 'зберігаю — а після оновлення сторінки все як було'",
+    "ВИПРАВЛЕНО в коді: збереження тепер явно каже 'onovlюй за company_id', а зчитування завжди бере НАЙНОВІШИЙ запис (сортування за часом)",
+    "ВАЖЛИВО — сам код цього достатньо НЕ виправить, якщо в базі Supabase нема унікального обмеження на company_id. Потрібно один раз виконати SQL в Supabase — повний скрипт з поясненням в чаті"
   ]},
 ];
 
