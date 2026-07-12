@@ -71,6 +71,10 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .pg.on{display:flex}
 .sbar{display:flex;gap:8px;background:transparent;border-bottom:1px solid var(--brd);flex-shrink:0;overflow-x:auto;padding:10px 14px}
 .sc{flex:0 1 auto;padding:9px 14px;background:var(--bg3);border:1px solid var(--brd);border-radius:10px;min-width:100px}
+.archive-subtab-btn{opacity:.6}
+.archive-subtab-btn.on{opacity:1;background:var(--acc);color:#fff;border-color:var(--acc)}
+.archive-subpage{display:none;flex-direction:column;flex:1;overflow:hidden;min-height:0}
+.archive-subpage.on{display:flex}
 .sc-l{font-size:10px;color:var(--txt2);text-transform:none;font-weight:500;letter-spacing:.01em;margin-bottom:2px;white-space:nowrap}
 .sc-v{font-size:15px;font-weight:600}
 .sc-v.g{color:var(--grn)}.sc-v.r{color:var(--red)}.sc-v.a{color:var(--amb)}.sc-v.b{color:var(--acc)}
@@ -286,8 +290,7 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
     <div class="nav-i" data-page="rentab" onclick="nav('rentab')"><span>📈</span>Рентабельність</div>
     <div class="nav-i" data-page="svirka" onclick="nav('svirka')"><span>🔍</span>Звірка (ПД)</div>
     <div class="nav-i" data-page="managers" onclick="nav('managers')"><span>👥</span>Менеджери</div>
-    <div class="nav-i" data-page="archive" onclick="nav('archive')"><span>🗄</span>Архів угод</div>
-    <div class="nav-i" data-page="closed-mid" onclick="nav('closed-mid')"><span>📑</span>Закриті МИД</div>
+    <div class="nav-i" data-page="archive" onclick="nav('archive')"><span>🗄</span>Архів</div>
     <div class="nav-i" data-page="patchnotes" onclick="nav('patchnotes')"><span>📋</span>Версії / Патч-нот</div>
     <div class="nav-i" data-page="import" onclick="nav('import')"><span>📂</span>Імпорт / Експорт</div>
     <div class="nav-i" id="nav-admin" data-page="admin" onclick="nav('admin')" style="display:none"><span>⚙</span>Адміністрування</div>
@@ -525,35 +528,62 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
     </div>
 
     <!-- ARCHIVE -->
+    <!-- ARCHIVE HUB (Закриті МІД + Архів угод + Архів ЗП + Архів П&L) -->
     <div class="pg" id="pg-archive">
-      <div class="sbar" id="arch-sbar"></div>
-      <div class="fbar">
-        <select id="arch-mo" onchange="renderArchive()"><option value="">Всі місяці</option></select>
-        <input class="fi" id="arch-search" oninput="renderArchive()" placeholder="Пошук...">
-        <span style="font-size:11px;color:var(--txt3)">Закриті угоди — можна відновити в журнал</span>
+      <div class="fbar" style="gap:6px">
+        <button class="btn sm archive-subtab-btn on" data-tab="closed-mid" onclick="archiveSubTab('closed-mid')">📑 Закриті МІД</button>
+        <button class="btn sm archive-subtab-btn" data-tab="deals" onclick="archiveSubTab('deals')">🗄 Архів угод</button>
+        <button class="btn sm archive-subtab-btn" id="archive-tab-payroll-btn" data-tab="payroll" onclick="archiveSubTab('payroll')" style="display:none">💰 Архів ЗП</button>
+        <button class="btn sm archive-subtab-btn" id="archive-tab-pnl-btn" data-tab="pnl" onclick="archiveSubTab('pnl')" style="display:none">📊 Архів П&amp;L</button>
       </div>
-      <div class="tw"><table><thead><tr>
-        <th>Індекс</th><th>Дата</th><th>Менеджер</th><th>Клієнт</th>
-        <th style="text-align:right">Продаж</th>
-        <th style="text-align:right">Δ авто</th>
-        <th style="text-align:right">Δ закрита</th>
-        <th>Місяць</th><th>Дія</th>
-      </tr></thead><tbody id="arch-tbody"></tbody></table></div>
-      <div class="pag">
-        <div class="pag-info" id="arch-pinfo"></div>
-        <button class="pb" onclick="archPg=Math.max(0,archPg-1);renderArchive()">← Назад</button>
-        <span id="arch-pnums"></span>
-        <button class="pb" onclick="archPg++;renderArchive()">Вперед →</button>
-      </div>
-    </div>
 
-    <!-- CLOSED MID -->
-    <div class="pg" id="pg-closed-mid">
-      <div class="fbar">
-        <span style="font-size:12px;color:var(--txt2)">Фінальні МИД закритих місяців</span>
+      <!-- Закриті МІД -->
+      <div class="archive-subpage on" id="archsub-closed-mid">
+        <div class="fbar">
+          <span style="font-size:12px;color:var(--txt2)">Фінальні МИД закритих місяців</span>
+        </div>
+        <div style="flex:1;overflow:auto;padding:14px" id="closed-mid-list">
+          <div style="color:var(--txt3);font-size:12px;padding:20px">Закритих місяців ще немає</div>
+        </div>
       </div>
-      <div style="flex:1;overflow:auto;padding:14px" id="closed-mid-list">
-        <div style="color:var(--txt3);font-size:12px;padding:20px">Закритих місяців ще немає</div>
+
+      <!-- Архів угод -->
+      <div class="archive-subpage" id="archsub-deals">
+        <div class="sbar" id="arch-sbar"></div>
+        <div class="fbar">
+          <select id="arch-mo" onchange="renderArchive()"><option value="">Всі місяці</option></select>
+          <input class="fi" id="arch-search" oninput="renderArchive()" placeholder="Пошук...">
+          <span style="font-size:11px;color:var(--txt3)">Закриті угоди — можна відновити в журнал</span>
+        </div>
+        <div class="tw"><table><thead><tr>
+          <th>Індекс</th><th>Дата</th><th>Менеджер</th><th>Клієнт</th>
+          <th style="text-align:right">Продаж</th>
+          <th style="text-align:right">Δ авто</th>
+          <th style="text-align:right">Δ закрита</th>
+          <th>Місяць</th><th>Дія</th>
+        </tr></thead><tbody id="arch-tbody"></tbody></table></div>
+        <div class="pag">
+          <div class="pag-info" id="arch-pinfo"></div>
+          <button class="pb" onclick="archPg=Math.max(0,archPg-1);renderArchive()">← Назад</button>
+          <span id="arch-pnums"></span>
+          <button class="pb" onclick="archPg++;renderArchive()">Вперед →</button>
+        </div>
+      </div>
+
+      <!-- Архів ЗП (лише адмін) -->
+      <div class="archive-subpage" id="archsub-payroll">
+        <div style="flex:1;overflow:auto;padding:16px">
+          <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">Закриті знімки минулих місяців — незмінні, навіть якщо потім поправиш оклад заднім числом. Клік по рядку розгортає деталізацію по співробітниках. Закривати нові місяці — на сторінці "Адміністрування → Зарплатна відомість".</div>
+          <div id="pa-wrap" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
+        </div>
+      </div>
+
+      <!-- Архів П&L (лише адмін) -->
+      <div class="archive-subpage" id="archsub-pnl">
+        <div style="flex:1;overflow:auto;padding:16px">
+          <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">Закритий звіт — незмінний знімок, навіть якщо потім поправиш витрати заднім числом. Закривати нові місяці — на сторінці "P&L (прибуток)".</div>
+          <div id="pnl-archive-wrap" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
+        </div>
       </div>
     </div>
 
@@ -653,16 +683,11 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
             <button class="btn pri sm" onclick="addEmployee()">+ Додати співробітника</button>
           </div>
           <div id="pr-wrap" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
-          <div style="margin-top:10px;display:flex;gap:8px">
+          <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
             <button class="btn sm grn" onclick="exportPayrollExcel()">⬇ Excel-відомість</button>
             <button class="btn sm" style="border-color:var(--amb);color:var(--amb)" onclick="closePayrollMonth()">🔒 Закрити відомість за місяць</button>
+            <span style="font-size:11px;color:var(--txt3)">Архів закритих відомостей — у вкладці 🗄 Архів</span>
           </div>
-        </div>
-
-        <div style="margin-top:24px">
-          <div style="font-size:13px;font-weight:700;margin-bottom:10px">📁 Архів відомостей</div>
-          <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">Закриті знімки минулих місяців — незмінні, навіть якщо потім поправиш оклад заднім числом. Клік по рядку розгортає деталізацію по співробітниках.</div>
-          <div id="pa-wrap" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
         </div>
 
         <div style="margin-top:24px">
@@ -1250,7 +1275,6 @@ async function renderAdminPage(){
   await admRenderCompanies();
   await admRenderAccessList();
   renderPayroll();
-  renderPayrollArchive();
 }
 
 async function admRenderCompanies(){
@@ -1848,10 +1872,10 @@ function updateSaveBtn(){
 
 
 // ── NAV ──────────────────────────────────────────────
-const PAGES=['dashboard','deals','bank','debts','mid','rentab','svirka','managers','archive','closed-mid','patchnotes','import','admin','pnl'];
+const PAGES=['dashboard','deals','bank','debts','mid','rentab','svirka','managers','archive','patchnotes','import','admin','pnl'];
 const TITLES={dashboard:'Дашборд',deals:'Журнал угод',bank:'Банк — виписка',debts:'Заборгованість',
   mid:'МИД / Дельти',rentab:'Рентабельність у динаміці',svirka:'Звірка (ПД)',managers:'Менеджери',
-  archive:'Архів угод',['closed-mid']:'Закриті МИД',patchnotes:'Версії / Патч-нот',import:'Імпорт / Експорт',admin:'Адміністрування',pnl:'P&L (прибуток компанії)'};
+  archive:'Архів',patchnotes:'Версії / Патч-нот',import:'Імпорт / Експорт',admin:'Адміністрування',pnl:'P&L (прибуток компанії)'};
 // ── ПЕРЕТЯГУВАННЯ РОЗДІЛІВ МЕНЮ ────────────────────────
 // Порядок розділів у сайдбарі можна міняти перетягуванням — зберігається
 // в цьому браузері (localStorage), у кожного може бути свій зручний порядок.
@@ -1919,13 +1943,43 @@ function nav(id){
   document.getElementById('ptitle').textContent=TITLES[id]||id;
   if(id==='import') updateImpInfo();
   if(id==='patchnotes') renderPatchnotes();
-  if(id==='archive') renderArchive();
-  if(id==='closed-mid') renderClosedMIDs();
+  if(id==='archive') openArchiveHub();
   if(id==='dashboard') renderDashboard();
   if(id==='admin') renderAdminPage();
   if(id==='rentab') renderRentab();
   if(id==='pnl') renderPnl();
   if(window.innerWidth<=768) toggleSidebar(false); // на телефоні меню закривається після вибору розділу
+}
+
+// ── АРХІВ (єдина вкладка з під-розділами) ─────────────
+// Закриті МІД + Архів угод — видно всім. Архів ЗП/П&L — лише адміну (кнопки самі ховаються).
+let _lastArchiveSubTab='closed-mid';
+try{
+  const savedTab=localStorage.getItem('jsm_archive_subtab');
+  if(savedTab && ['closed-mid','deals','payroll','pnl'].includes(savedTab)) _lastArchiveSubTab=savedTab;
+}catch(e){}
+function openArchiveHub(){
+  const payBtn=document.getElementById('archive-tab-payroll-btn');
+  const pnlBtn=document.getElementById('archive-tab-pnl-btn');
+  if(payBtn) payBtn.style.display = isAdmin ? '' : 'none';
+  if(pnlBtn) pnlBtn.style.display = isAdmin ? '' : 'none';
+  // якщо раніше стояв на адмінському під-розділі, а прав уже нема — повертаємось на загальнодоступний
+  const tab = (!isAdmin && (_lastArchiveSubTab==='payroll'||_lastArchiveSubTab==='pnl')) ? 'closed-mid' : _lastArchiveSubTab;
+  archiveSubTab(tab);
+}
+function archiveSubTab(tab){
+  _lastArchiveSubTab=tab;
+  ['closed-mid','deals','payroll','pnl'].forEach(t=>{
+    const page=document.getElementById('archsub-'+t);
+    if(page) page.classList.toggle('on', t===tab);
+    const btn=document.querySelector('.archive-subtab-btn[data-tab="'+t+'"]');
+    if(btn) btn.classList.toggle('on', t===tab);
+  });
+  try{ localStorage.setItem('jsm_archive_subtab', tab); }catch(e){}
+  if(tab==='closed-mid') renderClosedMIDs();
+  else if(tab==='deals') renderArchive();
+  else if(tab==='payroll') renderPayrollArchive();
+  else if(tab==='pnl') renderPnlArchive();
 }
 
 // ── HELPERS ──────────────────────────────────────────
@@ -3649,12 +3703,8 @@ function renderPnl(){
       <input id="pnl-oo-amount" type="number" placeholder="Сума ₴" style="width:120px;background:var(--bg3);border:1px solid var(--brd);border-radius:var(--r);padding:6px 10px;color:var(--txt);font-family:inherit;font-size:12px">
       <button class="btn pri sm" onclick="addPnlOneOff()">+ Додати разову</button>
     </div>
-
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px">📁 Архів П&L</div>
-    <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">Закритий звіт — незмінний знімок, навіть якщо потім поправиш витрати заднім числом.</div>
-    <div id="pnl-archive-wrap" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
+    <div style="font-size:11px;color:var(--txt3)">Архів закритих П&L-звітів — у вкладці 🗄 Архів</div>
   `;
-  renderPnlArchive();
 }
 function closePnlMonth(){
   if(!isAdmin) return;
@@ -5425,6 +5475,12 @@ const PATCHNOTES=[
     "ЗНАЙДЕНО причину, чому індикатор писав 'немає звʼязку з хмарою' навіть при робочому інтернеті: застосунок показував це повідомлення при БУДЬ-ЯКІЙ невдачі збереження, навіть коли сервер Supabase відповідав, але ВІДХИЛЯВ запит (наприклад, через відсутнє обмеження в базі)",
     "Тепер застосунок розрізняє: справжня відсутність інтернету (як і раніше) проти сервер відповів, але відхилив запит — у другому випадку показується РЕАЛЬНИЙ текст помилки від Supabase, а не 'немає інтернету'",
     "Текст помилки також пишеться в консоль браузера (F12 → Console) з поміткою [ЖСМ] — можна скопіювати й прислати для діагностики"
+  ]},
+  {v:'4.50',date:'13.07.2026',title:"Об'єднано всі архіви в одну вкладку 🗄 Архів",notes:[
+    "Було 4 різних місця: Архів угод і Закриті МІД — окремі пункти меню; Архів ЗП — всередині Адміністрування; Архів П&L — всередині сторінки P&L. Тепер усе в одній вкладці \"🗄 Архів\" з перемикачем під-розділів зверху",
+    "Під-розділи: 📑 Закриті МІД, 🗄 Архів угод — видно всім; 💰 Архів ЗП, 📊 Архів П&L — видно лише адміну (кнопки самі ховаються для звичайних користувачів)",
+    "Сам процес закриття місяця не змінився — кнопки \"🔒 Закрити відомість\" і \"🔒 Закрити П&L\" лишились на своїх робочих сторінках (Адміністрування → Зарплатна відомість, і P&L), знімки після закриття просто зʼявляються в новій вкладці Архів",
+    "Вибір під-розділу запамʼятовується в браузері — наступного разу відкриється саме той, що дивився останнім"
   ]},
 ];
 
