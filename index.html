@@ -535,6 +535,7 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         <button class="btn sm archive-subtab-btn" data-tab="deals" onclick="archiveSubTab('deals')">🗄 Архів угод</button>
         <button class="btn sm archive-subtab-btn" id="archive-tab-payroll-btn" data-tab="payroll" onclick="archiveSubTab('payroll')" style="display:none">💰 Архів ЗП</button>
         <button class="btn sm archive-subtab-btn" id="archive-tab-pnl-btn" data-tab="pnl" onclick="archiveSubTab('pnl')" style="display:none">📊 Архів П&amp;L</button>
+        <button class="btn sm archive-subtab-btn" id="archive-tab-backups-btn" data-tab="backups" onclick="archiveSubTab('backups')" style="display:none">💾 Резервні копії</button>
       </div>
 
       <!-- Закриті МІД -->
@@ -583,6 +584,15 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         <div style="flex:1;overflow:auto;padding:16px">
           <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">Закритий звіт — незмінний знімок, навіть якщо потім поправиш витрати заднім числом. Закривати нові місяці — на сторінці "P&L (прибуток)".</div>
           <div id="pnl-archive-wrap" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
+        </div>
+      </div>
+
+      <!-- Резервні копії (лише адмін) -->
+      <div class="archive-subpage" id="archsub-backups">
+        <div style="flex:1;overflow:auto;padding:16px">
+          <div style="font-size:11px;color:var(--txt3);margin-bottom:10px">Автоматичні знімки всієї бази — щодня (раз на день) і одразу при кожному закритті МІД/ЗП/П&L. Зберігаються останні 30. "Відновити" повністю замінює поточні дані компанії тим, що було на момент знімку — використовуй тільки якщо щось точно пішло не так.</div>
+          <button class="btn sm" onclick="renderBackupsList()" style="margin-bottom:10px">🔄 Оновити список</button>
+          <div id="backups-wrap" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
         </div>
       </div>
     </div>
@@ -803,12 +813,6 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
               </label>
             </div>
             <div id="flags-status" style="margin-top:6px;font-size:11px;color:var(--txt3)">Виконано 0 з 4 умов</div>
-          </div>
-          <div class="dp-grid" style="margin-bottom:6px">
-            <div class="df"><label>ДЗ нам — залишок дельти (ручне)</label>
-              <input id="di-dz1" type="number" step="0.01" placeholder="0.00" oninput="recalc()"></div>
-            <div class="df"><label>ДЗ нам — авто (з банку)</label>
-              <input id="di-dz1-auto" type="number" step="0.01" class="auto" readonly placeholder="рахується автоматично"></div>
           </div>
 
           <!-- ПОЗИЦІЇ -->
@@ -1804,6 +1808,7 @@ function init(){
       lastCloudUpdatedAt=cloudRow.updated_at;
       idbSave(); // кешуємо локально про всяк випадок (офлайн-фолбек)
       showToastIDB('Дані завантажено з хмари ('+deals.length+' угод, '+archiveDeals.length+' в архіві)');
+      maybeCreateDailySnapshot(); // у фоні, не блокує запуск
     } else if(cloudOk){
       // Хмара доступна, але СПРАВДІ порожня — перше використання: беремо локальний кеш, або стартуємо з чистого аркуша
       const saved=await idbLoad();
@@ -1956,20 +1961,23 @@ function nav(id){
 let _lastArchiveSubTab='closed-mid';
 try{
   const savedTab=localStorage.getItem('jsm_archive_subtab');
-  if(savedTab && ['closed-mid','deals','payroll','pnl'].includes(savedTab)) _lastArchiveSubTab=savedTab;
+  if(savedTab && ['closed-mid','deals','payroll','pnl','backups'].includes(savedTab)) _lastArchiveSubTab=savedTab;
 }catch(e){}
 function openArchiveHub(){
   const payBtn=document.getElementById('archive-tab-payroll-btn');
   const pnlBtn=document.getElementById('archive-tab-pnl-btn');
+  const bkBtn=document.getElementById('archive-tab-backups-btn');
   if(payBtn) payBtn.style.display = isAdmin ? '' : 'none';
   if(pnlBtn) pnlBtn.style.display = isAdmin ? '' : 'none';
+  if(bkBtn) bkBtn.style.display = isAdmin ? '' : 'none';
   // якщо раніше стояв на адмінському під-розділі, а прав уже нема — повертаємось на загальнодоступний
-  const tab = (!isAdmin && (_lastArchiveSubTab==='payroll'||_lastArchiveSubTab==='pnl')) ? 'closed-mid' : _lastArchiveSubTab;
+  const adminOnlyTabs=['payroll','pnl','backups'];
+  const tab = (!isAdmin && adminOnlyTabs.includes(_lastArchiveSubTab)) ? 'closed-mid' : _lastArchiveSubTab;
   archiveSubTab(tab);
 }
 function archiveSubTab(tab){
   _lastArchiveSubTab=tab;
-  ['closed-mid','deals','payroll','pnl'].forEach(t=>{
+  ['closed-mid','deals','payroll','pnl','backups'].forEach(t=>{
     const page=document.getElementById('archsub-'+t);
     if(page) page.classList.toggle('on', t===tab);
     const btn=document.querySelector('.archive-subtab-btn[data-tab="'+t+'"]');
@@ -1980,6 +1988,126 @@ function archiveSubTab(tab){
   else if(tab==='deals') renderArchive();
   else if(tab==='payroll') renderPayrollArchive();
   else if(tab==='pnl') renderPnlArchive();
+  else if(tab==='backups') renderBackupsList();
+}
+
+// ── РЕЗЕРВНІ КОПІЇ (автоматичні знімки в окрему таблицю) ──
+// Мета: якщо колись повториться щось на кшталт бага з RLS/upsert, що стирав дані —
+// є з чого відновитись, а не вводити все заново вручну. Знімок береться:
+//  1) раз на день (перша дія в застосунку цього дня, від будь-кого з команди)
+//  2) одразу при закритті МІД / зарплатної відомості / П&L (найцінніші моменти)
+// Таблиця jsm_state_snapshots — окрема від jsm_state, тому навіть баг у "живих" даних
+// не чіпає вже збережені знімки. Треба один раз створити таблицю в Supabase (SQL нижче).
+async function pushSnapshot(triggerLabel){
+  if(!currentCompanyId) return;
+  try{
+    const payload={
+      company_id: currentCompanyId,
+      trigger: triggerLabel,
+      created_by: currentUserEmail||null,
+      data: {deals,bank,managers,archiveDeals,closedMIDs,employees,payrollAdvances,payrollArchive,pnlRecurring,pnlOneOff,pnlArchive}
+    };
+    await sbFetch(SB_URL+'/rest/v1/jsm_state_snapshots',{
+      method:'POST', headers:{'Prefer':'return=minimal'},
+      body:JSON.stringify(payload)
+    });
+    pruneOldSnapshots(); // best-effort, не критично якщо не вийде
+  }catch(e){ /* резервна копія не має заважати основній роботі — тихо ігноруємо */ }
+}
+async function pruneOldSnapshots(){
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/jsm_state_snapshots?company_id=eq.'+currentCompanyId+'&select=id&order=created_at.desc');
+    if(!r.ok) return;
+    const rows=await r.json();
+    if(rows.length<=30) return;
+    const toDelete=rows.slice(30).map(x=>x.id);
+    if(toDelete.length) await sbFetch(SB_URL+'/rest/v1/jsm_state_snapshots?id=in.('+toDelete.join(',')+')',{method:'DELETE'});
+  }catch(e){}
+}
+async function maybeCreateDailySnapshot(){
+  if(!currentCompanyId) return;
+  try{
+    const todayStr=new Date().toISOString().slice(0,10);
+    const lastKey='jsm_last_snapshot_'+currentCompanyId;
+    if(localStorage.getItem(lastKey)===todayStr) return; // вже робили сьогодні з цього браузера
+    const r=await sbFetch(SB_URL+'/rest/v1/jsm_state_snapshots?company_id=eq.'+currentCompanyId+'&select=created_at&order=created_at.desc&limit=1');
+    if(r.ok){
+      const rows=await r.json();
+      if(rows[0] && rows[0].created_at.slice(0,10)===todayStr){
+        localStorage.setItem(lastKey,todayStr);
+        return; // сьогоднішній знімок вже є (від будь-кого з команди)
+      }
+    }
+    await pushSnapshot('daily');
+    localStorage.setItem(lastKey,todayStr);
+  }catch(e){}
+}
+const SNAPSHOT_TRIGGER_LABELS={daily:'📅 Щоденний',month_close:'🔒 Закриття МІД',payroll_close:'💰 Закриття ЗП',pnl_close:'📊 Закриття П&L'};
+async function renderBackupsList(){
+  if(!isAdmin) return;
+  const wrap=document.getElementById('backups-wrap');
+  if(!wrap) return;
+  wrap.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:12px">Завантажую список...</div>';
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/jsm_state_snapshots?company_id=eq.'+currentCompanyId+'&select=id,created_at,trigger,created_by&order=created_at.desc&limit=30');
+    if(!r.ok){
+      wrap.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:12px">Таблиця резервних копій ще не створена. SQL для її створення — дивись патчноут цієї версії.</div>';
+      return;
+    }
+    const rows=await r.json();
+    if(!rows.length){
+      wrap.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:12px">Знімків ще немає — з\'являться самі протягом дня роботи або при закритті місяця.</div>';
+      return;
+    }
+    wrap.innerHTML=rows.map(s=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--brd);flex-wrap:wrap;font-size:12px">
+        <span style="min-width:150px">${new Date(s.created_at).toLocaleString('uk-UA')}</span>
+        <span class="ba b">${esc(SNAPSHOT_TRIGGER_LABELS[s.trigger]||s.trigger||'—')}</span>
+        <span style="color:var(--txt3);font-size:10px">${esc(s.created_by||'')}</span>
+        <span style="flex:1"></span>
+        <button class="btn sm" style="font-size:10px;padding:2px 6px" onclick="downloadSnapshotById('${escJs(s.id)}')">⬇ JSON</button>
+        <button class="btn sm danger" style="font-size:10px;padding:2px 6px" onclick="restoreFromSnapshot('${escJs(s.id)}')">🔄 Відновити</button>
+      </div>`).join('');
+  }catch(e){
+    wrap.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:12px">Не вдалось звʼязатись з хмарою</div>';
+  }
+}
+async function downloadSnapshotById(id){
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/jsm_state_snapshots?id=eq.'+id+'&select=data,created_at,trigger');
+    if(!r.ok){ toast('Не вдалось завантажити знімок','e'); return; }
+    const rows=await r.json();
+    if(!rows[0]){ toast('Знімок не знайдено','e'); return; }
+    const blob=new Blob([JSON.stringify(rows[0].data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download='ЖСМ_знімок_'+(rows[0].created_at||'').slice(0,10)+'_'+(rows[0].trigger||'')+'.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Знімок завантажено','s');
+  }catch(e){ toast('Помилка завантаження знімку','e'); }
+}
+async function restoreFromSnapshot(id){
+  if(!isAdmin) return;
+  if(!confirm('⚠️ УВАГА: це ПОВНІСТЮ замінить поточні дані компанії тим, що було на момент цього знімку. Все, що змінилось після — буде втрачено з активних даних (сам знімок при цьому нікуди не дінеться).\n\nРекомендується спершу натиснути "⬇ JSON" і зберегти поточний знімок окремо, про всяк випадок.\n\nПродовжити?')) return;
+  const typed=prompt('Для підтвердження введи слово ВІДНОВИТИ (великими літерами):');
+  if(typed!=='ВІДНОВИТИ'){ toast('Відновлення скасовано','i'); return; }
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/jsm_state_snapshots?id=eq.'+id+'&select=data');
+    if(!r.ok){ toast('Не вдалось завантажити знімок','e'); return; }
+    const rows=await r.json();
+    if(!rows[0]){ toast('Знімок не знайдено','e'); return; }
+    const d=rows[0].data||{};
+    deals=d.deals||[]; bank=d.bank||{opening:0,transactions:[]}; managers=d.managers||[];
+    archiveDeals=d.archiveDeals||[]; closedMIDs=d.closedMIDs||[]; employees=d.employees||[];
+    payrollAdvances=d.payrollAdvances||{}; payrollArchive=d.payrollArchive||[];
+    pnlRecurring=d.pnlRecurring||[]; pnlOneOff=d.pnlOneOff||{}; pnlArchive=d.pnlArchive||[];
+    markChanged();
+    rebuildSelects(); applyF(); applyBF(); renderMID(); renderDebts(); renderSvirka(); renderMgrList();
+    renderArchive(); renderClosedMIDs(); updateImpInfo();
+    if(isAdmin) renderPayroll();
+    toast('✓ Дані відновлено зі знімку — перевір і за потреби збережи вручну','s');
+  }catch(e){ toast('Помилка відновлення','e'); }
 }
 
 // ── HELPERS ──────────────────────────────────────────
@@ -2460,7 +2588,6 @@ function openDeal(id){
   document.getElementById('di-sf').value=d?d.sf_client||'':'';
   document.getElementById('di-pd').value=d?d.pay_date||'':'';
   document.getElementById('di-pay-st').value=d?d.pay_status||'':'';
-  document.getElementById('di-dz1').value=d?d.dz_buyer_nam||'':'';
   // ВАЖЛИВО: раніше тут довіряли збереженому d.client_paid, а він міг бути зіпсований
   // старим багом подвійного підрахунку оплати (виправлено в saveDP/recalc нижче) —
   // тепер завжди рахуємо наживо з банку+ручних платежів (getDealPaid — те саме, що
@@ -3114,7 +3241,6 @@ function saveDP(){
   if(status==='+' && totalPaid>0 && totalPaid<sell) status='±';
 
   const dprev     = +document.getElementById('di-delta-prev')?.value||0;
-  const dzNam     = +document.getElementById('di-dz1')?.value||0;
   const payStatus = totalPaid<=0?'debt':totalPaid>=sell*0.999?'paid':'partial';
 
   const deal={
@@ -3130,8 +3256,6 @@ function saveDP(){
     manual_payments:JSON.parse(JSON.stringify(manualPayments)),
     flags:savedFlags,
     delta_prev:dprev,
-    dz_buyer_nam:dzNam,
-    dz_buyer_my:0,
     delta_auto:da,
     delta_closed:dclosed,
     delta_close_date:document.getElementById('di-dcd').value,
@@ -3249,7 +3373,6 @@ function copyDeal(){
   document.getElementById('di-cl').value=d.client||'';
   document.getElementById('di-sf').value='';
   document.getElementById('di-pd').value='';
-  document.getElementById('di-dz1').value='';
   document.getElementById('di-dcd').value='';
   document.getElementById('di-nt').value=d.notes||'';
   linesData=JSON.parse(JSON.stringify(d.lines||[]));
@@ -3444,6 +3567,7 @@ function closePayrollMonth(){
   }
   markChanged();
   renderPayrollArchive();
+  pushSnapshot('payroll_close');
   toast('Відомість за '+mo+' закрита і збережена в архів','s');
 }
 function togglePayrollArchiveRow(id){
@@ -3723,6 +3847,7 @@ function closePnlMonth(){
   else{ pnlArchive.push(entry); }
   markChanged();
   renderPnlArchive();
+  pushSnapshot('pnl_close');
   toast('П&L за '+mo+' закрито і збережено в архів','s');
 }
 function togglePnlArchiveRow(id){
@@ -4945,6 +5070,7 @@ function closeMonth(){
   rebuildSelects(); applyF(); renderMID(); renderArchive(); renderClosedMIDs(); updateImpInfo();
     setTimeout(()=>{nav('dashboard');renderDashboard();},150);
   toast('Місяць '+mo+' закрито. '+toArchive.length+' угод в архіві.','s');
+  pushSnapshot('month_close');
   // Також скачуємо HTML звіт місяця
   exportClosedMIDReport(midRecord);
 }
@@ -5481,6 +5607,14 @@ const PATCHNOTES=[
     "Під-розділи: 📑 Закриті МІД, 🗄 Архів угод — видно всім; 💰 Архів ЗП, 📊 Архів П&L — видно лише адміну (кнопки самі ховаються для звичайних користувачів)",
     "Сам процес закриття місяця не змінився — кнопки \"🔒 Закрити відомість\" і \"🔒 Закрити П&L\" лишились на своїх робочих сторінках (Адміністрування → Зарплатна відомість, і P&L), знімки після закриття просто зʼявляються в новій вкладці Архів",
     "Вибір під-розділу запамʼятовується в браузері — наступного разу відкриється саме той, що дивився останнім"
+  ]},
+  {v:'4.51',date:'14.07.2026',title:"Прибрано мертві поля з форми угоди + автоматичні резервні копії",notes:[
+    "ПРИБРАНО поле \"ДЗ нам — залишок дельти (ручне)\" з картки угоди — воно роками збирало дані, які НІХТО в застосунку не читав для жодного розрахунку (перевірив: МІД/Рентаб/ЗП/П&L/Заборгованість — ніде). Поряд з ним було ще поле \"авто\", яке взагалі ніколи не заповнювалось жодним кодом — повністю неробоче",
+    "Δ минулих місяців (delta_prev) НЕ чіпав — це живе, активно використовується при закритті МІД для угод, що тягнуться через кілька місяців",
+    "НОВЕ: автоматичні резервні копії всієї бази — окрема таблиця в Supabase, незалежна від robochих даних. Знімок береться раз на день (перша дія в застосунку) і одразу при закритті МІД, зарплатної відомості чи П&L",
+    "НОВА вкладка \"💾 Резервні копії\" в 🗄 Архів (лише адмін) — список останніх 30 знімків з датою й причиною, можна завантажити як JSON або відновити",
+    "Відновлення захищене подвійним підтвердженням (діалог + треба вручну ввести слово \"ВІДНОВИТИ\") — це не та кнопка, яку можна натиснути випадково",
+    "ВАЖЛИВО: щоб резервні копії почали працювати, потрібно один раз виконати SQL в Supabase — повний скрипт у відповіді в чаті"
   ]},
 ];
 
