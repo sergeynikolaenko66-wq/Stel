@@ -239,6 +239,289 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
 
   .toast{left:12px;right:12px;max-width:none;bottom:12px}
 }
+
+/* ══════════ CRM MODULE STYLES (scoped to #pg-crm) ══════════ */
+#pg-crm{
+  --bg:var(--bg2);--bg2:var(--bg3);--bg3:var(--bg4);
+  --border:var(--brd);--border2:var(--brd2);
+  --text:var(--txt);--text2:var(--txt2);--text3:var(--txt3);
+  --green:var(--grn);--green2:rgba(74,222,145,0.14);--green3:rgba(74,222,145,0.07);
+  --blue:var(--acc);--blue2:rgba(157,144,250,0.14);
+  --amber:var(--amb);--amber2:rgba(245,185,92,0.14);
+  --purple:var(--pur);--purple2:rgba(196,181,253,0.14);
+  --red:var(--red);--red2:rgba(242,139,130,0.12);
+  --radius:var(--r);--mono:'JetBrains Mono',monospace;
+  display:flex;flex-direction:column;overflow:hidden;flex:1;min-height:0;background:var(--bg);
+}
+#pg-crm .crm-gsearch-bar{padding:.5rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);}
+#pg-crm .crm-gsearch-wrap{position:relative;max-width:500px;}
+#pg-crm .crm-gsearch-wrap .crm-gsi{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text3);pointer-events:none;}
+#pg-crm .crm-gsearch-inp{width:100%;height:32px;padding:0 10px 0 32px;font-size:13px;border:1px solid var(--border);border-radius:8px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;}
+#pg-crm .crm-gsearch-inp:focus{border-color:var(--green);}
+#pg-crm .crm-gsearch-inp::placeholder{color:var(--text3);}
+#pg-crm .crm-gsearch-results{position:absolute;top:38px;left:0;right:0;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);z-index:200;max-height:320px;overflow-y:auto;display:none;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+#pg-crm .crm-gsr-item{padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:10px;}
+#pg-crm .crm-gsr-item:last-child{border-bottom:none;}
+#pg-crm .crm-gsr-item:hover{background:var(--bg3);}
+#pg-crm .crm-gsr-badge{font-size:10px;padding:2px 6px;border-radius:10px;flex-shrink:0;}
+#pg-crm .crm-gsr-badge.lead{background:var(--blue2);color:var(--blue);}
+#pg-crm .crm-gsr-badge.client{background:var(--green2);color:var(--green);}
+#pg-crm .crm-gsr-badge.arch{background:var(--purple2);color:var(--purple);}
+#pg-crm .crm-gsr-name{font-size:13px;font-weight:500;}
+#pg-crm .crm-gsr-sub{font-size:11px;color:var(--text3);}
+#pg-crm .crm-remind-banner{background:var(--amber2);border-bottom:1px solid rgba(255,184,48,.2);padding:.4rem 1rem;display:none;align-items:center;gap:8px;flex-wrap:wrap;}
+#pg-crm .crm-remind-banner.show{display:flex;}
+#pg-crm .crm-rb-title{font-size:11px;font-weight:500;color:var(--amber);}
+#pg-crm .crm-rb-item{font-size:11px;color:var(--text);background:rgba(255,184,48,.15);border-radius:4px;padding:2px 7px;}
+#pg-crm .crm-rb-close{margin-left:auto;font-size:12px;color:var(--text3);cursor:pointer;}
+#pg-crm .crm-stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:.75rem 1rem;background:var(--bg);border-bottom:1px solid var(--border);}
+#pg-crm .crm-sc-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+#pg-crm .crm-sc-ico.g{background:var(--green2);}
+#pg-crm .crm-sc-ico.b{background:var(--blue2);}
+#pg-crm .crm-sc-ico.a{background:var(--amber2);}
+#pg-crm .crm-sc-ico.p{background:var(--purple2);}
+#pg-crm .crm-sc-val{font-size:17px;font-weight:600;font-family:var(--mono);}
+#pg-crm .crm-sc-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;}
+#pg-crm .crm-tabs{display:flex;padding:0 1rem;border-bottom:1px solid var(--border);background:var(--bg2);overflow-x:auto;}
+#pg-crm .crm-tab:hover{color:var(--text);}
+#pg-crm .crm-tab.active{color:var(--green);border-bottom-color:var(--green);font-weight:500;}
+#pg-crm .crm-panel{display:none;padding:1rem;}
+#pg-crm .crm-panel.active{display:block;}
+#pg-crm .crm-form-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem .9rem;margin-bottom:.85rem;}
+#pg-crm .crm-form-box.editing{border-color:rgba(255,184,48,.35);}
+#pg-crm .crm-fb-title{font-size:11px;color:var(--text3);margin-bottom:.55rem;display:flex;align-items:center;gap:5px;}
+#pg-crm .crm-edit-banner{background:var(--amber2);border:1px solid rgba(255,184,48,.3);border-radius:6px;padding:5px 9px;font-size:11px;color:var(--amber);margin-bottom:.5rem;display:none;align-items:center;gap:5px;}
+#pg-crm .crm-fg{display:flex;flex-direction:column;gap:3px;}
+#pg-crm .crm-fg label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;}
+#pg-crm .crm-fg input, #pg-crm .crm-fg select{height:31px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);width:100%;font-family:var(--font);outline:none;}
+#pg-crm .crm-fg input:focus, #pg-crm .crm-fg select:focus{border-color:var(--green);}
+#pg-crm .crm-fg input::placeholder{color:var(--text3);font-size:11px;}
+#pg-crm .crm-row2{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px;}
+#pg-crm .crm-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:7px;}
+#pg-crm .crm-row4e{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:7px;align-items:flex-end;}
+#pg-crm .crm-btn-sub{display:flex;align-items:center;gap:4px;padding:0 12px;height:31px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:var(--green);color:#001a0e;white-space:nowrap;font-family:var(--font);}
+#pg-crm .crm-btn-sub.amber{background:var(--amber);}
+#pg-crm .crm-btn-sub.blue{background:var(--blue);color:#001430;}
+#pg-crm .crm-btn-can{display:flex;align-items:center;gap:4px;padding:0 9px;height:31px;border-radius:6px;font-size:11px;cursor:pointer;font-family:var(--font);border:1px solid var(--border2);background:none;color:var(--text2);white-space:nowrap;margin-top:3px;}
+#pg-crm .crm-toolbar{display:flex;align-items:center;gap:7px;margin-bottom:.6rem;flex-wrap:wrap;}
+#pg-crm .crm-sw{position:relative;flex:1;min-width:140px;max-width:220px;}
+#pg-crm .crm-sw .crm-si{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text3);pointer-events:none;}
+#pg-crm .crm-srch{height:29px;padding:0 8px 0 26px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--text);width:100%;font-family:var(--font);outline:none;}
+#pg-crm .crm-srch:focus{border-color:var(--green);}
+#pg-crm .crm-srch::placeholder{color:var(--text3);}
+#pg-crm .crm-cnt{font-size:11px;color:var(--text3);font-family:var(--mono);}
+#pg-crm .crm-pg-btns{display:flex;gap:3px;margin-left:auto;align-items:center;}
+#pg-crm .crm-pg-btn{width:25px;height:25px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--mono);}
+#pg-crm .crm-pg-btn:hover:not(:disabled){background:var(--bg3);}
+#pg-crm .crm-pg-btn:disabled{opacity:.3;cursor:default;}
+#pg-crm .crm-pg-btn.active{background:var(--green);color:#001a0e;border-color:var(--green);font-weight:600;}
+#pg-crm .crm-pg-info{font-size:11px;color:var(--text3);padding:0 2px;}
+#pg-crm .crm-tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:auto;}
+#pg-crm table{width:100%;border-collapse:collapse;font-size:12px;table-layout:auto;}
+#pg-crm th:hover{color:var(--text2);}
+#pg-crm th .crm-sort-arrow{margin-left:3px;opacity:.4;font-size:9px;}
+#pg-crm th.crm-sort-asc .crm-sort-arrow::after{content:'▲';opacity:1;}
+#pg-crm th.crm-sort-desc .crm-sort-arrow::after{content:'▼';opacity:1;}
+#pg-crm th .crm-sort-arrow::after{content:'⇅';}
+#pg-crm td:hover{overflow:visible;white-space:normal;word-break:break-word;position:relative;z-index:2;background:var(--bg2);}
+#pg-crm tr.crm-editing-row td{background:rgba(255,184,48,.04);}
+#pg-crm .crm-phone-a{color:var(--green);text-decoration:none;font-family:var(--mono);font-size:11px;}
+#pg-crm .crm-phone-a:hover{text-decoration:underline;}
+#pg-crm .crm-email-a{color:var(--blue);text-decoration:none;font-size:11px;}
+#pg-crm .crm-email-a:hover{text-decoration:underline;}
+#pg-crm .crm-sbadge{display:inline-block;padding:2px 6px;border-radius:20px;font-size:10px;font-weight:500;}
+#pg-crm .crm-sb-new{background:var(--blue2);color:var(--blue);}
+#pg-crm .crm-sb-call{background:var(--amber2);color:var(--amber);}
+#pg-crm .crm-sb-nego{background:var(--purple2);color:var(--purple);}
+#pg-crm .crm-sb-think{background:rgba(255,255,255,.08);color:var(--text2);}
+#pg-crm .crm-sb-reject{background:var(--red2);color:var(--red);}
+#pg-crm .crm-days-ago{font-size:10px;font-family:var(--mono);}
+#pg-crm .crm-days-ok{color:var(--text3);}
+#pg-crm .crm-days-warn{color:var(--amber);}
+#pg-crm .crm-days-bad{color:var(--red);}
+#pg-crm .crm-acts{display:flex;gap:2px;flex-wrap:nowrap;}
+#pg-crm .crm-ab{display:inline-flex;align-items:center;gap:2px;padding:0 5px;height:21px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid;white-space:nowrap;font-family:var(--font);}
+#pg-crm .crm-ab.star{border-color:rgba(0,214,143,.4);color:var(--green);background:var(--green3);}
+#pg-crm .crm-ab.back{border-color:rgba(77,159,255,.35);color:var(--blue);background:var(--blue2);}
+#pg-crm .crm-ab.edt{border-color:rgba(255,184,48,.35);color:var(--amber);background:var(--amber2);}
+#pg-crm .crm-ab.del{border-color:rgba(255,107,107,.3);color:var(--red);background:var(--red2);}
+#pg-crm .crm-ab.arch{border-color:rgba(167,139,250,.35);color:var(--purple);background:var(--purple2);}
+#pg-crm .crm-ab.hist{border-color:var(--border2);color:var(--text2);background:var(--bg3);}
+#pg-crm .crm-confirm-box{background:rgba(0,0,0,.55);border-radius:10px;padding:1rem;margin-top:.5rem;display:none;text-align:center;}
+#pg-crm .crm-confirm-box p{color:var(--text2);font-size:13px;margin-bottom:.85rem;}
+#pg-crm .crm-confirm-box .crm-cbbtns{display:flex;gap:8px;justify-content:center;}
+#pg-crm .crm-confirm-box .crm-cbbtns button{height:30px;padding:0 16px;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--font);}
+#pg-crm .crm-empty{text-align:center;padding:2rem 1rem;color:var(--text3);}
+#pg-crm .crm-empty .crm-eico{font-size:30px;display:block;margin-bottom:8px;opacity:.4;}
+#pg-crm .crm-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem;}
+#pg-crm .crm-modal-overlay.show{display:flex;}
+#pg-crm .crm-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.25rem;width:100%;max-width:540px;max-height:85vh;overflow-y:auto;position:relative;}
+#pg-crm .crm-modal-title{font-size:14px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:7px;}
+#pg-crm .crm-modal-close{position:absolute;top:.9rem;right:.9rem;font-size:17px;cursor:pointer;color:var(--text3);background:none;border:none;}
+#pg-crm .crm-hist-item{background:var(--bg3);border-radius:7px;padding:.65rem;border-left:3px solid var(--green);}
+#pg-crm .crm-hist-date{font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:3px;}
+#pg-crm .crm-hist-text{font-size:13px;color:var(--text);}
+#pg-crm .crm-hist-who{font-size:10px;color:var(--text3);margin-top:3px;}
+#pg-crm .crm-hist-add{display:flex;gap:7px;margin-top:.85rem;}
+#pg-crm .crm-hist-add textarea{flex:1;padding:7px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--font);resize:none;height:65px;outline:none;}
+#pg-crm .crm-hist-add textarea:focus{border-color:var(--green);}
+#pg-crm .crm-hist-add button{padding:0 12px;border-radius:6px;background:var(--green);color:#001a0e;border:none;cursor:pointer;font-size:12px;font-weight:500;font-family:var(--font);}
+#pg-crm .crm-remind-item{background:var(--bg3);border-radius:7px;padding:.6rem .85rem;display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+#pg-crm .crm-ri-overdue{border-left:3px solid var(--red);}
+#pg-crm .crm-ri-today{border-left:3px solid var(--amber);}
+#pg-crm .crm-ri-future{border-left:3px solid var(--green);}
+#pg-crm .crm-ri-date{font-size:10px;color:var(--text3);font-family:var(--mono);}
+#pg-crm .crm-ri-text{font-size:13px;color:var(--text);flex:1;}
+#pg-crm .crm-ri-del{font-size:15px;cursor:pointer;color:var(--text3);}
+#pg-crm .crm-ri-del:hover{color:var(--red);}
+#pg-crm .crm-ssub{font-size:11px;font-weight:500;color:var(--text3);margin-bottom:.45rem;margin-top:.85rem;text-transform:uppercase;letter-spacing:.05em;}
+#pg-crm .crm-dbar{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+#pg-crm .crm-dbar-lbl{font-size:11px;color:var(--text3);width:26px;font-family:var(--mono);}
+#pg-crm .crm-dbar-lbl.wide{width:90px;}
+#pg-crm .crm-dbar-bg{flex:1;background:rgba(255,255,255,.06);border-radius:4px;height:19px;overflow:hidden;}
+#pg-crm [data-theme="light"] .crm-dbar-bg{background:rgba(0,0,0,.06);}
+#pg-crm .crm-dbar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:7px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+#pg-crm .crm-dbar-fill span{font-size:11px;font-weight:500;font-family:var(--mono);}
+#pg-crm .crm-dbar-n{font-size:11px;color:var(--text2);width:18px;text-align:right;font-family:var(--mono);}
+#pg-crm .crm-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+#pg-crm .crm-heatmap-wrap{overflow-x:auto;}
+#pg-crm .crm-heatmap{display:flex;flex-direction:column;gap:3px;}
+#pg-crm .crm-hm-months{display:flex;gap:3px;margin-bottom:3px;padding-left:22px;}
+#pg-crm .crm-hm-month{font-size:10px;color:var(--text3);font-family:var(--mono);}
+#pg-crm .crm-hm-row{display:flex;align-items:center;gap:3px;}
+#pg-crm .crm-hm-day-lbl{font-size:9px;color:var(--text3);width:18px;font-family:var(--mono);text-align:right;}
+#pg-crm .crm-hm-cells{display:flex;gap:3px;}
+#pg-crm .crm-hm-cell{width:12px;height:12px;border-radius:2px;cursor:default;transition:transform .1s;}
+#pg-crm .crm-hm-cell:hover{transform:scale(1.4);z-index:1;position:relative;}
+#pg-crm .crm-hm-0{background:rgba(255,255,255,.05);}
+#pg-crm [data-theme="light"] .crm-hm-0{background:rgba(0,0,0,.07);}
+#pg-crm .crm-hm-1{background:rgba(0,214,143,.3);}
+#pg-crm .crm-hm-2{background:rgba(0,214,143,.55);}
+#pg-crm .crm-hm-3{background:rgba(0,214,143,.8);}
+#pg-crm .crm-hm-4{background:#00d68f;}
+#pg-crm .crm-hm-legend{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:10px;color:var(--text3);}
+#pg-crm .crm-hm-legend-cells{display:flex;gap:3px;}
+#pg-crm .crm-conv-chart{display:flex;align-items:flex-end;gap:5px;height:120px;margin-top:.5rem;}
+#pg-crm .crm-conv-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
+#pg-crm .crm-conv-bar-bg{width:100%;background:rgba(255,255,255,.06);border-radius:4px 4px 0 0;position:relative;display:flex;flex-direction:column;justify-content:flex-end;height:100px;}
+#pg-crm [data-theme="light"] .crm-conv-bar-bg{background:rgba(0,0,0,.06);}
+#pg-crm .crm-conv-bar-fill{width:100%;border-radius:4px 4px 0 0;background:var(--green);transition:height .4s;}
+#pg-crm .crm-conv-bar-pct{font-size:9px;color:var(--text3);font-family:var(--mono);}
+#pg-crm .crm-conv-bar-lbl{font-size:9px;color:var(--text3);font-family:var(--mono);}
+#pg-crm .crm-dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+#pg-crm .crm-dash-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem;}
+#pg-crm .crm-dash-card.full{grid-column:1/-1;}
+#pg-crm .crm-dash-card-title{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.65rem;display:flex;align-items:center;gap:6px;}
+#pg-crm .crm-dash-plan-item{padding:.5rem .6rem;border-radius:7px;background:var(--bg3);margin-bottom:5px;display:flex;align-items:center;gap:8px;}
+#pg-crm .crm-dash-plan-item:last-child{margin-bottom:0;}
+#pg-crm .crm-dash-remind-item{padding:.45rem .6rem;border-radius:6px;background:var(--red2);margin-bottom:4px;font-size:12px;color:var(--red);display:flex;align-items:center;gap:7px;}
+#pg-crm .crm-dash-remind-item.today{background:var(--amber2);color:var(--amber);}
+#pg-crm .crm-dash-client-item{display:flex;align-items:center;gap:8px;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:12px;}
+#pg-crm .crm-dash-client-item:last-child{border-bottom:none;}
+#pg-crm .crm-week-stat{display:flex;justify-content:space-between;gap:.5rem;margin-bottom:.65rem;}
+#pg-crm .crm-ws-item{flex:1;background:var(--bg3);border-radius:7px;padding:.5rem .6rem;text-align:center;}
+#pg-crm .crm-ws-val{font-size:18px;font-weight:600;font-family:var(--mono);color:var(--green);}
+#pg-crm .crm-ws-lbl{font-size:10px;color:var(--text3);}
+#pg-crm .crm-arch-banner{background:var(--purple2);border:1px solid rgba(167,139,250,.2);border-radius:7px;padding:.45rem .7rem;font-size:12px;color:var(--purple);margin-bottom:.65rem;}
+#pg-crm .crm-plan-date-bar{display:flex;align-items:center;gap:8px;margin-bottom:.85rem;flex-wrap:wrap;}
+#pg-crm .crm-plan-date-lbl{font-size:13px;font-weight:500;}
+#pg-crm .crm-plan-date-inp{height:29px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--text);font-family:var(--font);outline:none;}
+#pg-crm .crm-plan-date-inp:focus{border-color:var(--green);}
+#pg-crm .crm-atp-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:.85rem;}
+#pg-crm .crm-atp-hdr{padding:.6rem .9rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:500;user-select:none;}
+#pg-crm .crm-atp-hdr:hover{background:var(--bg3);}
+#pg-crm .crm-atp-arr{transition:transform .2s;font-size:11px;}
+#pg-crm .crm-atp-arr.open{transform:rotate(180deg);}
+#pg-crm .crm-atp-body{display:none;padding:.7rem .9rem;}
+#pg-crm .crm-atp-body.open{display:block;}
+#pg-crm .crm-atp-search{width:100%;height:30px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;margin-bottom:.5rem;}
+#pg-crm .crm-atp-search:focus{border-color:var(--green);}
+#pg-crm .crm-atp-list{max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;}
+#pg-crm .crm-atp-item{display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:6px;cursor:pointer;}
+#pg-crm .crm-atp-item:hover{background:var(--bg3);}
+#pg-crm .crm-atp-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+#pg-crm .crm-atp-dot.g{background:var(--green);}
+#pg-crm .crm-atp-dot.b{background:var(--blue);}
+#pg-crm .crm-atp-nm{font-size:13px;font-weight:500;}
+#pg-crm .crm-atp-co{font-size:11px;color:var(--text3);}
+#pg-crm .crm-plan-cards{display:flex;flex-direction:column;gap:.7rem;}
+#pg-crm .crm-plan-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+#pg-crm .crm-pc-hdr{padding:.6rem .9rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;}
+#pg-crm .crm-pc-name{font-size:14px;font-weight:600;}
+#pg-crm .crm-pc-co{font-size:11px;color:var(--text3);}
+#pg-crm .crm-pc-rem{font-size:13px;cursor:pointer;color:var(--text3);}
+#pg-crm .crm-pc-rem:hover{color:var(--red);}
+#pg-crm .crm-pc-body{padding:.65rem .9rem;display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+#pg-crm .crm-task-chip{display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--bg3);user-select:none;}
+#pg-crm .crm-task-chip:hover{border-color:var(--border2);}
+#pg-crm .crm-task-chip.checked{border-color:rgba(0,214,143,.4);background:var(--green3);}
+#pg-crm .crm-tc-box{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;}
+#pg-crm .crm-task-chip.checked .crm-tc-box{background:var(--green);border-color:var(--green);color:#001a0e;}
+#pg-crm .crm-tc-lbl{font-size:12px;color:var(--text2);}
+#pg-crm .crm-task-chip.checked .crm-tc-lbl{color:var(--green);}
+#pg-crm .crm-pc-note{padding:.65rem .9rem;border-top:1px solid var(--border);}
+#pg-crm .crm-pc-note textarea{width:100%;padding:6px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;font-family:var(--font);resize:none;height:55px;outline:none;}
+#pg-crm .crm-pc-note textarea:focus{border-color:var(--green);}
+#pg-crm .crm-pc-note-save{margin-top:4px;padding:3px 11px;font-size:11px;border-radius:5px;background:var(--green);color:#001a0e;border:none;cursor:pointer;font-family:var(--font);}
+#pg-crm .crm-empty-plan{text-align:center;padding:2rem;color:var(--text3);font-size:13px;}
+@media(max-width:640px){
+#pg-crm .crm-stats-bar{grid-template-columns:1fr 1fr;}
+#pg-crm .crm-row3, #pg-crm .crm-row4e{grid-template-columns:1fr 1fr;}
+#pg-crm .crm-dash-grid{grid-template-columns:1fr;}
+#pg-crm .crm-stats-grid{grid-template-columns:1fr;}
+#pg-crm .crm-pc-body{grid-template-columns:1fr;}
+#pg-crm .crm-week-stat{flex-wrap:wrap;}
+#pg-crm table{font-size:11px;}
+#pg-crm td, #pg-crm th{padding:6px 6px;}
+}
+@media(max-width:400px){
+#pg-crm .crm-stats-bar{grid-template-columns:1fr 1fr;}
+#pg-crm .crm-sc-lbl{display:none;}
+#pg-crm .crm-panel{padding:.65rem;}
+}
+#pg-crm .crm-ab{position:relative;}
+#pg-crm .crm-ab .crm-tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1a2340;border:1px solid rgba(255,255,255,0.15);color:#e8eaf0;font-size:11px;white-space:nowrap;padding:4px 8px;border-radius:5px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:999;}
+#pg-crm .crm-ab .crm-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:#1a2340;}
+#pg-crm .crm-ab:hover .crm-tip{opacity:1;}
+#pg-crm .crm-arch-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:550;display:none;align-items:center;justify-content:center;padding:1rem;}
+#pg-crm .crm-arch-modal.show{display:flex;}
+#pg-crm .crm-arch-modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.5rem;width:100%;max-width:400px;}
+#pg-crm .crm-arch-modal-title{font-size:15px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+#pg-crm .crm-stats-filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem;padding:.75rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);}
+#pg-crm .crm-stats-filter-bar label{font-size:12px;color:var(--text3);white-space:nowrap;}
+#pg-crm .crm-sfsel{height:30px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;cursor:pointer;}
+#pg-crm .crm-sfsel:focus{border-color:var(--green);}
+#pg-crm .crm-sf-inp{height:30px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;width:120px;}
+#pg-crm .crm-sf-inp:focus{border-color:var(--green);}
+#pg-crm .crm-sf-btn{height:30px;padding:0 12px;font-size:12px;border-radius:6px;border:none;background:var(--green);color:#001a0e;cursor:pointer;font-weight:500;font-family:var(--font);}
+#pg-crm .crm-sf-btn.reset{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+#pg-crm .crm-pc-tasks-view{padding:.6rem .9rem;display:flex;flex-direction:column;gap:5px;}
+#pg-crm .crm-pc-task-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;user-select:none;transition:all .15s;}
+#pg-crm .crm-pc-task-row:hover{border-color:var(--border2);}
+#pg-crm .crm-pc-task-row.done{background:var(--green3);border-color:rgba(0,214,143,.35);}
+#pg-crm .crm-pc-task-row.done .crm-pct-lbl{color:var(--green);text-decoration:line-through;text-decoration-color:rgba(0,214,143,.5);}
+#pg-crm .crm-pc-task-row.done .crm-pct-check{background:var(--green);border-color:var(--green);color:#001a0e;}
+#pg-crm .crm-pc-edit-btn{font-size:11px;color:var(--text3);background:none;border:1px solid var(--border);border-radius:5px;padding:3px 8px;cursor:pointer;margin-left:auto;font-family:var(--font);}
+#pg-crm .crm-pc-edit-btn:hover{color:var(--text);border-color:var(--border2);}
+#pg-crm .crm-pc-tasks-edit{padding:.6rem .9rem;display:none;}
+#pg-crm .crm-pc-tasks-edit.open{display:block;}
+#pg-crm .crm-pc-tasks-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:.6rem;}
+#pg-crm .crm-pc-save-tasks-btn{width:100%;height:32px;border-radius:7px;background:var(--green);color:#001a0e;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--font);}
+#pg-crm .crm-pc-save-tasks-btn:hover{opacity:.85;}
+#pg-crm .crm-pc-no-tasks{font-size:12px;color:var(--text3);padding:.5rem 0;display:flex;align-items:center;gap:8px;}#pg-crm .crm-history-list{display:flex;flex-direction:column;gap:7px;max-height:340px;overflow-y:auto}
+#pg-crm .crm-hbtn{display:flex;align-items:center;gap:4px;padding:0 9px;height:28px;border-radius:6px;font-size:11px;cursor:pointer;border:1px solid var(--border2);color:var(--text2);background:transparent;white-space:nowrap}
+#pg-crm .crm-hbtn:hover{background:var(--bg3);color:var(--text)}
+
+#pg-crm .crm-tab{padding:8px 12px;font-size:12px;color:var(--text2);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;display:flex;align-items:center;gap:5px;font-family:var(--font);white-space:nowrap;}
+#pg-crm .crm-fg{display:flex;flex-direction:column;gap:3px;}
+#pg-crm th{text-align:left;padding:7px 8px;font-size:10px;font-weight:500;color:var(--text3);border-bottom:1px solid var(--border);background:var(--bg3);white-space:nowrap;text-transform:uppercase;letter-spacing:.04em;resize:horizontal;overflow:hidden;min-width:55px;cursor:pointer;user-select:none;}
+#pg-crm td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#pg-crm .crm-si{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text3);pointer-events:none;}
+#pg-crm .crm-sw{position:relative;flex:1;min-width:140px;max-width:220px;}
+#pg-crm .crm-sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .8rem;display:flex;align-items:center;gap:8px;}
+#pg-crm .crm-acts{display:flex;gap:2px;flex-wrap:nowrap;}
+#pg-crm .crm-ab{display:inline-flex;align-items:center;gap:2px;padding:0 5px;height:21px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid;white-space:nowrap;font-family:var(--font);}
+#pg-crm .crm-cnt{font-size:11px;color:var(--text3);font-family:var(--mono);}
 </style>
 </head>
 <body>
@@ -295,6 +578,10 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
     <div class="nav-i" data-page="import" onclick="nav('import')"><span>📂</span>Імпорт / Експорт</div>
     <div class="nav-i" id="nav-admin" data-page="admin" onclick="nav('admin')" style="display:none"><span>⚙</span>Адміністрування</div>
     <div class="nav-i" id="nav-pnl" data-page="pnl" onclick="nav('pnl')" style="display:none"><span>📊</span>P&amp;L (прибуток)</div>
+    <div style="height:1px;background:var(--brd);margin:6px 14px"></div>
+    <div class="nav-i" id="nav-chat" onclick="openChatOverlay()"><span>💬</span>Чат</div>
+    <div class="nav-i" id="nav-approvals" data-page="approvals" onclick="nav('approvals')" style="display:none"><span>✅</span>Підтвердження <span id="appr-badge" style="display:none;background:var(--red);color:#fff;border-radius:8px;padding:1px 6px;font-size:9px;margin-left:auto"></span></div>
+    <div class="nav-i" id="nav-goto-crm" onclick="switchToCrm()" style="display:none"><span>🧾</span>Перейти в CRM</div>
   </div>
   <div style="padding:4px 14px;font-size:9px;color:var(--txt3);opacity:.6">⠿ Перетягни розділ, щоб змінити порядок</div>
   <div class="sb-foot" id="sb-count"></div>
@@ -733,9 +1020,249 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
       <div style="flex:1;overflow:auto;padding:16px" id="pnl-wrap"></div>
     </div>
 
+    <!-- ОЧЕРЕДЬ ПІДТВЕРДЖЕНЬ -->
+    <div class="pg" id="pg-approvals">
+      <div class="fbar"><span style="font-size:12px;color:var(--txt3)">Заявки від Гол. бухгалтера, що очікують вашого рішення</span></div>
+      <div style="flex:1;overflow:auto;padding:14px" id="appr-wrap"></div>
+    </div>
+
   </div><!-- /content -->
 </div><!-- /main -->
 </div><!-- /app -->
+
+<div id="crm-shell" style="display:none;position:fixed;inset:0;z-index:20;background:var(--bg);flex-direction:column">
+  <div style="display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--brd);background:var(--bg2);flex-shrink:0">
+    <div style="font-weight:800;color:var(--acc);letter-spacing:.1em;font-size:12px;text-transform:uppercase">🧾 CRM — Ліди / Клієнти</div>
+    <span style="flex:1"></span>
+    <button class="crm-hbtn-shell" onclick="openChatOverlay()" title="Чат" style="display:flex;align-items:center;gap:5px;height:30px;padding:0 12px;border-radius:7px;font-size:12px;cursor:pointer;border:1px solid var(--brd2);color:var(--txt2);background:transparent">💬 Чат</button>
+    <button id="crm-switch-zhsm-btn" onclick="switchToZhsm()" style="display:none;align-items:center;gap:5px;height:30px;padding:0 12px;border-radius:7px;font-size:12px;cursor:pointer;border:1px solid var(--brd2);color:var(--txt2);background:transparent">⇄ Перейти в ЖСМ</button>
+    <button onclick="toggleTheme()" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;border:1px solid var(--brd2);background:transparent;color:var(--txt2);cursor:pointer">☀</button>
+    <span id="crm-shell-user-lbl" style="font-size:11px;color:var(--txt3);white-space:nowrap"></span>
+    <button onclick="doLogout()" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;border:1px solid var(--brd2);background:transparent;color:var(--txt2);cursor:pointer" title="Вийти">⏻</button>
+  </div>
+    <!-- ═══════════════ CRM: ПОВНИЙ МОДУЛЬ (Ліди/Постійні/Архів/Статистика/План) ═══════════════ -->
+    <div class="pg" id="pg-crm" style="padding:0">
+      <div class="crm-stats-bar">
+        <div class="crm-sc"><div class="crm-sc-ico g">👥</div><div><div class="crm-sc-val" id="crm-s-leads">0</div><div class="crm-sc-lbl">Лідів</div></div></div>
+        <div class="crm-sc"><div class="crm-sc-ico b">⭐</div><div><div class="crm-sc-val" id="crm-s-pay">0</div><div class="crm-sc-lbl">Постійних</div></div></div>
+        <div class="crm-sc"><div class="crm-sc-ico a">📅</div><div><div class="crm-sc-val" id="crm-s-month">0</div><div class="crm-sc-lbl">За цей місяць</div></div></div>
+        <div class="crm-sc"><div class="crm-sc-ico p">📊</div><div><div class="crm-sc-val" id="crm-s-conv">0%</div><div class="crm-sc-lbl">Конверсія</div></div></div>
+      </div>
+
+      <div class="crm-gsearch-bar">
+        <div class="crm-gsearch-wrap">
+          <span class="crm-gsi">🔍</span>
+          <input class="crm-gsearch-inp" id="crm-gsearch" placeholder="Глобальний пошук по всіх клієнтах..." oninput="crmGlobalSearch()" onfocus="crmShowGsr()" onblur="setTimeout(crmHideGsr,200)">
+          <div class="crm-gsearch-results" id="crm-gsr"></div>
+        </div>
+        <button class="crm-hbtn" onclick="crmShowModal('crm-modal-reminders')">🔔 <span id="crm-remind-cnt" style="display:none;background:var(--red);color:#fff;border-radius:8px;padding:1px 5px;font-size:10px">0</span></button>
+      </div>
+
+      <div class="crm-remind-banner" id="crm-remind-banner">
+        <span class="crm-rb-title">🔔 Нагадування:</span>
+        <div id="crm-rb-items" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+        <span class="crm-rb-close" onclick="document.getElementById('crm-remind-banner').classList.remove('show')">✕</span>
+      </div>
+
+      <div class="crm-tabs">
+        <button class="crm-tab" id="crm-tabbtn-dash" onclick="crmShowTab('dash')">🏠 Дашборд</button>
+        <button class="crm-tab active" id="crm-tabbtn-leads" onclick="crmShowTab('leads')">🔵 Ліди</button>
+        <button class="crm-tab" id="crm-tabbtn-clients" onclick="crmShowTab('clients')">⭐ Постійні</button>
+        <button class="crm-tab" id="crm-tabbtn-archive" onclick="crmShowTab('archive')">📦 Архів</button>
+        <button class="crm-tab" id="crm-tabbtn-stats" onclick="crmShowTab('stats')">📊 Статистика</button>
+        <button class="crm-tab" id="crm-tabbtn-plan" onclick="crmShowTab('plan')">📋 План</button>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div id="crm-tab-dash" class="crm-panel">
+        <div class="crm-week-stat" id="crm-week-stat"></div>
+        <div class="crm-dash-grid">
+          <div class="crm-dash-card"><div class="crm-dash-card-title">🔔 Прострочені нагадування</div><div id="crm-dash-overdue"></div></div>
+          <div class="crm-dash-card"><div class="crm-dash-card-title">📋 План на сьогодні</div><div id="crm-dash-plan"></div></div>
+          <div class="crm-dash-card full"><div class="crm-dash-card-title">🕐 Останні додані</div><div id="crm-dash-recent"></div></div>
+        </div>
+      </div>
+
+      <!-- LEADS -->
+      <div id="crm-tab-leads" class="crm-panel active">
+        <div class="crm-form-box" id="crm-lead-fb">
+          <div class="crm-edit-banner" id="crm-lead-eb">✏️ Режим редагування</div>
+          <div class="crm-fb-title" id="crm-lead-fb-t">➕ Додати ліда</div>
+          <div class="crm-row2"><div class="crm-fg"><label>Компанія</label><input id="crm-f-co" placeholder="ТОВ Ромашка"></div><div class="crm-fg"><label>Ім'я</label><input id="crm-f-nm" placeholder="Іван Іванов"></div></div>
+          <div class="crm-row3"><div class="crm-fg"><label>Телефон</label><input id="crm-f-ph" placeholder="+380..." type="tel"></div><div class="crm-fg"><label>Посада</label><input id="crm-f-rl" placeholder="Директор"></div><div class="crm-fg"><label>Чим займається</label><input id="crm-f-bz" placeholder="Будівництво..."></div></div>
+          <div class="crm-row4e">
+            <div class="crm-fg"><label>Пошта</label><input id="crm-f-em" placeholder="ivan@ukr.net" type="email"></div>
+            <div class="crm-fg"><label>Статус</label><select id="crm-f-st"><option value="Новий">Новий</option><option>Дзвінок</option><option>Переговори</option><option>Думає</option><option>Відмова</option></select></div>
+            <div class="crm-fg"><label>Нагадати</label><input id="crm-f-rm" type="date"></div>
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <button class="crm-btn-sub" id="crm-lead-sbmt" onclick="crmSubmitLead()">➕ Додати</button>
+              <button class="crm-btn-can" id="crm-lead-cncl" onclick="crmCancelEditLead()" style="display:none">✕ Відміна</button>
+            </div>
+          </div>
+          <div class="crm-row2" style="margin-top:7px">
+            <div class="crm-fg"><label>Дата запису</label><input id="crm-f-dt" type="date"></div>
+            <div class="crm-fg"><label>Останній дзвінок</label><input id="crm-f-ls" type="date"></div>
+          </div>
+        </div>
+        <div class="crm-toolbar">
+          <div class="crm-sw"><span class="crm-si">🔍</span><input class="crm-srch" id="crm-lead-srch" placeholder="Пошук..." oninput="crmRenderLeads()"></div>
+          <select class="crm-sfsel" id="crm-lead-fst" onchange="crmRenderLeads()" style="height:30px"><option value="">Всі статуси</option><option>Новий</option><option>Дзвінок</option><option>Переговори</option><option>Думає</option><option>Відмова</option></select>
+          <span class="crm-cnt" id="crm-lead-cnt"></span>
+          <div class="crm-pg-btns" id="crm-lead-pg"></div>
+        </div>
+        <div class="crm-tbl-wrap"><table>
+          <thead><tr>
+            <th onclick="crmSortTable('leads','company')" data-col="company"><div>Компанія<span class="crm-sort-arrow"></span></div></th>
+            <th onclick="crmSortTable('leads','name')" data-col="name"><div>Ім'я<span class="crm-sort-arrow"></span></div></th>
+            <th><div>Телефон</div></th><th><div>Посада</div></th><th><div>Чим займається</div></th><th><div>Пошта</div></th>
+            <th><div>Статус</div></th>
+            <th onclick="crmSortTable('leads','date')" data-col="date"><div>Записаний<span class="crm-sort-arrow"></span></div></th>
+            <th><div>Дзвінок</div></th><th><div>Нагадати</div></th><th id="crm-lead-th-mgr" style="display:none"><div>Менеджер</div></th><th><div>Дії</div></th>
+          </tr></thead>
+          <tbody id="crm-leads-tb"></tbody>
+        </table><div class="crm-empty" id="crm-leads-empty" style="display:none"><span class="crm-eico">🔵</span>Немає лідів</div></div>
+        <div class="crm-confirm-box" id="crm-dc-lead"><p>Видалити запис?</p><div class="crm-cbbtns"><button onclick="crmConfirmDel()" style="background:#A32D2D;color:#fff;border:none">Видалити</button><button onclick="crmCancelDel()" style="background:none;border:1px solid var(--brd2);color:var(--txt2)">Відміна</button></div></div>
+      </div>
+
+      <!-- CLIENTS -->
+      <div id="crm-tab-clients" class="crm-panel">
+        <div class="crm-form-box editing" id="crm-client-fb" style="display:none">
+          <div class="crm-edit-banner" style="display:flex">✏️ Редагування клієнта</div>
+          <div class="crm-fb-title">✏️ Редагувати</div>
+          <div class="crm-row2"><div class="crm-fg"><label>Компанія</label><input id="crm-cf-co" placeholder="ТОВ Ромашка"></div><div class="crm-fg"><label>Ім'я</label><input id="crm-cf-nm" placeholder="Іван Іванов"></div></div>
+          <div class="crm-row3"><div class="crm-fg"><label>Телефон</label><input id="crm-cf-ph" placeholder="+380..." type="tel"></div><div class="crm-fg"><label>Посада</label><input id="crm-cf-rl" placeholder="Директор"></div><div class="crm-fg"><label>Чим займається</label><input id="crm-cf-bz" placeholder="Будівництво..."></div></div>
+          <div class="crm-row4e">
+            <div class="crm-fg"><label>Пошта</label><input id="crm-cf-em" placeholder="ivan@ukr.net" type="email"></div>
+            <div class="crm-fg"><label>Дата запису</label><input id="crm-cf-dt" type="date"></div>
+            <div class="crm-fg"><label>Останній дзвінок</label><input id="crm-cf-ls" type="date"></div>
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <button class="crm-btn-sub blue" onclick="crmSaveEditClient()">✔ Зберегти</button>
+              <button class="crm-btn-can" onclick="crmCancelEditClient()">✕ Відміна</button>
+            </div>
+          </div>
+        </div>
+        <div class="crm-toolbar">
+          <div class="crm-sw"><span class="crm-si">🔍</span><input class="crm-srch" id="crm-client-srch" placeholder="Пошук..." oninput="crmRenderClients()"></div>
+          <span class="crm-cnt" id="crm-client-cnt"></span>
+          <div class="crm-pg-btns" id="crm-client-pg"></div>
+        </div>
+        <div class="crm-tbl-wrap"><table>
+          <thead><tr>
+            <th onclick="crmSortTable('clients','company')" data-col="company"><div>Компанія<span class="crm-sort-arrow"></span></div></th>
+            <th onclick="crmSortTable('clients','name')" data-col="name"><div>Ім'я<span class="crm-sort-arrow"></span></div></th>
+            <th><div>Телефон</div></th><th><div>Посада</div></th><th><div>Чим займається</div></th><th><div>Пошта</div></th>
+            <th onclick="crmSortTable('clients','date')" data-col="date"><div>Записаний<span class="crm-sort-arrow"></span></div></th>
+            <th onclick="crmSortTable('clients','last')" data-col="last"><div>Дзвінок<span class="crm-sort-arrow"></span></div></th>
+            <th id="crm-client-th-mgr" style="display:none"><div>Менеджер</div></th>
+            <th><div>Дії</div></th>
+          </tr></thead>
+          <tbody id="crm-clients-tb"></tbody>
+        </table><div class="crm-empty" id="crm-clients-empty" style="display:none"><span class="crm-eico">⭐</span>Переведи лідів у постійні</div></div>
+        <div class="crm-confirm-box" id="crm-dc-client"><p>Видалити запис?</p><div class="crm-cbbtns"><button onclick="crmConfirmDel()" style="background:#A32D2D;color:#fff;border:none">Видалити</button><button onclick="crmCancelDel()" style="background:none;border:1px solid var(--brd2);color:var(--txt2)">Відміна</button></div></div>
+      </div>
+
+      <!-- ARCHIVE -->
+      <div id="crm-tab-archive" class="crm-panel">
+        <div class="crm-arch-banner">📦 Архів — клієнти, які відмовились або неактивні. Можна відновити.</div>
+        <div class="crm-toolbar"><div class="crm-sw"><span class="crm-si">🔍</span><input class="crm-srch" id="crm-arch-srch" placeholder="Пошук..." oninput="crmRenderArchive()"></div><span class="crm-cnt" id="crm-arch-cnt"></span></div>
+        <div class="crm-tbl-wrap"><table><thead><tr><th><div>Компанія</div></th><th><div>Ім'я</div></th><th><div>Телефон</div></th><th><div>Посада</div></th><th><div>Пошта</div></th><th onclick="crmSortTable('archive','archivedAt')" data-col="archivedAt"><div>Архівовано<span class="crm-sort-arrow"></span></div></th><th><div>Причина</div></th><th><div>Дії</div></th></tr></thead><tbody id="crm-arch-tb"></tbody></table>
+        <div class="crm-empty" id="crm-arch-empty" style="display:none"><span class="crm-eico">📦</span>Архів порожній</div></div>
+      </div>
+
+      <!-- STATS -->
+      <div id="crm-tab-stats" class="crm-panel">
+        <div class="crm-stats-grid">
+          <div>
+            <div class="crm-ssub">По днях тижня</div><div id="crm-day-chart"></div>
+            <div class="crm-ssub">По статусах лідів</div><div id="crm-st-chart"></div>
+          </div>
+          <div>
+            <div class="crm-ssub">По місяцях</div><div id="crm-month-chart"></div>
+            <div class="crm-ssub">Конверсія по місяцях (%)</div>
+            <div class="crm-conv-chart" id="crm-conv-chart"></div>
+          </div>
+        </div>
+        <div class="crm-ssub" style="margin-top:1rem">Теплова карта активності (рік)</div>
+        <div class="crm-heatmap-wrap"><div class="crm-heatmap" id="crm-heatmap"></div></div>
+      </div>
+
+      <!-- PLAN -->
+      <div id="crm-tab-plan" class="crm-panel">
+        <div class="crm-plan-date-bar">
+          <span class="crm-plan-date-lbl">📋 План на день:</span>
+          <input type="date" class="crm-plan-date-inp" id="crm-plan-date" onchange="crmRenderPlan()">
+          <span style="font-size:12px;color:var(--txt3)" id="crm-plan-day-name"></span>
+        </div>
+        <div class="crm-atp-wrap">
+          <div class="crm-atp-hdr" onclick="crmToggleAtp()"><span>➕ Додати клієнта у план</span><span class="crm-atp-arr" id="crm-atp-arr">▼</span></div>
+          <div class="crm-atp-body" id="crm-atp-body">
+            <input type="text" class="crm-atp-search" id="crm-atp-srch" placeholder="Пошук клієнта..." oninput="crmRenderAtpList()">
+            <div class="crm-atp-list" id="crm-atp-list"></div>
+          </div>
+        </div>
+        <div class="crm-plan-cards" id="crm-plan-cards"></div>
+        <div class="crm-empty-plan" id="crm-plan-empty">Немає клієнтів у плані. Додайте вище ↑</div>
+      </div>
+
+    <!-- CRM MODALS (nested INSIDE #pg-crm so scoped CSS hides them by default) -->
+    <div class="crm-modal-overlay" id="crm-modal-history" onclick="if(event.target===this)crmCloseModal('crm-modal-history')">
+      <div class="crm-modal">
+        <button class="crm-modal-close" onclick="crmCloseModal('crm-modal-history')">✕</button>
+        <div class="crm-modal-title">📝 <span id="crm-hist-client-name"></span></div>
+        <div class="crm-history-list" id="crm-hist-list"></div>
+        <div class="crm-hist-add"><textarea id="crm-hist-input" placeholder="Додати замітку / підсумок переговорів..."></textarea><button onclick="crmAddHistNote()">Додати</button></div>
+      </div>
+    </div>
+    <div class="crm-modal-overlay" id="crm-modal-reminders" onclick="if(event.target===this)crmCloseModal('crm-modal-reminders')">
+      <div class="crm-modal">
+        <button class="crm-modal-close" onclick="crmCloseModal('crm-modal-reminders')">✕</button>
+        <div class="crm-modal-title">🔔 Нагадування</div>
+        <div id="crm-remind-list"></div>
+      </div>
+    </div>
+    <div class="crm-arch-modal" id="crm-arch-modal">
+      <div class="crm-arch-modal-box">
+        <div class="crm-arch-modal-title">📦 Архівувати клієнта</div>
+        <div style="font-size:13px;color:var(--txt2);margin-bottom:1rem" id="crm-arch-modal-name"></div>
+        <div class="crm-fg" style="margin-bottom:.75rem">
+          <label>Причина архівації</label>
+          <select id="crm-arch-reason-sel" style="height:34px;padding:0 9px;font-size:13px;border:1px solid var(--brd);border-radius:7px;background:var(--bg3);color:var(--txt);margin-top:4px">
+            <option value="Ціна">💰 Ціна — не влаштувала ціна</option>
+            <option value="Конкурент">🏁 Конкурент — пішов до конкурента</option>
+            <option value="Не актуально">🕐 Не актуально — поки не потрібно</option>
+            <option value="Немає бюджету">💸 Немає бюджету</option>
+            <option value="Не відповідає">📵 Не відповідає — немає контакту</option>
+            <option value="Інше">📝 Інше</option>
+          </select>
+        </div>
+        <div class="crm-fg" style="margin-bottom:1rem"><label>Коментар (необов'язково)</label><textarea id="crm-arch-reason-comment" style="width:100%;min-height:60px;background:var(--bg3);border:1px solid var(--brd);border-radius:7px;color:var(--txt);padding:8px;margin-top:4px;font-family:inherit"></textarea></div>
+        <div style="display:flex;gap:8px"><button class="crm-btn-sub" onclick="crmConfirmArchive()" style="flex:1">📦 Архівувати</button><button class="crm-btn-can" onclick="crmCancelArchive()">Відміна</button></div>
+      </div>
+    </div>
+    </div><!-- /#pg-crm -->
+
+</div><!-- /crm-shell -->
+
+<!-- ГЛОБАЛЬНИЙ ЧАТ (доступний і з ЖСМ, і з CRM) -->
+<div id="chat-overlay" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px">
+  <div style="background:var(--bg2);border:1px solid var(--brd2);border-radius:14px;width:100%;max-width:760px;height:min(600px,85vh);display:flex;overflow:hidden">
+    <div style="width:220px;border-right:1px solid var(--brd);overflow-y:auto;flex-shrink:0;background:var(--bg3)">
+      <div style="padding:12px 14px;font-weight:700;font-size:12px;color:var(--txt2);border-bottom:1px solid var(--brd)">💬 Чат</div>
+      <div class="nav-i on" data-chat="group" onclick="chatOpen(null,this)" style="border-left-color:var(--acc)"><span>👥</span>Загальний чат</div>
+      <div id="chat-users-list"></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+      <div style="display:flex;justify-content:flex-end;padding:6px 10px;border-bottom:1px solid var(--brd)">
+        <button onclick="closeChatOverlay()" style="background:none;border:none;color:var(--txt3);font-size:14px;cursor:pointer">✕</button>
+      </div>
+      <div id="chat-msgs" style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px"></div>
+      <div style="display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--brd)">
+        <input class="fi" id="chat-input" style="flex:1" placeholder="Повідомлення..." onkeydown="if(event.key==='Enter')chatSend()">
+        <button class="btn pri sm" onclick="chatSend()">➤</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- DEAL PANEL -->
 <datalist id="suppliers-datalist"></datalist>
@@ -1207,6 +1734,7 @@ async function afterLogin(){
   document.getElementById('login-screen').style.display='none';
 
   try{ isAdmin=await fetchIsAdmin(); }catch(e){ isAdmin=false; }
+  try{ myRole=await fetchMyRole(); }catch(e){ myRole='manager'; }
   try{
     availableCompanies=await fetchCompanies();
   }catch(e){ availableCompanies=[]; }
@@ -1220,9 +1748,15 @@ async function afterLogin(){
   }
 
   const adminNav=document.getElementById('nav-admin');
-  if(adminNav) adminNav.style.display = isAdmin ? '' : 'none';
+  if(adminNav) adminNav.style.display = (isAdmin || myRole==='chief_accountant') ? '' : 'none';
   const pnlNav=document.getElementById('nav-pnl');
-  if(pnlNav) pnlNav.style.display = isAdmin ? '' : 'none';
+  if(pnlNav) pnlNav.style.display = (isAdmin || myRole==='chief_accountant') ? '' : 'none';
+  applyRoleVisibility();
+
+  // Менеджер ніколи не бачить ЖСМ — одразу і назавжди в CRM-оболонці.
+  if(myRole==='manager'){
+    document.querySelector('.app').style.display='none';
+  }
 
   if(availableCompanies.length===1){
     // Компанія лише одна — вибирати нема з чого, одразу заходимо
@@ -1239,6 +1773,13 @@ async function fetchIsAdmin(){
   if(!r.ok) return false;
   const rows=await r.json();
   return !!(rows[0] && rows[0].is_admin);
+}
+async function fetchMyRole(){
+  if(!sbSession||!sbSession.user) return 'manager';
+  const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+sbSession.user.id+'&select=role');
+  if(!r.ok) return 'manager';
+  const rows=await r.json();
+  return (rows[0] && rows[0].role) || 'manager';
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1272,7 +1813,7 @@ async function admCallRPC(fn,body){
 }
 
 async function renderAdminPage(){
-  if(!isAdmin){
+  if(!isAdmin && myRole!=='chief_accountant'){
     document.getElementById('pg-admin').innerHTML='<div style="padding:20px;color:var(--txt3)">Доступно лише адміністратору</div>';
     return;
   }
@@ -1341,6 +1882,9 @@ async function admGrantAccess(){
   const email=document.getElementById('adm-grant-email').value.trim();
   const companyId=parseInt(document.getElementById('adm-grant-company').value,10);
   if(!email||!companyId){ toast('Вкажіть email і компанію','e'); return; }
+  const companyName=(availableCompanies.find(c=>c.id===companyId)||{}).name||companyId;
+  const ok=await requiresApproval('grant_access',{email,companyId,companyName},'Надати доступ '+email);
+  if(!ok) return; // chief_accountant: заявка створена, чекаємо Директора
   try{
     const res=await admCallRPC('admin_grant_access',{target_email:email, target_company_id:companyId});
     if(res && res.ok===false && res.reason==='user_not_found'){
@@ -1459,9 +2003,22 @@ async function enterApp(companyId){
   localStorage.setItem('jsm_last_company', String(companyId));
   document.getElementById('login-screen').style.display='none';
   document.getElementById('company-screen').style.display='none';
-  document.querySelector('.app').classList.add('on');
   const lbl=document.getElementById('current-user-lbl');
   if(lbl) lbl.textContent=currentUserEmail||'';
+  await chatInitUsersList();
+
+  if(myRole==='manager'){
+    // Менеджер ніколи не бачить ЖСМ — одразу й назавжди в окремій CRM-оболонці,
+    // важкі дані ЖСМ (угоди/банк) для нього взагалі не завантажуються.
+    document.querySelector('.app').style.display='none';
+    const shell=document.getElementById('crm-shell'); shell.style.display='flex';
+    document.getElementById('crm-switch-zhsm-btn').style.display='none';
+    updateCrmShellHeader();
+    await crmLoadAll();
+    return;
+  }
+
+  document.querySelector('.app').classList.add('on');
   updateCompanyLabel();
   await init();
   startCloudPolling();
@@ -1877,10 +2434,857 @@ function updateSaveBtn(){
 
 
 // ── NAV ──────────────────────────────────────────────
-const PAGES=['dashboard','deals','bank','debts','mid','rentab','svirka','managers','archive','patchnotes','import','admin','pnl'];
+const PAGES=['dashboard','deals','bank','debts','mid','rentab','svirka','managers','archive','patchnotes','import','admin','pnl','approvals'];
 const TITLES={dashboard:'Дашборд',deals:'Журнал угод',bank:'Банк — виписка',debts:'Заборгованість',
   mid:'МИД / Дельти',rentab:'Рентабельність у динаміці',svirka:'Звірка (ПД)',managers:'Менеджери',
-  archive:'Архів',patchnotes:'Версії / Патч-нот',import:'Імпорт / Експорт',admin:'Адміністрування',pnl:'P&L (прибуток компанії)'};
+  archive:'Архів',patchnotes:'Версії / Патч-нот',import:'Імпорт / Експорт',admin:'Адміністрування',pnl:'P&L (прибуток компанії)',
+  approvals:'Підтвердження'};
+// ── РОЛІ: Менеджер працює лише в CRM (окрема повноекранна оболонка),
+//    Директор/Гол.бух/Бухгалтер працюють в ЖСМ і можуть перемкнутись у CRM ──
+const ROLE_LABELS={director:'Директор',chief_accountant:'Гол. бухгалтер',accountant:'Бухгалтер',manager:'Менеджер'};
+let myRole='manager';
+function applyRoleVisibility(){
+  const adminNav=document.getElementById('nav-admin');
+  if(adminNav) adminNav.style.display = (isAdmin || myRole==='chief_accountant') ? '' : 'none';
+  const pnlNav=document.getElementById('nav-pnl');
+  if(pnlNav) pnlNav.style.display = (isAdmin || myRole==='chief_accountant') ? '' : 'none';
+  const apprNav=document.getElementById('nav-approvals');
+  if(apprNav) apprNav.style.display = (myRole==='director') ? '' : 'none';
+  const gotoCrm=document.getElementById('nav-goto-crm');
+  if(gotoCrm) gotoCrm.style.display = ''; // ЖСМ-ролі завжди можуть перейти в CRM подивитись лідів/клієнтів
+  if(myRole==='director') refreshApprovalBadge();
+}
+function switchToCrm(){
+  document.querySelector('.app').style.display='none';
+  document.getElementById('crm-shell').style.display='flex';
+  document.getElementById('crm-switch-zhsm-btn').style.display = (myRole==='manager') ? 'none' : '';
+  updateCrmShellHeader();
+  crmEnsureLoaded();
+}
+function switchToZhsm(){
+  document.getElementById('crm-shell').style.display='none';
+  document.querySelector('.app').style.display='flex';
+}
+function updateCrmShellHeader(){
+  const lbl=document.getElementById('crm-shell-user-lbl');
+  if(lbl) lbl.textContent=(currentUserEmail||'')+' · '+(ROLE_LABELS[myRole]||myRole);
+}
+function openChatOverlay(){
+  document.getElementById('chat-overlay').style.display='flex';
+  if(!chatCompanyProfiles.length) chatInitUsersList(); else chatOpen(null,document.querySelector('.nav-i[data-chat="group"]'));
+}
+function closeChatOverlay(){
+  document.getElementById('chat-overlay').style.display='none';
+  if(chatPollTimer) clearInterval(chatPollTimer);
+}
+
+// ══════════════════════════════════════════════════════════
+// CRM: ПОВНИЙ МОДУЛЬ — Дашборд / Ліди / Постійні / Архів / Статистика / План
+// Дані живуть у Supabase (contractors, contractor_notes, crm_plan),
+// але в пам'яті працюємо зі звичними масивами — як у "Моя CRM".
+// ══════════════════════════════════════════════════════════
+const CRM_TASKS=['📞 Зателефонувати','🛒 Купити метал','📄 ВН','🧾 Рахунок','📑 Тендер','📱 Дзвінок','🚚 Відвантаження','📝 Інше'];
+let crmLeads=[], crmClients=[], crmArchive=[];
+let crmPlans={};      // "<contractorId>_<date>" -> {tasks:{}, savedTasks:[], note:'', _dbId}
+let crmHistory={};    // contractorId -> [{id,date,time,text,who}]
+let crmSortState={leads:{col:null,dir:1}, clients:{col:null,dir:1}, archive:{col:null,dir:1}};
+let crmEditLeadId=null, crmEditClientId=null;
+let crmLeadPage=1, crmClientPage=1;
+const CRM_PER=15;
+let crmPendingDel=null, crmPendingDelType=null, crmPendingArchiveId=null;
+let crmAtpOpen=false, crmHistClientId=null, crmLoaded=false;
+let crmProfileEmailById={}; // uuid -> email, для показу "хто" у нотатках
+
+function crmToday(){return new Date().toISOString().slice(0,10);}
+function crmFmtD(d){if(!d)return'—';const p=d.split('-');if(p.length<3)return d;return p[2]+'.'+p[1]+'.'+p[0].slice(-2);}
+function crmDaysAgo(d){if(!d||d==='—')return'';const diff=Math.floor((Date.now()-new Date(d))/(864e5));if(diff<0)return'';if(diff===0)return'<span class="crm-days-ago crm-days-ok">сьогодні</span>';if(diff<=7)return`<span class="crm-days-ago crm-days-ok">${diff}д тому</span>`;if(diff<=30)return`<span class="crm-days-ago crm-days-warn">${diff}д тому</span>`;return`<span class="crm-days-ago crm-days-bad">${diff}д тому</span>`;}
+function crmPhoneLink(phone){if(!phone)return'—';const clean=phone.replace(/\s/g,'');return`<a class="crm-phone-a" href="tel:${esc(clean)}" onclick="event.stopPropagation()">📞 ${esc(phone)}</a>`;}
+function crmEmailLink(email){if(!email)return'—';return`<a class="crm-email-a" href="mailto:${encodeURIComponent(email)}" onclick="event.stopPropagation()">✉️ ${esc(email)}</a>`;}
+function crmStBadge(s){const m={'Новий':'crm-sb-new','Дзвінок':'crm-sb-call','Переговори':'crm-sb-nego','Думає':'crm-sb-think','Відмова':'crm-sb-reject'};return s?`<span class="crm-sbadge ${m[s]||'crm-sb-new'}">${esc(s)}</span>`:'—';}
+function crmMyEmail(){return sbSession?.user?.email||'Я';}
+
+// ── ЗАВАНТАЖЕННЯ З SUPABASE ──
+function crmRowToLocal(r){
+  return {
+    id:r.id, company:r.company||'', name:r.name||'', phone:r.phone||'', role:r.position||'',
+    biz:r.business||'', email:r.email||'', status:r.status||'Новий',
+    date:r.registered_at||(r.created_at?r.created_at.slice(0,10):crmToday()),
+    last:r.last_contact_at||'', reminder:r.remind_at||'',
+    archivedAt:r.archived_at?r.archived_at.slice(0,10):'', archReason:r.archived_reason||'', archComment:r.archived_comment||'',
+    assignedTo:r.assigned_to||null
+  };
+}
+async function crmLoadAll(){
+  if(!currentCompanyId) return;
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/contractors?company_id=eq.'+currentCompanyId+'&kind=in.(lead,client)&order=updated_at.desc&limit=5000');
+    const rows=r.ok?await r.json():[];
+    crmLeads=rows.filter(x=>!x.archived && x.kind==='lead').map(crmRowToLocal);
+    crmClients=rows.filter(x=>!x.archived && x.kind==='client').map(crmRowToLocal);
+    crmArchive=rows.filter(x=>x.archived).map(crmRowToLocal);
+  }catch(e){ crmLeads=[];crmClients=[];crmArchive=[]; }
+  try{
+    const rn=await sbFetch(SB_URL+'/rest/v1/contractor_notes?contractor_id=in.('+([...crmLeads,...crmClients,...crmArchive].map(x=>x.id).join(',')||'0')+')&order=created_at.desc&limit=2000');
+    const notes=rn.ok?await rn.json():[];
+    crmHistory={};
+    notes.forEach(n=>{
+      if(!crmHistory[n.contractor_id]) crmHistory[n.contractor_id]=[];
+      const dt=new Date(n.created_at);
+      crmHistory[n.contractor_id].push({id:n.id, date:dt.toISOString().slice(0,10), time:dt.toTimeString().slice(0,5), text:n.note, who:crmProfileEmailById[n.created_by]||(n.created_by===sbSession?.user?.id?crmMyEmail():'Колега')});
+    });
+  }catch(e){ crmHistory={}; }
+  try{
+    const rp=await sbFetch(SB_URL+'/rest/v1/crm_plan?company_id=eq.'+currentCompanyId+'&limit=2000');
+    const prows=rp.ok?await rp.json():[];
+    crmPlans={};
+    prows.forEach(p=>{ crmPlans[p.contractor_id+'_'+p.plan_date]={tasks:p.tasks||{}, savedTasks:p.saved_tasks||[], note:p.note||'', _dbId:p.id}; });
+  }catch(e){ crmPlans={}; }
+  crmLoaded=true;
+  crmApplyManagerColumnVisibility();
+  crmUpdateStats();
+  crmRenderLeads(); crmRenderClients(); crmRenderArchive();
+  crmCheckReminders();
+  const pd=document.getElementById('crm-plan-date'); if(pd && !pd.value) pd.value=crmToday();
+  crmShowTab(document.querySelector('#pg-crm .crm-tab.active')?.id==='crm-tabbtn-dash'?'dash':'leads', true);
+}
+async function crmEnsureLoaded(){ if(!crmLoaded) await crmLoadAll(); }
+function crmApplyManagerColumnVisibility(){
+  const show = myRole!=='manager';
+  const th1=document.getElementById('crm-lead-th-mgr'); if(th1) th1.style.display=show?'':'none';
+  const th2=document.getElementById('crm-client-th-mgr'); if(th2) th2.style.display=show?'':'none';
+}
+function crmMgrEmail(uid){ if(!uid) return '—'; if(uid===sbSession?.user?.id) return 'Я'; return crmProfileEmailById[uid]||'?'; }
+
+// ── ПЕРСИСТЕНЦІЯ (кожна мутація одразу летить у Supabase) ──
+async function crmPersistUpsert(local, kind){
+  const payload={
+    company_id:currentCompanyId, company:local.company||null, name:local.name||local.company||'—',
+    phone:local.phone||null, email:local.email||null, position:local.role||null, business:local.biz||null,
+    status:local.status||null, kind,
+    registered_at:local.date||null, last_contact_at:local.last||null, remind_at:local.reminder||null,
+    archived: kind==='archive'?true:false,
+    archived_at: local.archivedAt||null, archived_reason: local.archReason||null, archived_comment: local.archComment||null,
+    updated_at:new Date().toISOString()
+  };
+  if(kind==='archive') payload.kind='lead'; // архів зберігає початковий тип запису, статус archived=true рахує все
+  if(local.id){
+    await sbFetch(SB_URL+'/rest/v1/contractors?id=eq.'+local.id,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify(payload)});
+    return local.id;
+  }else{
+    payload.created_by=sbSession?.user?.id||null;
+    payload.assigned_to=sbSession?.user?.id||null; // новий запис одразу закріплюється за тим, хто його створив
+    const r=await sbFetch(SB_URL+'/rest/v1/contractors',{method:'POST',headers:{'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    const rows=r.ok?await r.json():[];
+    return rows[0]?.id;
+  }
+}
+async function crmPersistDelete(id){ await sbFetch(SB_URL+'/rest/v1/contractors?id=eq.'+id,{method:'DELETE'}); }
+
+// ── ГЛОБАЛЬНИЙ ПОШУК ──
+function crmGlobalSearch(){
+  const q=(document.getElementById('crm-gsearch').value||'').toLowerCase().trim();
+  const gsr=document.getElementById('crm-gsr');
+  if(!q){gsr.style.display='none';return;}
+  const all=[...crmLeads.map(l=>({...l,_type:'lead'})),...crmClients.map(c=>({...c,_type:'client'})),...crmArchive.map(a=>({...a,_type:'arch'}))];
+  const res=all.filter(x=>((x.name||'')+(x.company||'')+(x.phone||'')+(x.email||'')+(x.biz||'')).toLowerCase().includes(q)).slice(0,12);
+  if(!res.length){gsr.innerHTML='<div class="crm-gsr-item"><span style="color:var(--txt3);font-size:13px">Нічого не знайдено</span></div>';gsr.style.display='block';return;}
+  const labels={lead:'Лід',client:'Клієнт',arch:'Архів'};
+  gsr.innerHTML=res.map(x=>`<div class="crm-gsr-item" onclick="crmGoToRecord(${x.id},'${x._type}')">
+    <span class="crm-gsr-badge ${x._type}">${labels[x._type]}</span>
+    <div><div class="crm-gsr-name">${esc(x.name||x.company||'—')}</div><div class="crm-gsr-sub">${esc(x.company||'')} ${x.phone?'· '+esc(x.phone):''}</div></div>
+  </div>`).join('');
+  gsr.style.display='block';
+}
+function crmGoToRecord(id,type){
+  document.getElementById('crm-gsearch').value='';document.getElementById('crm-gsr').style.display='none';
+  if(type==='lead')crmShowTab('leads');else if(type==='client')crmShowTab('clients');else crmShowTab('archive');
+}
+function crmShowGsr(){if(document.getElementById('crm-gsearch').value)document.getElementById('crm-gsr').style.display='block';}
+function crmHideGsr(){document.getElementById('crm-gsr').style.display='none';}
+
+// ── ВКЛАДКИ ──
+function crmShowTab(t, skipLoad){
+  document.querySelectorAll('#pg-crm .crm-tab').forEach(el=>el.classList.remove('active'));
+  const btn=document.getElementById('crm-tabbtn-'+t); if(btn) btn.classList.add('active');
+  document.querySelectorAll('#pg-crm .crm-panel').forEach(el=>el.classList.remove('active'));
+  const panel=document.getElementById('crm-tab-'+t); if(panel) panel.classList.add('active');
+  crmUpdateStats();
+  if(t==='stats')crmRenderStats();
+  if(t==='plan'){crmRenderPlan();crmRenderAtpList();}
+  if(t==='dash')crmRenderDash();
+}
+
+// ── ФОРМА ЛІДА ──
+function crmLG(id){return document.getElementById(id).value.trim();}
+function crmLS(id,v){document.getElementById(id).value=v||'';}
+function crmLClear(){['crm-f-co','crm-f-nm','crm-f-ph','crm-f-rl','crm-f-bz','crm-f-em','crm-f-ls','crm-f-rm'].forEach(id=>crmLS(id,''));crmLS('crm-f-dt',crmToday());crmLS('crm-f-st','Новий');}
+function crmLRead(){return{company:crmLG('crm-f-co'),name:crmLG('crm-f-nm'),phone:crmLG('crm-f-ph'),role:crmLG('crm-f-rl'),biz:crmLG('crm-f-bz'),email:crmLG('crm-f-em'),status:crmLG('crm-f-st')||'Новий',date:crmLG('crm-f-dt')||crmToday(),last:crmLG('crm-f-ls'),reminder:crmLG('crm-f-rm')};}
+function crmLFill(x){crmLS('crm-f-co',x.company);crmLS('crm-f-nm',x.name);crmLS('crm-f-ph',x.phone);crmLS('crm-f-rl',x.role);crmLS('crm-f-bz',x.biz);crmLS('crm-f-em',x.email);crmLS('crm-f-st',x.status||'Новий');crmLS('crm-f-dt',x.date);crmLS('crm-f-ls',x.last);crmLS('crm-f-rm',x.reminder||'');}
+
+async function crmSubmitLead(){
+  if(crmEditLeadId!==null){ await crmSaveEditLead(); return; }
+  const f=crmLRead();
+  if(!f.name && !f.company){ toast("Вкажіть компанію або ім'я","e"); return; }
+  const btn=document.getElementById('crm-lead-sbmt'); btn.disabled=true;
+  try{
+    const id=await crmPersistUpsert(f,'lead');
+    crmLeads.unshift({...f,id});
+    crmLClear(); crmRenderLeads(); crmUpdateStats();
+    toast('Лід додано','s');
+  }catch(e){ toast('Помилка збереження','e'); }
+  btn.disabled=false;
+}
+function crmStartEditLead(id){
+  const l=crmLeads.find(x=>x.id===id); if(!l)return;
+  crmEditLeadId=id; crmLFill(l);
+  document.getElementById('crm-lead-eb').style.display='block';
+  document.getElementById('crm-lead-fb-t').textContent='✏️ Редагувати ліда';
+  document.getElementById('crm-lead-sbmt').textContent='✔ Зберегти';
+  document.getElementById('crm-lead-cncl').style.display='inline-flex';
+  document.getElementById('crm-lead-fb').scrollIntoView({behavior:'smooth',block:'nearest'});
+  crmRenderLeads();
+}
+async function crmSaveEditLead(){
+  const f=crmLRead();
+  if(!f.name && !f.company){ toast("Вкажіть компанію або ім'я","e"); return; }
+  const idx=crmLeads.findIndex(x=>x.id===crmEditLeadId); if(idx<0)return;
+  const updated={...f,id:crmEditLeadId};
+  try{
+    await crmPersistUpsert(updated,'lead');
+    crmLeads[idx]=updated;
+    toast('Збережено','s');
+  }catch(e){ toast('Помилка збереження','e'); }
+  crmCancelEditLead(); crmRenderLeads(); crmUpdateStats();
+}
+function crmCancelEditLead(){
+  crmEditLeadId=null; crmLClear();
+  document.getElementById('crm-lead-eb').style.display='none';
+  document.getElementById('crm-lead-fb-t').textContent='➕ Додати ліда';
+  document.getElementById('crm-lead-sbmt').textContent='➕ Додати';
+  document.getElementById('crm-lead-cncl').style.display='none';
+  crmRenderLeads();
+}
+
+// ── ФОРМА КЛІЄНТА (редагування) ──
+function crmCG(id){return document.getElementById(id).value.trim();}
+function crmCS(id,v){document.getElementById(id).value=v||'';}
+function crmCRead(){return{company:crmCG('crm-cf-co'),name:crmCG('crm-cf-nm'),phone:crmCG('crm-cf-ph'),role:crmCG('crm-cf-rl'),biz:crmCG('crm-cf-bz'),email:crmCG('crm-cf-em'),date:crmCG('crm-cf-dt'),last:crmCG('crm-cf-ls')};}
+function crmCFill(x){crmCS('crm-cf-co',x.company);crmCS('crm-cf-nm',x.name);crmCS('crm-cf-ph',x.phone);crmCS('crm-cf-rl',x.role);crmCS('crm-cf-bz',x.biz);crmCS('crm-cf-em',x.email);crmCS('crm-cf-dt',x.date);crmCS('crm-cf-ls',x.last);}
+function crmStartEditClient(id){
+  const x=crmClients.find(c=>c.id===id); if(!x)return;
+  crmEditClientId=id; crmCFill(x);
+  document.getElementById('crm-client-fb').style.display='block';
+  document.getElementById('crm-client-fb').scrollIntoView({behavior:'smooth',block:'nearest'});
+  crmRenderClients();
+}
+async function crmSaveEditClient(){
+  const f=crmCRead(); if(!f.name && !f.company)return;
+  const idx=crmClients.findIndex(c=>c.id===crmEditClientId); if(idx<0)return;
+  const old=crmClients[idx];
+  const updated={...old,...f,id:crmEditClientId,status:old.status};
+  try{
+    await crmPersistUpsert(updated,'client');
+    crmClients[idx]=updated;
+    toast('Збережено','s');
+  }catch(e){ toast('Помилка збереження','e'); }
+  crmCancelEditClient(); crmRenderClients(); crmUpdateStats();
+}
+function crmCancelEditClient(){ crmEditClientId=null; document.getElementById('crm-client-fb').style.display='none'; crmRenderClients(); }
+
+// ── ПЕРЕНЕСЕННЯ ЛІД ↔ КЛІЄНТ ──
+async function crmMoveToClient(id){
+  const idx=crmLeads.findIndex(x=>x.id===id); if(idx<0)return;
+  const l=crmLeads[idx];
+  try{ await crmPersistUpsert(l,'client'); }catch(e){ toast('Помилка','e'); return; }
+  crmClients.unshift(l); crmLeads.splice(idx,1);
+  crmRenderLeads(); crmRenderClients(); crmUpdateStats();
+  toast((l.name||l.company)+' → Постійні','s');
+}
+async function crmMoveToLead(id){
+  const idx=crmClients.findIndex(x=>x.id===id); if(idx<0)return;
+  const c=crmClients[idx];
+  try{ await crmPersistUpsert(c,'lead'); }catch(e){ toast('Помилка','e'); return; }
+  crmLeads.unshift(c); crmClients.splice(idx,1);
+  crmRenderLeads(); crmRenderClients(); crmUpdateStats();
+  toast((c.name||c.company)+' → Ліди','s');
+}
+
+// ── АРХІВ ──
+function crmAskArchive(id){
+  const l=crmLeads.find(x=>x.id===id); if(!l)return;
+  crmPendingArchiveId=id;
+  document.getElementById('crm-arch-modal-name').textContent=(l.company||l.name||'')+(l.company&&l.name?' · '+l.name:'');
+  document.getElementById('crm-arch-reason-sel').value='Ціна';
+  document.getElementById('crm-arch-reason-comment').value='';
+  document.getElementById('crm-arch-modal').classList.add('show');
+}
+async function crmConfirmArchive(){
+  const idx=crmLeads.findIndex(x=>x.id===crmPendingArchiveId); if(idx<0)return;
+  const l=crmLeads[idx];
+  const reason=document.getElementById('crm-arch-reason-sel').value;
+  const comment=document.getElementById('crm-arch-reason-comment').value.trim();
+  const archived={...l, archivedAt:crmToday(), archReason:reason, archComment:comment};
+  try{ await crmPersistUpsert(archived,'archive'); }catch(e){ toast('Помилка','e'); return; }
+  crmArchive.unshift(archived); crmLeads.splice(idx,1);
+  crmCancelArchive(); crmRenderLeads(); crmRenderArchive(); crmUpdateStats();
+  toast('Архівовано','s');
+}
+function crmCancelArchive(){ crmPendingArchiveId=null; document.getElementById('crm-arch-modal').classList.remove('show'); }
+async function crmUnarchive(id){
+  const idx=crmArchive.findIndex(x=>x.id===id); if(idx<0)return;
+  const a=crmArchive[idx];
+  const restored={...a, archivedAt:'', archReason:'', archComment:''};
+  try{ await crmPersistUpsert(restored,'lead'); }catch(e){ toast('Помилка','e'); return; }
+  crmLeads.unshift(restored); crmArchive.splice(idx,1);
+  crmRenderLeads(); crmRenderArchive(); crmUpdateStats();
+  toast('Відновлено','s');
+}
+
+// ── ВИДАЛЕННЯ ──
+function crmAskDel(id,type){
+  crmPendingDel=id; crmPendingDelType=type;
+  const dl=document.getElementById('crm-dc-lead'), dc=document.getElementById('crm-dc-client');
+  if(dl) dl.style.display=type==='lead'?'block':'none';
+  if(dc) dc.style.display=type==='client'?'block':'none';
+}
+async function crmConfirmDel(){
+  try{ await crmPersistDelete(crmPendingDel); }catch(e){}
+  if(crmPendingDelType==='lead') crmLeads=crmLeads.filter(x=>x.id!==crmPendingDel);
+  else crmClients=crmClients.filter(x=>x.id!==crmPendingDel);
+  crmCancelDel(); crmRenderLeads(); crmRenderClients(); crmUpdateStats();
+}
+function crmCancelDel(){
+  crmPendingDel=null; crmPendingDelType=null;
+  const dl=document.getElementById('crm-dc-lead'), dc=document.getElementById('crm-dc-client');
+  if(dl) dl.style.display='none'; if(dc) dc.style.display='none';
+}
+
+// ── ІСТОРІЯ / НОТАТКИ ──
+function crmOpenHistory(id){
+  const all=[...crmLeads,...crmClients,...crmArchive];
+  const x=all.find(i=>i.id===id);
+  crmHistClientId=id;
+  document.getElementById('crm-hist-client-name').textContent=(x?(x.name||x.company):'')+' — Історія';
+  const hl=crmHistory[id]||[];
+  document.getElementById('crm-hist-list').innerHTML=hl.length===0?'<div style="color:var(--txt3);font-size:13px">Немає записів</div>':hl.map((e,i)=>`<div class="crm-hist-item" style="position:relative"><div class="crm-hist-date">${crmFmtD(e.date)} ${e.time||''}</div><div class="crm-hist-text">${esc(e.text)}</div><div class="crm-hist-who">— ${esc(e.who)}</div><button onclick="crmDelHistNote(${id},${i})" style="position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;font-size:13px;color:rgba(242,139,130,0.6);padding:2px 4px;border-radius:3px">✕</button></div>`).join('');
+  document.getElementById('crm-hist-input').value='';
+  crmShowModal('crm-modal-history');
+}
+async function crmAddHistNote(){
+  const txt=document.getElementById('crm-hist-input').value.trim(); if(!txt)return;
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/contractor_notes',{method:'POST',headers:{'Prefer':'return=representation'},body:JSON.stringify({contractor_id:crmHistClientId, note:txt, created_by:sbSession?.user?.id||null})});
+    const rows=r.ok?await r.json():[];
+    if(rows[0]){
+      if(!crmHistory[crmHistClientId]) crmHistory[crmHistClientId]=[];
+      const dt=new Date(rows[0].created_at);
+      crmHistory[crmHistClientId].unshift({id:rows[0].id, date:dt.toISOString().slice(0,10), time:dt.toTimeString().slice(0,5), text:txt, who:crmMyEmail()});
+    }
+  }catch(e){ toast('Не вдалось зберегти нотатку','e'); }
+  crmOpenHistory(crmHistClientId);
+}
+async function crmDelHistNote(clientId,idx){
+  const item=(crmHistory[clientId]||[])[idx]; if(!item)return;
+  try{ await sbFetch(SB_URL+'/rest/v1/contractor_notes?id=eq.'+item.id,{method:'DELETE'}); }catch(e){}
+  crmHistory[clientId].splice(idx,1);
+  crmOpenHistory(clientId);
+}
+
+// ── НАГАДУВАННЯ ──
+function crmCheckReminders(){
+  const td=crmToday();
+  const due=crmLeads.filter(l=>l.reminder&&l.reminder<=td);
+  const cnt=document.getElementById('crm-remind-cnt');
+  if(due.length){ cnt.style.display='inline'; cnt.textContent=due.length;
+    const banner=document.getElementById('crm-remind-banner');
+    document.getElementById('crm-rb-items').innerHTML=due.slice(0,4).map(l=>`<span class="crm-rb-item">${esc(l.name||l.company)} (${crmFmtD(l.reminder)})</span>`).join('');
+    banner.classList.add('show');
+  } else { cnt.style.display='none'; }
+  crmRenderReminderList();
+}
+function crmRenderReminderList(){
+  const td=crmToday();
+  const items=crmLeads.filter(l=>l.reminder).sort((a,b)=>a.reminder.localeCompare(b.reminder));
+  const el=document.getElementById('crm-remind-list'); if(!el)return;
+  el.innerHTML=items.length===0?'<div style="color:var(--txt3);font-size:13px">Немає нагадувань</div>':items.map(l=>{
+    const cls=l.reminder<td?'crm-ri-overdue':l.reminder===td?'crm-ri-today':'crm-ri-future';
+    const tag=l.reminder<td?'🔴':'🟡';
+    return `<div class="crm-remind-item ${cls}"><span class="crm-ri-date">${crmFmtD(l.reminder)} ${tag}</span><span class="crm-ri-text">${esc(l.name||l.company||'—')}</span><span class="crm-ri-del" onclick="crmClearReminder(${l.id})">✕</span></div>`;
+  }).join('');
+}
+async function crmClearReminder(id){
+  const idx=crmLeads.findIndex(l=>l.id===id); if(idx<0)return;
+  crmLeads[idx]={...crmLeads[idx],reminder:''};
+  try{ await sbFetch(SB_URL+'/rest/v1/contractors?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({remind_at:null})}); }catch(e){}
+  crmRenderLeads(); crmCheckReminders();
+}
+
+// ── РЕНДЕР ЛІДІВ ──
+function crmApplySortFilter(arr,type){
+  const ss=crmSortState[type]; if(!ss.col) return arr;
+  return [...arr].sort((a,b)=>{ const av=a[ss.col]||'', bv=b[ss.col]||''; return String(av).localeCompare(String(bv),'uk')*ss.dir; });
+}
+function crmSortTable(type,col){
+  const ss=crmSortState[type];
+  if(ss.col===col) ss.dir*=-1; else { ss.col=col; ss.dir=1; }
+  if(type==='leads')crmRenderLeads(); else if(type==='clients')crmRenderClients(); else crmRenderArchive();
+}
+function crmMakePager(total,cur,onPage,pgId,cntId,lbl){
+  const pages=Math.max(1,Math.ceil(total/CRM_PER));
+  const cntEl=document.getElementById(cntId); if(cntEl) cntEl.textContent=total>0?`${lbl}: ${total}`:'';
+  let html='';
+  if(pages>1){
+    html+=`<button class="crm-pg-btn" onclick="${onPage}(${Math.max(1,cur-1)})" ${cur===1?'disabled':''}>‹</button>`;
+    for(let p=1;p<=pages;p++){
+      if(pages<=7||p===1||p===pages||Math.abs(p-cur)<=1) html+=`<button class="crm-pg-btn${p===cur?' active':''}" onclick="${onPage}(${p})">${p}</button>`;
+      else if(Math.abs(p-cur)===2) html+=`<span class="crm-pg-info">…</span>`;
+    }
+    html+=`<button class="crm-pg-btn" onclick="${onPage}(${Math.min(pages,cur+1)})" ${cur===pages?'disabled':''}>›</button>`;
+  }
+  const pgEl=document.getElementById(pgId); if(pgEl) pgEl.innerHTML=html;
+}
+function crmRenderLeads(){
+  const q=(document.getElementById('crm-lead-srch')?.value||'').toLowerCase();
+  const fst=document.getElementById('crm-lead-fst')?.value||'';
+  let f=crmLeads.filter(l=>(!q||((l.name||'')+(l.company||'')+(l.phone||'')+(l.email||'')+(l.biz||'')).toLowerCase().includes(q))&&(!fst||l.status===fst));
+  f=crmApplySortFilter(f,'leads');
+  const pages=Math.max(1,Math.ceil(f.length/CRM_PER)); if(crmLeadPage>pages)crmLeadPage=pages;
+  const slice=f.slice((crmLeadPage-1)*CRM_PER,crmLeadPage*CRM_PER);
+  const tb=document.getElementById('crm-leads-tb'); if(!tb)return;
+  tb.innerHTML=slice.map(l=>{
+    const isEd=crmEditLeadId===l.id;
+    const rm=l.reminder?`<span style="font-size:10px;font-family:var(--mono);color:${l.reminder<=crmToday()?'var(--red)':'var(--txt3)'}">${crmFmtD(l.reminder)}</span>`:'—';
+    return `<tr${isEd?' class="crm-editing-row"':''}>
+      <td title="${esc(l.company||'')}">${esc(l.company)||'—'}</td>
+      <td title="${esc(l.name||'')}">${esc(l.name)||'—'}</td>
+      <td>${crmPhoneLink(l.phone)}</td>
+      <td>${esc(l.role)||'—'}</td>
+      <td title="${esc(l.biz||'')}">${esc(l.biz)||'—'}</td>
+      <td>${crmEmailLink(l.email)}</td>
+      <td>${crmStBadge(l.status)}</td>
+      <td style="color:var(--txt3);font-family:var(--mono);font-size:11px">${crmFmtD(l.date)}</td>
+      <td>${crmDaysAgo(l.last)}</td>
+      <td>${rm}</td>
+      <td style="display:${myRole!=='manager'?'':'none'};font-size:11px;color:var(--txt3)">${esc(crmMgrEmail(l.assignedTo))}</td>
+      <td><div class="crm-acts">
+        <button class="crm-ab star" onclick="crmMoveToClient(${l.id})">⭐<span class="crm-tip">У постійні</span></button>
+        <button class="crm-ab edt" onclick="crmStartEditLead(${l.id})">✏️<span class="crm-tip">Змінити</span></button>
+        <button class="crm-ab hist" onclick="crmOpenHistory(${l.id})">📝<span class="crm-tip">Історія</span></button>
+        <button class="crm-ab arch" onclick="crmAskArchive(${l.id})">📦<span class="crm-tip">В архів</span></button>
+        <button class="crm-ab del" onclick="crmAskDel(${l.id},'lead')">🗑<span class="crm-tip">Видалити</span></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  const emptyEl=document.getElementById('crm-leads-empty'); if(emptyEl) emptyEl.style.display=crmLeads.length===0?'block':'none';
+  crmMakePager(f.length,crmLeadPage,'crmSetLeadPage','crm-lead-pg','crm-lead-cnt','Лідів');
+}
+function crmSetLeadPage(p){crmLeadPage=p;crmRenderLeads();}
+
+// ── РЕНДЕР КЛІЄНТІВ ──
+function crmRenderClients(){
+  const q=(document.getElementById('crm-client-srch')?.value||'').toLowerCase();
+  let f=crmClients.filter(c=>!q||((c.name||'')+(c.company||'')+(c.phone||'')+(c.email||'')+(c.biz||'')).toLowerCase().includes(q));
+  f=crmApplySortFilter(f,'clients');
+  const pages=Math.max(1,Math.ceil(f.length/CRM_PER)); if(crmClientPage>pages)crmClientPage=pages;
+  const slice=f.slice((crmClientPage-1)*CRM_PER,crmClientPage*CRM_PER);
+  const tb=document.getElementById('crm-clients-tb'); if(!tb)return;
+  tb.innerHTML=slice.map(c=>{
+    const isEd=crmEditClientId===c.id;
+    return `<tr${isEd?' class="crm-editing-row"':''}>
+      <td title="${esc(c.company||'')}">${esc(c.company)||'—'}</td>
+      <td>${esc(c.name)||'—'}</td>
+      <td>${crmPhoneLink(c.phone)}</td>
+      <td>${esc(c.role)||'—'}</td>
+      <td title="${esc(c.biz||'')}">${esc(c.biz)||'—'}</td>
+      <td>${crmEmailLink(c.email)}</td>
+      <td style="color:var(--txt3);font-family:var(--mono);font-size:11px">${crmFmtD(c.date)}</td>
+      <td>${crmDaysAgo(c.last)}</td>
+      <td style="display:${myRole!=='manager'?'':'none'};font-size:11px;color:var(--txt3)">${esc(crmMgrEmail(c.assignedTo))}</td>
+      <td><div class="crm-acts">
+        <button class="crm-ab back" onclick="crmMoveToLead(${c.id})">↩<span class="crm-tip">Повернути в ліди</span></button>
+        <button class="crm-ab edt" onclick="crmStartEditClient(${c.id})">✏️<span class="crm-tip">Змінити</span></button>
+        <button class="crm-ab hist" onclick="crmOpenHistory(${c.id})">📝<span class="crm-tip">Історія</span></button>
+        <button class="crm-ab del" onclick="crmAskDel(${c.id},'client')">🗑<span class="crm-tip">Видалити</span></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  const emptyEl=document.getElementById('crm-clients-empty'); if(emptyEl) emptyEl.style.display=crmClients.length===0?'block':'none';
+  crmMakePager(f.length,crmClientPage,'crmSetClientPage','crm-client-pg','crm-client-cnt','Клієнтів');
+}
+function crmSetClientPage(p){crmClientPage=p;crmRenderClients();}
+
+// ── РЕНДЕР АРХІВУ ──
+function crmRenderArchive(){
+  const q=(document.getElementById('crm-arch-srch')?.value||'').toLowerCase();
+  let f=crmArchive.filter(a=>!q||((a.name||'')+(a.company||'')+(a.phone||'')).toLowerCase().includes(q));
+  f=crmApplySortFilter(f,'archive');
+  const tb=document.getElementById('crm-arch-tb'); if(!tb)return;
+  tb.innerHTML=f.map(a=>`<tr>
+    <td>${esc(a.company)||'—'}</td><td>${esc(a.name)||'—'}</td>
+    <td>${crmPhoneLink(a.phone)}</td><td>${esc(a.role)||'—'}</td><td>${crmEmailLink(a.email)}</td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--txt3)">${crmFmtD(a.archivedAt)}</td>
+    <td><span style="font-size:11px;color:var(--txt2)">${a.archReason?esc(a.archReason):'—'}</span>${a.archComment?`<div style="font-size:10px;color:var(--txt3);margin-top:2px">${esc(a.archComment)}</div>`:''}</td>
+    <td><button class="crm-ab star" onclick="crmUnarchive(${a.id})" title="Відновити">↩<span class="crm-tip">Відновити</span></button></td>
+  </tr>`).join('');
+  const emptyEl=document.getElementById('crm-arch-empty'); if(emptyEl) emptyEl.style.display=crmArchive.length===0?'block':'none';
+  const cntEl=document.getElementById('crm-arch-cnt'); if(cntEl) cntEl.textContent=crmArchive.length>0?`Архів: ${f.length}`:'';
+}
+
+// ── СТАТИСТИКА ──
+function crmUpdateStats(){
+  const all=[...crmLeads,...crmClients];
+  const elL=document.getElementById('crm-s-leads'); if(elL) elL.textContent=crmLeads.length;
+  const elP=document.getElementById('crm-s-pay'); if(elP) elP.textContent=crmClients.length;
+  const ym=new Date().toISOString().slice(0,7);
+  const elM=document.getElementById('crm-s-month'); if(elM) elM.textContent=all.filter(l=>l.date&&l.date.startsWith(ym)).length;
+  const tot=crmLeads.length+crmClients.length;
+  const elC=document.getElementById('crm-s-conv'); if(elC) elC.textContent=tot>0?Math.round(crmClients.length/tot*100)+'%':'0%';
+}
+function crmRenderStats(){
+  const filtered=[...crmLeads,...crmClients];
+  const days=['Пн','Вт','Ср','Чт','Пт','Сб','Нд'],dc=new Array(7).fill(0);
+  filtered.forEach(l=>{if(!l.date)return;dc[(new Date(l.date).getDay()+6)%7]++;});
+  const md=Math.max(...dc,1);
+  const dch=document.getElementById('crm-day-chart');
+  if(dch) dch.innerHTML=days.map((d,i)=>{const pct=Math.round(dc[i]/md*100);const col=i<5?'var(--green)':'var(--purple)';return`<div class="crm-dbar"><span class="crm-dbar-lbl">${d}</span><div class="crm-dbar-bg"><div class="crm-dbar-fill" style="width:${pct}%;background:${col}"><span style="color:#001a0e">${dc[i]||''}</span></div></div><span class="crm-dbar-n">${dc[i]}</span></div>`;}).join('');
+  const mnames=['Січ','Лют','Бер','Кв','Тра','Чер','Лип','Сер','Вер','Жов','Лис','Гру'],mc=new Array(12).fill(0);
+  filtered.forEach(l=>{if(!l.date)return;mc[parseInt(l.date.split('-')[1])-1]++;});
+  const mm=Math.max(...mc,1);
+  const mch=document.getElementById('crm-month-chart');
+  if(mch) mch.innerHTML=mnames.map((m,i)=>`<div class="crm-dbar"><span class="crm-dbar-lbl">${m}</span><div class="crm-dbar-bg"><div class="crm-dbar-fill" style="width:${Math.round(mc[i]/mm*100)}%;background:var(--blue)"><span style="color:#001430">${mc[i]||''}</span></div></div><span class="crm-dbar-n">${mc[i]}</span></div>`).join('');
+  const sts=['Новий','Дзвінок','Переговори','Думає','Відмова'],stc={};
+  crmLeads.forEach(l=>{if(l.status)stc[l.status]=(stc[l.status]||0)+1;});
+  const stm=Math.max(...Object.values(stc),1);
+  const stcols={'Новий':'var(--blue)','Дзвінок':'var(--amber)','Переговори':'var(--purple)','Думає':'#aaa','Відмова':'var(--red)'};
+  const sch=document.getElementById('crm-st-chart');
+  if(sch) sch.innerHTML=sts.map(s=>`<div class="crm-dbar"><span class="crm-dbar-lbl wide">${s}</span><div class="crm-dbar-bg"><div class="crm-dbar-fill" style="width:${Math.round((stc[s]||0)/stm*100)}%;background:${stcols[s]}"><span style="color:#fff;text-shadow:0 0 3px rgba(0,0,0,.5)">${stc[s]||''}</span></div></div><span class="crm-dbar-n">${stc[s]||0}</span></div>`).join('');
+  crmRenderConvChart(); crmRenderHeatmap();
+}
+function crmRenderConvChart(){
+  const now=new Date();const yr=now.getFullYear();
+  const bars=[];
+  for(let m=0;m<12;m++){
+    const ym=`${yr}-${String(m+1).padStart(2,'0')}`;
+    const lc=crmLeads.filter(l=>l.date&&l.date.startsWith(ym)).length;
+    const cc=crmClients.filter(c=>c.date&&c.date.startsWith(ym)).length;
+    const tot=lc+cc;const pct=tot>0?Math.round(cc/tot*100):0;
+    bars.push({m:['Січ','Лют','Бер','Кв','Тра','Чер','Лип','Сер','Вер','Жов','Лис','Гру'][m],pct});
+  }
+  const el=document.getElementById('crm-conv-chart');
+  if(el) el.innerHTML=bars.map(b=>`<div class="crm-conv-bar-wrap"><span class="crm-conv-bar-pct">${b.pct?b.pct+'%':''}</span><div class="crm-conv-bar-bg"><div class="crm-conv-bar-fill" style="height:${b.pct}px"></div></div><span class="crm-conv-bar-lbl">${b.m}</span></div>`).join('');
+}
+function crmRenderHeatmap(){
+  const all=[...crmLeads,...crmClients];
+  const counts={}; all.forEach(x=>{if(x.date)counts[x.date]=(counts[x.date]||0)+1;});
+  const now=new Date(); const end=new Date(now.getFullYear(),11,31); const start=new Date(now.getFullYear(),0,1);
+  const weeks=[]; let week=[]; let cur=new Date(start);
+  const dow=(cur.getDay()+6)%7; for(let i=0;i<dow;i++)week.push(null);
+  while(cur<=end){ const ds=cur.toISOString().slice(0,10); week.push({ds,n:counts[ds]||0}); if(week.length===7){weeks.push(week);week=[];} cur=new Date(cur.getTime()+864e5); }
+  if(week.length){while(week.length<7)week.push(null);weeks.push(week);}
+  const mnames=['Січ','Лют','Бер','Кв','Тра','Чер','Лип','Сер','Вер','Жов','Лис','Гру'];
+  const dlabels=['Пн','','Ср','','Пт','',''];
+  const lvl=n=>n===0?0:n===1?1:n<=3?2:n<=5?3:4;
+  let monthsHTML='<div class="crm-hm-months">'; let lastM=-1;
+  weeks.forEach(w=>{ const firstDay=w.find(d=>d); if(firstDay){const m=new Date(firstDay.ds).getMonth();if(m!==lastM){monthsHTML+=`<span class="crm-hm-month" style="min-width:13px">${mnames[m]}</span>`;lastM=m;}else monthsHTML+=`<span class="crm-hm-month" style="min-width:13px"></span>`;} });
+  monthsHTML+='</div>';
+  const rowsHTML=dlabels.map((dl,di)=>`<div class="crm-hm-row"><span class="crm-hm-day-lbl">${dl}</span><div class="crm-hm-cells">${weeks.map(w=>{const cell=w[di];if(!cell)return`<div class="crm-hm-cell crm-hm-0"></div>`;const l=lvl(cell.n);return`<div class="crm-hm-cell crm-hm-${l}" title="${cell.ds}: ${cell.n} записів"></div>`;}).join('')}</div></div>`).join('');
+  const el=document.getElementById('crm-heatmap');
+  if(el) el.innerHTML=`${monthsHTML}${rowsHTML}<div class="crm-hm-legend"><span>Менше</span><div class="crm-hm-legend-cells"><div class="crm-hm-cell crm-hm-0"></div><div class="crm-hm-cell crm-hm-1"></div><div class="crm-hm-cell crm-hm-2"></div><div class="crm-hm-cell crm-hm-3"></div><div class="crm-hm-cell crm-hm-4"></div></div><span>Більше</span></div>`;
+}
+
+// ── ДАШБОРД ──
+function crmRenderDash(){
+  const td=crmToday();
+  const now=new Date(); const weekStart=new Date(now); weekStart.setDate(now.getDate()-7);
+  const weekStr=weekStart.toISOString().slice(0,10);
+  const all=[...crmLeads,...crmClients];
+  const weekLeads=crmLeads.filter(l=>l.date>=weekStr).length;
+  const weekClients=crmClients.filter(c=>c.date>=weekStr).length;
+  const weekCalls=all.filter(x=>x.last>=weekStr).length;
+  const ws=document.getElementById('crm-week-stat');
+  if(ws) ws.innerHTML=`
+    <div class="crm-ws-item"><div class="crm-ws-val">${weekLeads}</div><div class="crm-ws-lbl">Лідів за тиждень</div></div>
+    <div class="crm-ws-item"><div class="crm-ws-val">${weekClients}</div><div class="crm-ws-lbl">Клієнтів за тиждень</div></div>
+    <div class="crm-ws-item"><div class="crm-ws-val">${weekCalls}</div><div class="crm-ws-lbl">Дзвінків за тиждень</div></div>
+    <div class="crm-ws-item"><div class="crm-ws-val">${crmLeads.filter(l=>l.reminder&&l.reminder<=td).length}</div><div class="crm-ws-lbl">Простроч. нагадувань</div></div>`;
+  const overdue=crmLeads.filter(l=>l.reminder&&l.reminder<td);
+  const todayRemind=crmLeads.filter(l=>l.reminder&&l.reminder===td);
+  const overdueHTML=[...overdue.map(l=>`<div class="crm-dash-remind-item">🔴 <strong>${esc(l.company||l.name)}</strong>${l.company&&l.name?' · '+esc(l.name):''} — ${crmFmtD(l.reminder)}</div>`),
+    ...todayRemind.map(l=>`<div class="crm-dash-remind-item today">🟡 <strong>${esc(l.company||l.name)}</strong>${l.company&&l.name?' · '+esc(l.name):''} — сьогодні</div>`)].join('');
+  const ov=document.getElementById('crm-dash-overdue'); if(ov) ov.innerHTML=overdueHTML||'<div style="font-size:13px;color:var(--txt3)">Немає прострочених 🎉</div>';
+  const pk=td;
+  const planIds=Object.keys(crmPlans).filter(k=>k.endsWith('_'+pk)).map(k=>parseInt(k.split('_')[0]));
+  const planHTML=planIds.map(id=>{
+    const item=all.find(x=>x.id===id); if(!item) return '';
+    const p=crmPlans[id+'_'+pk];
+    const savedTasks=p&&p.savedTasks?p.savedTasks:[];
+    const total=savedTasks.length;
+    const done=total>0?savedTasks.filter(i=>p&&p.tasks&&p.tasks[i]).length:0;
+    const pct=total>0?Math.round(done/total*100):0;
+    const color=pct===100?'var(--green)':pct>50?'var(--amber)':'var(--blue)';
+    return `<div class="crm-dash-plan-item">
+      <div style="flex:1">
+        <div class="crm-dpi-name">${esc(item.company||item.name)}</div>
+        ${item.company&&item.name?`<div style="font-size:11px;color:var(--txt3)">${esc(item.name)}</div>`:''}
+        <div style="margin-top:5px;background:rgba(255,255,255,.08);border-radius:3px;height:5px;width:100%"><div style="width:${pct}%;height:100%;background:${color};border-radius:3px"></div></div>
+        <div style="font-size:10px;color:var(--txt3);margin-top:3px">${done} з ${total||0} задач · ${pct}%</div>
+      </div>
+      <div style="text-align:right;font-size:18px;line-height:1">${pct===100?'✅':pct>0?'🔄':'⏳'}</div>
+    </div>`;
+  }).join('');
+  const dp=document.getElementById('crm-dash-plan');
+  if(dp) dp.innerHTML=planHTML||`<div style="font-size:13px;color:var(--txt3)">Немає плану на сьогодні</div><button onclick="crmShowTab('plan')" style="margin-top:8px;font-size:12px;padding:4px 10px;border-radius:6px;background:var(--green);color:#001a0e;border:none;cursor:pointer">Відкрити план →</button>`;
+  const recent=[...all].filter(x=>x.date).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8);
+  const dr=document.getElementById('crm-dash-recent');
+  if(dr) dr.innerHTML=recent.map(x=>{
+    const isClient=crmClients.find(c=>c.id===x.id);
+    return `<div class="crm-dash-client-item"><div class="crm-dci-dot ${isClient?'b':'g'}"></div><div class="crm-dci-name"><strong>${esc(x.company||x.name||'—')}</strong>${x.company&&x.name?` <span style="font-size:11px;color:var(--txt3)">· ${esc(x.name)}</span>`:''}</div><div class="crm-dci-date">${crmFmtD(x.date)}</div></div>`;
+  }).join('')||'<div style="font-size:13px;color:var(--txt3)">Немає даних</div>';
+}
+
+// ── ПЛАН НА ДЕНЬ ──
+function crmUpdatePlanDayName(){ const d=document.getElementById('crm-plan-date').value; if(!d)return; const names=['Неділя','Понеділок','Вівторок','Середа','Четвер',"П'ятниця",'Субота']; document.getElementById('crm-plan-day-name').textContent=names[new Date(d).getDay()]; }
+function crmPlanKey(){ return document.getElementById('crm-plan-date').value||crmToday(); }
+function crmGetPlan(id){ return crmPlans[id+'_'+crmPlanKey()]||{tasks:{},savedTasks:[],note:''}; }
+async function crmPersistPlan(id,data){
+  const key=id+'_'+crmPlanKey();
+  crmPlans[key]=data;
+  try{
+    await sbFetch(SB_URL+'/rest/v1/crm_plan?on_conflict=contractor_id,plan_date',{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({
+      company_id:currentCompanyId, contractor_id:id, plan_date:crmPlanKey(), tasks:data.tasks||{}, saved_tasks:data.savedTasks||[], note:data.note||''
+    })});
+  }catch(e){}
+}
+function crmToggleAtp(){ crmAtpOpen=!crmAtpOpen; document.getElementById('crm-atp-body').classList.toggle('open',crmAtpOpen); document.getElementById('crm-atp-arr').classList.toggle('open',crmAtpOpen); if(crmAtpOpen)crmRenderAtpList(); }
+async function crmAddToPlan(id){
+  const p=crmGetPlan(id); if(!p.savedTasks)p.savedTasks=[];
+  await crmPersistPlan(id,p);
+  crmRenderPlan();
+  document.getElementById('crm-atp-body').classList.remove('open'); document.getElementById('crm-atp-arr').classList.remove('open'); crmAtpOpen=false;
+}
+async function crmRemoveFromPlan(id){
+  const key=id+'_'+crmPlanKey();
+  const dbId=crmPlans[key]?._dbId;
+  delete crmPlans[key];
+  if(dbId){ try{ await sbFetch(SB_URL+'/rest/v1/crm_plan?id=eq.'+dbId,{method:'DELETE'}); }catch(e){} }
+  crmRenderPlan();
+}
+async function crmTogglePlanTask(id,ti){ const p=crmGetPlan(id); if(!p.tasks)p.tasks={}; p.tasks[ti]=!p.tasks[ti]; await crmPersistPlan(id,p); crmRenderPlan(); }
+function crmToggleViewTask(id,ti){ crmTogglePlanTask(id,ti); }
+async function crmToggleSavedTask(id,ti){
+  const p=crmGetPlan(id); if(!p.savedTasks)p.savedTasks=[];
+  const pos=p.savedTasks.indexOf(ti);
+  if(pos>=0) p.savedTasks.splice(pos,1); else p.savedTasks.push(ti);
+  await crmPersistPlan(id,p); crmRenderPlan();
+}
+function crmOpenTaskEdit(id){
+  const pv=document.getElementById('pv-'+id), pe=document.getElementById('pe-'+id);
+  if(pv&&pe){ pv.style.display='none'; pe.style.display='block'; }
+}
+async function crmSavePlanNote(id){
+  const p=crmGetPlan(id); const ta=document.getElementById('crm-pn-'+id); if(ta)p.note=ta.value;
+  await crmPersistPlan(id,p);
+  const btn=document.querySelector(`[data-crmpns="${id}"]`);
+  if(btn){ btn.textContent='✅ Збережено'; setTimeout(()=>btn.textContent='💾 Зберегти',1500); }
+}
+function crmRenderAtpList(){
+  const q=(document.getElementById('crm-atp-srch').value||'').toLowerCase();
+  const already=Object.keys(crmPlans).filter(k=>k.endsWith('_'+crmPlanKey())).map(k=>parseInt(k.split('_')[0]));
+  const fClients=crmClients.filter(x=>!already.includes(x.id)&&(!q||((x.name||'')+(x.company||'')).toLowerCase().includes(q)));
+  const fLeads=crmLeads.filter(x=>!already.includes(x.id)&&(!q||((x.name||'')+(x.company||'')).toLowerCase().includes(q)));
+  const el=document.getElementById('crm-atp-list');
+  if(!fClients.length&&!fLeads.length){ el.innerHTML='<div style="font-size:12px;color:var(--txt3);padding:5px 0">Немає клієнтів або всі вже додані</div>'; return; }
+  let html='';
+  if(fClients.length){
+    html+='<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;padding:2px 4px 5px">⭐ Постійні ('+fClients.length+')</div>';
+    html+=fClients.map(x=>'<div class="crm-atp-item" onclick="crmAddToPlan('+x.id+')"><div class="crm-atp-dot b"></div><div><div class="crm-atp-nm">'+esc(x.company||x.name||'—')+'</div><div class="crm-atp-co">'+(x.company&&x.name?esc(x.name):'')+'</div></div></div>').join('');
+  }
+  if(fLeads.length){
+    const sep=fClients.length?'border-top:1px solid var(--brd);margin-top:4px':'';
+    html+='<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;padding:7px 4px 5px;'+sep+'">🔵 Ліди ('+fLeads.length+')</div>';
+    html+=fLeads.map(x=>'<div class="crm-atp-item" onclick="crmAddToPlan('+x.id+')"><div class="crm-atp-dot g"></div><div><div class="crm-atp-nm">'+esc(x.company||x.name||'—')+'</div><div class="crm-atp-co">'+(x.company&&x.name?esc(x.name):'')+'</div></div></div>').join('');
+  }
+  el.innerHTML=html;
+}
+function crmRenderPlan(){
+  crmUpdatePlanDayName();
+  const pk=crmPlanKey();
+  const planItems=Object.keys(crmPlans).filter(k=>k.endsWith('_'+pk)).map(k=>({id:parseInt(k.split('_')[0]),data:crmPlans[k]}));
+  const all=[...crmLeads,...crmClients];
+  const cards=planItems.map(pi=>{
+    const item=all.find(x=>x.id===pi.id); if(!item)return'';
+    const p=pi.data;
+    const done=Object.keys(p.tasks||{}).filter(i=>p.tasks[i]).length;
+    const hasAny=(p.savedTasks&&p.savedTasks.length>0);
+    const total=p.savedTasks?p.savedTasks.length:0;
+    const pct=total>0?Math.round(done/total*100):0;
+    let taskView='';
+    if(!hasAny){
+      taskView=`<div class="crm-pc-no-tasks">Немає задач — <button class="crm-pc-edit-btn" onclick="crmOpenTaskEdit(${item.id})">+ Обрати задачі</button></div>`;
+    }else{
+      const savedRows=CRM_TASKS.map((t,i)=>{
+        if(!p.savedTasks||!p.savedTasks.includes(i))return'';
+        const isDone=p.tasks&&p.tasks[i];
+        return `<div class="crm-pc-task-row${isDone?' done':''}" onclick="crmToggleViewTask(${item.id},${i})"><div class="crm-pct-check">${isDone?'✓':''}</div><span class="crm-pct-lbl">${t}</span></div>`;
+      }).join('');
+      taskView=savedRows+`<div style="text-align:right;margin-top:4px"><button class="crm-pc-edit-btn" onclick="crmOpenTaskEdit(${item.id})">✏️ Змінити задачі</button></div>`;
+    }
+    const editGrid=CRM_TASKS.map((t,i)=>{
+      const sel=p.savedTasks&&p.savedTasks.includes(i);
+      return `<div class="crm-task-chip${sel?' checked':''}" onclick="crmToggleSavedTask(${item.id},${i})"><div class="crm-tc-box">${sel?'✓':''}</div><span class="crm-tc-lbl">${t}</span></div>`;
+    }).join('');
+    return `<div class="crm-plan-card" id="crm-pc-${item.id}">
+      <div class="crm-pc-hdr">
+        <div>
+          <div class="crm-pc-name">${esc(item.company||item.name||'—')}</div>
+          <div class="crm-pc-co">${item.company&&item.name?esc(item.name)+' · ':''} ${item.phone?crmPhoneLink(item.phone):''}</div>
+          <div style="margin-top:6px;background:rgba(255,255,255,.08);border-radius:3px;height:3px;width:130px"><div style="width:${pct}%;height:100%;background:var(--green);border-radius:3px"></div></div>
+        </div>
+        <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <span class="crm-pc-rem" onclick="crmRemoveFromPlan(${item.id})" title="Прибрати з плану">✕</span>
+          <div class="crm-pc-done-counter" style="font-size:11px;color:var(--txt3);font-family:var(--mono)">${done}/${total}</div>
+        </div>
+      </div>
+      <div class="crm-pc-tasks-view" id="pv-${item.id}">${taskView}</div>
+      <div class="crm-pc-tasks-edit" id="pe-${item.id}" style="display:none">
+        <div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Оберіть задачі для цього клієнта:</div>
+        <div class="crm-pc-tasks-grid">${editGrid}</div>
+        <button class="crm-pc-edit-btn" style="margin-top:6px" onclick="document.getElementById('pv-${item.id}').style.display='block';document.getElementById('pe-${item.id}').style.display='none';crmRenderPlan();">✔ Готово</button>
+      </div>
+      <div class="crm-pc-note">
+        <textarea id="crm-pn-${item.id}" placeholder="Нотатка на цей день...">${esc(p.note||'')}</textarea>
+        <button class="crm-pc-note-save" data-crmpns="${item.id}" onclick="crmSavePlanNote(${item.id})">💾 Зберегти</button>
+      </div>
+    </div>`;
+  }).join('');
+  const cardsEl=document.getElementById('crm-plan-cards'); if(cardsEl) cardsEl.innerHTML=cards;
+  const emptyEl=document.getElementById('crm-plan-empty'); if(emptyEl) emptyEl.style.display=planItems.length===0?'block':'none';
+}
+
+// ── МОДАЛКИ ──
+function crmShowModal(id){ document.getElementById(id).classList.add('show'); if(id==='crm-modal-reminders')crmRenderReminderList(); }
+function crmCloseModal(id){ document.getElementById(id).classList.remove('show'); }
+
+
+// ══════════════════════════════════════════════════════════
+// ЧАТ: загальний канал компанії + особисті повідомлення
+// ══════════════════════════════════════════════════════════
+let chatPeerId=null; let chatCompanyProfiles=[]; let chatPollTimer=null;
+async function chatInitUsersList(){
+  try{
+    // Двокроково (без покладання на FK-embed, якому може бракувати іменованого constraint):
+    // 1) хто має доступ до цієї компанії, 2) їхні профілі (email/роль)
+    const r1=await sbFetch(SB_URL+'/rest/v1/company_access?company_id=eq.'+currentCompanyId+'&select=user_id');
+    const accessRows=r1.ok?await r1.json():[];
+    const ids=[...new Set(accessRows.map(x=>x.user_id))].filter(id=>id!==sbSession?.user?.id);
+    if(ids.length){
+      const r2=await sbFetch(SB_URL+'/rest/v1/profiles?id=in.('+ids.join(',')+')&select=id,email,role');
+      chatCompanyProfiles=r2.ok?await r2.json():[];
+      chatCompanyProfiles.forEach(p=>{ crmProfileEmailById[p.id]=p.email; });
+    }else chatCompanyProfiles=[];
+  }catch(e){ chatCompanyProfiles=[]; }
+  const list=document.getElementById('chat-users-list');
+  if(list) list.innerHTML=chatCompanyProfiles.map(p=>`
+    <div class="nav-i" data-chat="${p.id}" onclick="chatOpen('${p.id}',this)"><span>👤</span>${esc(p.email)} <span style="opacity:.5;font-size:9px;margin-left:auto">${ROLE_LABELS[p.role]||''}</span></div>
+  `).join('');
+  chatOpen(null,document.querySelector('.nav-i[data-chat="group"]'));
+}
+function chatOpen(peerId,el){
+  chatPeerId=peerId;
+  document.querySelectorAll('#chat-overlay .nav-i').forEach(n=>n.classList.remove('on'));
+  if(el) el.classList.add('on');
+  chatLoadMessages();
+  if(chatPollTimer) clearInterval(chatPollTimer);
+  chatPollTimer=setInterval(chatLoadMessages,5000);
+}
+async function chatLoadMessages(){
+  const wrap=document.getElementById('chat-msgs'); if(!wrap) return;
+  let url;
+  if(chatPeerId){
+    const me=sbSession?.user?.id;
+    url=SB_URL+'/rest/v1/chat_messages?company_id=eq.'+currentCompanyId+
+      '&or=(and(sender_id.eq.'+me+',recipient_id.eq.'+chatPeerId+'),and(sender_id.eq.'+chatPeerId+',recipient_id.eq.'+me+'))'+
+      '&order=created_at.asc&limit=200';
+  }else{
+    url=SB_URL+'/rest/v1/chat_messages?company_id=eq.'+currentCompanyId+'&recipient_id=is.null&order=created_at.asc&limit=200';
+  }
+  try{
+    const r=await sbFetch(url);
+    const rows=r.ok?await r.json():[];
+    const me=sbSession?.user?.id;
+    wrap.innerHTML=rows.map(m=>{
+      const mine=m.sender_id===me;
+      return `<div style="align-self:${mine?'flex-end':'flex-start'};max-width:70%">
+        <div style="background:${mine?'var(--acc)':'var(--bg3)'};color:${mine?'#fff':'var(--txt)'};padding:7px 11px;border-radius:12px;font-size:12px;word-break:break-word">${esc(m.text)}</div>
+        <div style="font-size:9px;color:var(--txt3);margin-top:2px;text-align:${mine?'right':'left'}">${new Date(m.created_at).toLocaleString('uk-UA',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'})}</div>
+      </div>`;
+    }).join('');
+    wrap.scrollTop=wrap.scrollHeight;
+  }catch(e){}
+}
+async function chatSend(){
+  const inp=document.getElementById('chat-input');
+  const text=inp.value.trim(); if(!text) return;
+  inp.value='';
+  try{
+    await sbFetch(SB_URL+'/rest/v1/chat_messages',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({
+      company_id:currentCompanyId, sender_id:sbSession?.user?.id, recipient_id:chatPeerId, text
+    })});
+    chatLoadMessages();
+  }catch(e){ toast('Не вдалось надіслати','e'); }
+}
+
+// ══════════════════════════════════════════════════════════
+// ОЧЕРЕДЬ ПІДТВЕРДЖЕНЬ: дії Гол. бухгалтера чекають рішення Директора
+// ══════════════════════════════════════════════════════════
+// Універсальна функція: якщо роль chief_accountant — дія лише СТВОРЮЄ заявку
+// і повертає false (виконувати саму дію НЕ треба). Якщо роль director/інша — повертає true (можна виконувати одразу).
+async function requiresApproval(actionType, payload, humanLabel){
+  if(myRole!=='chief_accountant') return true; // director/accountant/manager виконують одразу
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/approval_requests',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({
+      company_id:currentCompanyId, requested_by:sbSession?.user?.id, action_type:actionType, payload
+    })});
+    if(!r.ok) throw new Error();
+    toast('Заявку "'+(humanLabel||actionType)+'" надіслано Директору на підтвердження','s');
+  }catch(e){ toast('Не вдалось створити заявку на підтвердження','e'); }
+  return false;
+}
+async function refreshApprovalBadge(){
+  if(myRole!=='director'||!currentCompanyId) return;
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/approval_requests?company_id=eq.'+currentCompanyId+'&status=eq.pending&select=id');
+    const rows=r.ok?await r.json():[];
+    const badge=document.getElementById('appr-badge');
+    if(badge){ badge.style.display=rows.length?'inline-block':'none'; badge.textContent=rows.length; }
+  }catch(e){}
+}
+async function renderApprovalsPage(){
+  const wrap=document.getElementById('appr-wrap'); if(!wrap) return;
+  wrap.innerHTML='Завантаження...';
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/approval_requests?company_id=eq.'+currentCompanyId+'&status=eq.pending&select=*,profiles!approval_requests_requested_by_fkey(email)&order=created_at.desc');
+    const rows=r.ok?await r.json():[];
+    if(!rows.length){ wrap.innerHTML='<div style="color:var(--txt3);text-align:center;padding:30px">Немає заявок, що очікують рішення</div>'; return; }
+    wrap.innerHTML=rows.map(x=>`
+      <div style="border:1px solid var(--brd);border-radius:var(--rl);padding:12px 14px;margin-bottom:8px">
+        <div style="font-size:12px;color:var(--txt3);margin-bottom:4px">${esc(x.profiles?.email||'')} · ${new Date(x.created_at).toLocaleString('uk-UA')}</div>
+        <div style="font-weight:600;margin-bottom:6px">${esc(x.action_type)}</div>
+        <pre style="font-size:11px;color:var(--txt2);background:var(--bg3);padding:8px;border-radius:8px;white-space:pre-wrap;margin-bottom:8px">${esc(JSON.stringify(x.payload,null,2))}</pre>
+        <button class="btn sm grn" onclick="approvalDecide(${x.id},'approved')">✔ Підтвердити</button>
+        <button class="btn sm danger" onclick="approvalDecide(${x.id},'rejected')">✕ Відхилити</button>
+      </div>`).join('');
+  }catch(e){ wrap.innerHTML='<div style="color:var(--red)">Помилка завантаження</div>'; }
+}
+async function approvalDecide(id,status){
+  try{
+    await sbFetch(SB_URL+'/rest/v1/approval_requests?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({
+      status, reviewed_by:sbSession?.user?.id, reviewed_at:new Date().toISOString()
+    })});
+    toast(status==='approved'?'Підтверджено':'Відхилено','s');
+    renderApprovalsPage(); refreshApprovalBadge();
+  }catch(e){ toast('Помилка','e'); }
+}
 // ── ПЕРЕТЯГУВАННЯ РОЗДІЛІВ МЕНЮ ────────────────────────
 // Порядок розділів у сайдбарі можна міняти перетягуванням — зберігається
 // в цьому браузері (localStorage), у кожного може бути свій зручний порядок.
@@ -1953,6 +3357,7 @@ function nav(id){
   if(id==='admin') renderAdminPage();
   if(id==='rentab') renderRentab();
   if(id==='pnl') renderPnl();
+  if(id==='approvals') renderApprovalsPage();
   if(window.innerWidth<=768) toggleSidebar(false); // на телефоні меню закривається після вибору розділу
 }
 
@@ -3326,10 +4731,12 @@ function saveDP(){
   rebuildSelects(); applyF(); renderMID(); renderDebts(); renderSvirka();
   closeDP(); toast(editId?'Угоду оновлено':'Угоду додано','s');
 }
-function delDeal(){
+async function delDeal(){
   if(!confirm('Видалити угоду '+editId+'?\n\nМожна буде відновити з "кошика" протягом цієї сесії роботи.')) return;
   const removed=deals.find(d=>d.id===editId);
   if(!removed){toast('Угоду не знайдено','e');return;}
+  const ok=await requiresApproval('deal_delete',{dealId:removed.id, client:removed.client||removed.buyer||'', sum:removed.sum_buy_vat||removed.sum||null},'Видалення угоди '+removed.id);
+  if(!ok) return; // chief_accountant: заявка створена, чекаємо Директора
   deletedDeals.unshift({...removed, deletedAt:new Date().toISOString()});
   if(deletedDeals.length>50) deletedDeals=deletedDeals.slice(0,50); // кошик не безмежний
   deals=deals.filter(d=>d.id!==editId);
