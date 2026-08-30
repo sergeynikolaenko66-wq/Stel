@@ -285,7 +285,7 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
 #pg-crm .crm-tabs{display:flex;padding:0 1rem;border-bottom:1px solid var(--border);background:var(--bg2);overflow-x:auto;}
 #pg-crm .crm-tab:hover{color:var(--text);}
 #pg-crm .crm-tab.active{color:var(--green);border-bottom-color:var(--green);font-weight:500;}
-#pg-crm .crm-panel{display:none;padding:1rem;}
+#pg-crm .crm-panel{display:none;padding:1rem;overflow-y:auto;flex:1;min-height:0;}
 #pg-crm .crm-panel.active{display:block;}
 #pg-crm .crm-form-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem .9rem;margin-bottom:.85rem;}
 #pg-crm .crm-form-box.editing{border-color:rgba(255,184,48,.35);}
@@ -945,6 +945,12 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
             <button class="btn pri sm" onclick="admAddCompany()">+ Додати</button>
           </div>
           <div id="adm-companies-list" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px">🎭 Ролі колег</div>
+          <div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Директор / Гол.бух / Бухгалтер — доступ до ЖСМ+CRM. Менеджер — лише CRM.</div>
+          <div id="adm-roles-list" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
         </div>
 
         <div style="margin-bottom:24px">
@@ -1819,7 +1825,37 @@ async function renderAdminPage(){
   }
   await admRenderCompanies();
   await admRenderAccessList();
+  await admRenderRoles();
   renderPayroll();
+}
+
+async function admRenderRoles(){
+  const list=document.getElementById('adm-roles-list'); if(!list) return;
+  list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Завантаження...</div>';
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?select=id,email,role&order=email.asc');
+    const rows=r.ok?await r.json():[];
+    if(!rows.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Нікого не знайдено</div>'; return; }
+    const roleOpts=['director','chief_accountant','accountant','manager'];
+    list.innerHTML=rows.map(p=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--brd);font-size:12px">
+        <span>${esc(p.email)}${p.id===sbSession?.user?.id?' <span style="color:var(--txt3)">(ви)</span>':''}</span>
+        <select onchange="admSetRole('${p.id}',this.value)" style="background:var(--bg3);border:1px solid var(--brd);border-radius:6px;padding:5px 8px;color:var(--txt);font-family:inherit;font-size:12px" ${myRole!=='director'?'disabled':''}>
+          ${roleOpts.map(ro=>`<option value="${ro}" ${p.role===ro?'selected':''}>${esc(ROLE_LABELS[ro]||ro)}</option>`).join('')}
+        </select>
+      </div>`).join('');
+  }catch(e){
+    list.innerHTML='<div style="padding:10px;color:var(--red);font-size:12px">Помилка завантаження ролей</div>';
+  }
+}
+async function admSetRole(userId,newRole){
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+userId,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({role:newRole})});
+    if(!r.ok) throw new Error();
+    toast('Роль оновлено','s');
+  }catch(e){
+    toast('Помилка. Перевірте, чи виконано 05_role_management.sql в Supabase','e');
+  }
 }
 
 async function admRenderCompanies(){
