@@ -948,6 +948,12 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         </div>
 
         <div style="margin-bottom:24px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px">🔗 Зв'язок менеджера з іменем у ЖСМ</div>
+          <div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Щоб менеджер бачив свої угоди в CRM — вкажіть, яке ім'я в полі "Менеджер" угод ЖСМ відповідає його акаунту.</div>
+          <div id="adm-mgrlink-list" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
+        </div>
+
+        <div style="margin-bottom:24px">
           <div style="font-size:13px;font-weight:700;margin-bottom:10px">🎭 Ролі колег</div>
           <div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Директор / Гол.бух / Бухгалтер — доступ до ЖСМ+CRM. Менеджер — лише CRM.</div>
           <div id="adm-roles-list" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
@@ -1077,6 +1083,7 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         <button class="crm-tab" id="crm-tabbtn-archive" onclick="crmShowTab('archive')">📦 Архів</button>
         <button class="crm-tab" id="crm-tabbtn-stats" onclick="crmShowTab('stats')">📊 Статистика</button>
         <button class="crm-tab" id="crm-tabbtn-plan" onclick="crmShowTab('plan')">📋 План</button>
+        <button class="crm-tab" id="crm-tabbtn-mydeals" onclick="crmShowTab('mydeals')" style="display:none">🧾 Мої угоди</button>
       </div>
 
       <!-- DASHBOARD -->
@@ -1208,6 +1215,12 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         </div>
         <div class="crm-plan-cards" id="crm-plan-cards"></div>
         <div class="crm-empty-plan" id="crm-plan-empty">Немає клієнтів у плані. Додайте вище ↑</div>
+      </div>
+
+      <!-- МОЇ УГОДИ (з ЖСМ, лише свого менеджера) -->
+      <div id="crm-tab-mydeals" class="crm-panel">
+        <div class="crm-arch-banner">🧾 Ваші угоди з ЖСМ. Можна залишати позначки — їх бачать бухгалтери.</div>
+        <div id="crm-mydeals-list"></div>
       </div>
 
     <!-- CRM MODALS (nested INSIDE #pg-crm so scoped CSS hides them by default) -->
@@ -1426,6 +1439,12 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
           </div>
           <div class="dp-sect">Історія змін</div>
           <div id="dp-changelog" style="max-height:120px;overflow-y:auto;font-size:11px"></div>
+          <div class="dp-sect">💬 Позначки менеджера (видно і бухгалтерам)</div>
+          <div id="dp-mgrnotes" style="max-height:140px;overflow-y:auto;font-size:12px;margin-bottom:6px"></div>
+          <div style="display:flex;gap:6px">
+            <input id="dp-mgrnote-inp" placeholder="Додати позначку..." style="flex:1;background:var(--bg3);border:1px solid var(--brd);border-radius:var(--r);padding:6px 9px;color:var(--txt);font-family:inherit;font-size:12px" onkeydown="if(event.key==='Enter')addDealNote()">
+            <button class="btn sm" onclick="addDealNote()">➤</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1826,7 +1845,38 @@ async function renderAdminPage(){
   await admRenderCompanies();
   await admRenderAccessList();
   await admRenderRoles();
+  await admRenderMgrLinks();
   renderPayroll();
+}
+
+async function admRenderMgrLinks(){
+  const list=document.getElementById('adm-mgrlink-list'); if(!list) return;
+  list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Завантаження...</div>';
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?select=id,email,role,manager_name&role=eq.manager&order=email.asc');
+    const rows=r.ok?await r.json():[];
+    const zhsmManagerNames=[...new Set(deals.map(d=>d.manager).filter(Boolean))].sort();
+    if(!rows.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Немає користувачів з роллю "Менеджер"</div>'; return; }
+    list.innerHTML=rows.map(p=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--brd);font-size:12px">
+        <span>${esc(p.email)}</span>
+        <select onchange="admSetMgrLink('${p.id}',this.value)" style="background:var(--bg3);border:1px solid var(--brd);border-radius:6px;padding:5px 8px;color:var(--txt);font-family:inherit;font-size:12px;min-width:160px">
+          <option value="">— не прив'язано —</option>
+          ${zhsmManagerNames.map(n=>`<option value="${esc(n)}" ${p.manager_name===n?'selected':''}>${esc(n)}</option>`).join('')}
+        </select>
+      </div>`).join('');
+  }catch(e){
+    list.innerHTML='<div style="padding:10px;color:var(--red);font-size:12px">Помилка завантаження</div>';
+  }
+}
+async function admSetMgrLink(userId,managerName){
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+userId,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({manager_name:managerName||null})});
+    if(!r.ok) throw new Error();
+    toast('Прив\'язку оновлено','s');
+  }catch(e){
+    toast('Помилка. Перевірте, чи виконано 06_manager_deals_link.sql в Supabase','e');
+  }
 }
 
 async function admRenderRoles(){
@@ -2577,6 +2627,7 @@ async function crmLoadAll(){
   }catch(e){ crmPlans={}; }
   crmLoaded=true;
   crmApplyManagerColumnVisibility();
+  const mdBtn=document.getElementById('crm-tabbtn-mydeals'); if(mdBtn) mdBtn.style.display = (myRole==='manager') ? '' : 'none';
   crmUpdateStats();
   crmRenderLeads(); crmRenderClients(); crmRenderArchive();
   crmCheckReminders();
@@ -2648,6 +2699,7 @@ function crmShowTab(t, skipLoad){
   if(t==='stats')crmRenderStats();
   if(t==='plan'){crmRenderPlan();crmRenderAtpList();}
   if(t==='dash')crmRenderDash();
+  if(t==='mydeals')crmLoadMyDeals();
 }
 
 // ── ФОРМА ЛІДА ──
@@ -3199,6 +3251,77 @@ function crmRenderPlan(){
 
 // ── МОДАЛКИ ──
 function crmShowModal(id){ document.getElementById(id).classList.add('show'); if(id==='crm-modal-reminders')crmRenderReminderList(); }
+
+// ── МОЇ УГОДИ (тільки якщо є прив'язка manager_name, дані отримуємо через безпечну RPC) ──
+let crmDealNotesCache={};
+async function crmLoadMyDeals(){
+  const btn=document.getElementById('crm-tabbtn-mydeals');
+  const box=document.getElementById('crm-mydeals-list');
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/rpc/get_my_deals',{method:'POST',body:JSON.stringify({p_company_id:currentCompanyId})});
+    if(!r.ok) throw new Error();
+    const deals=await r.json();
+    if(!deals.length){
+      if(btn) btn.style.display=''; // показуємо вкладку навіть якщо порожньо (можливо ще не прив'язано)
+      box.innerHTML='<div style="padding:20px;color:var(--txt3);font-size:13px">Угод не знайдено. Якщо ви вважаєте, що це помилка — попросіть Директора прив\'язати ваш акаунт до імені менеджера в ЖСМ (Адміністрування → Зв\'язок менеджера).</div>';
+      return;
+    }
+    if(btn) btn.style.display='';
+    const ids=deals.map(d=>d.id);
+    const rn=await sbFetch(SB_URL+'/rest/v1/deal_notes?company_id=eq.'+currentCompanyId+'&deal_id=in.('+ids.map(id=>'"'+id+'"').join(',')+')&order=created_at.asc');
+    const notes=rn.ok?await rn.json():[];
+    crmDealNotesCache={};
+    notes.forEach(n=>{ if(!crmDealNotesCache[n.deal_id])crmDealNotesCache[n.deal_id]=[]; crmDealNotesCache[n.deal_id].push(n); });
+    box.innerHTML=deals.map(d=>{
+      const dn=crmDealNotesCache[d.id]||[];
+      const lines=(d.lines||[]).filter(l=>l.supplier||l.goods);
+      const linesHTML=lines.length?`<div style="margin:8px 0;border:1px solid var(--brd);border-radius:8px;overflow:hidden">
+          <table style="width:100%;font-size:11px;border-collapse:collapse">
+            <thead><tr style="background:var(--bg3)"><th style="text-align:left;padding:5px 8px">Товар</th><th style="text-align:left;padding:5px 8px">Постачальник</th><th style="text-align:right;padding:5px 8px">К-сть</th><th style="text-align:right;padding:5px 8px">Ціна</th><th style="text-align:right;padding:5px 8px">Сума</th></tr></thead>
+            <tbody>${lines.map(l=>`<tr style="border-top:1px solid var(--brd)">
+              <td style="padding:5px 8px">${esc(l.goods||'—')}</td>
+              <td style="padding:5px 8px">${esc(l.supplier||'—')}</td>
+              <td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${l.qty_sell||''}</td>
+              <td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${l.price_sell||''}</td>
+              <td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${l.sum_sell_no_vat?Number(l.sum_sell_no_vat).toLocaleString('uk-UA'):''}</td>
+            </tr>`).join('')}</tbody>
+          </table>
+        </div>`:'';
+      const payHTML=`<div style="font-size:11px;color:var(--txt3);margin-top:4px">Оплата: ${esc(d.pay_status||'—')}${d.client_paid?' · Клієнт сплатив: '+Number(d.client_paid).toLocaleString('uk-UA')+' грн':''}${d.pay_date?' · Дата оплати: '+esc(d.pay_date):''}</div>`;
+      return `<div class="crm-plan-card" style="margin-bottom:10px">
+        <div class="crm-pc-hdr">
+          <div style="flex:1"><div class="crm-pc-name">${esc(d.client||'—')} <span style="font-size:11px;color:var(--txt3);font-family:var(--mono)">#${esc(d.id)}</span></div>
+          <div class="crm-pc-co">${esc(d.date||'')} · ${crmStBadge(d.status)} · <strong>${d.sum_sell?Number(d.sum_sell).toLocaleString('uk-UA')+' грн':''}</strong></div>
+          ${payHTML}</div>
+        </div>
+        ${linesHTML}
+        ${d.notes?`<div style="font-size:11px;color:var(--txt2);background:var(--bg3);border-radius:7px;padding:6px 9px;margin:6px 0">📝 Нотатка з ЖСМ: ${esc(d.notes)}</div>`:''}
+        <div style="font-size:11px;color:var(--txt3);margin:6px 0 3px">💬 Позначки (бачать і бухгалтери):</div>
+        <div id="crm-dealnotes-${esc(d.id)}" style="margin:0 0 8px;display:flex;flex-direction:column;gap:5px">
+          ${dn.map(n=>`<div style="background:var(--bg3);border-radius:8px;padding:6px 9px;font-size:12px"><div>${esc(n.note)}</div><div style="font-size:10px;color:var(--txt3);margin-top:2px">${crmMgrEmail(n.created_by)} · ${new Date(n.created_at).toLocaleString('uk-UA')}</div></div>`).join('')||'<div style="font-size:11px;color:var(--txt3)">Позначок немає</div>'}
+        </div>
+        <div style="display:flex;gap:6px">
+          <input id="crm-dn-inp-${esc(d.id)}" placeholder="Додати позначку..." style="flex:1;background:var(--bg3);border:1px solid var(--brd);border-radius:7px;padding:6px 9px;color:var(--txt);font-family:inherit;font-size:12px" onkeydown="if(event.key==='Enter')crmAddDealNote('${esc(d.id)}')">
+          <button class="crm-btn-sub blue" style="padding:0 12px" onclick="crmAddDealNote('${esc(d.id)}')">➤</button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    box.innerHTML='<div style="padding:20px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 06_manager_deals_link.sql в Supabase.</div>';
+  }
+}
+async function crmAddDealNote(dealId){
+  const inp=document.getElementById('crm-dn-inp-'+dealId);
+  const text=inp.value.trim(); if(!text) return;
+  inp.value='';
+  try{
+    await sbFetch(SB_URL+'/rest/v1/deal_notes',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({
+      company_id:currentCompanyId, deal_id:dealId, manager_user_id:sbSession?.user?.id, note:text, created_by:sbSession?.user?.id
+    })});
+    crmLoadMyDeals();
+  }catch(e){ toast('Не вдалось зберегти позначку','e'); }
+}
+
 function crmCloseModal(id){ document.getElementById(id).classList.remove('show'); }
 
 
