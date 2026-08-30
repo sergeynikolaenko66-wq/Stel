@@ -1710,7 +1710,7 @@ function sbSaveSession(data){
 let _refreshInFlight=null;
 async function sbFetch(url,opts={}){
   const extra=opts.headers||{};
-  const doFetch=()=>fetch(url,{...opts,headers:{...sbHeaders(true),...extra}});
+  const doFetch=()=>fetch(url,{...opts,cache:'no-store',headers:{...sbHeaders(true),...extra,'Cache-Control':'no-cache'}});
   let r=await doFetch();
   if(r.status===401 && sbSession && sbSession.refresh_token){
     try{
@@ -1853,7 +1853,7 @@ async function admRenderMgrLinks(){
   const list=document.getElementById('adm-mgrlink-list'); if(!list) return;
   list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Завантаження...</div>';
   try{
-    const r=await sbFetch(SB_URL+'/rest/v1/profiles?select=id,email,role,manager_name&role=eq.manager&order=email.asc');
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?select=id,email,role,manager_name&role=eq.manager&order=email.asc&_ts='+Date.now());
     const rows=r.ok?await r.json():[];
     const zhsmManagerNames=[...new Set(deals.map(d=>d.manager).filter(Boolean))].sort();
     if(!rows.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Немає користувачів з роллю "Менеджер"</div>'; return; }
@@ -1883,7 +1883,7 @@ async function admRenderRoles(){
   const list=document.getElementById('adm-roles-list'); if(!list) return;
   list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Завантаження...</div>';
   try{
-    const r=await sbFetch(SB_URL+'/rest/v1/profiles?select=id,email,role&order=email.asc');
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?select=id,email,role&order=email.asc&_ts='+Date.now());
     const rows=r.ok?await r.json():[];
     if(!rows.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Нікого не знайдено</div>'; return; }
     const roleOpts=['director','chief_accountant','accountant','manager'];
