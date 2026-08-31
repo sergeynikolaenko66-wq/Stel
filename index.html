@@ -1842,11 +1842,12 @@ async function renderAdminPage(){
     document.getElementById('pg-admin').innerHTML='<div style="padding:20px;color:var(--txt3)">Доступно лише адміністратору</div>';
     return;
   }
-  await admRenderCompanies();
-  await admRenderAccessList();
-  await admRenderRoles();
-  await admRenderMgrLinks();
-  renderPayroll();
+  // Кожен блок незалежний: якщо один впаде з помилкою — решта все одно оновляться.
+  try{ await admRenderCompanies(); }catch(e){ console.error('admRenderCompanies:',e); }
+  try{ await admRenderAccessList(); }catch(e){ console.error('admRenderAccessList:',e); }
+  try{ await admRenderRoles(); }catch(e){ console.error('admRenderRoles:',e); }
+  try{ await admRenderMgrLinks(); }catch(e){ console.error('admRenderMgrLinks:',e); }
+  try{ renderPayroll(); }catch(e){ console.error('renderPayroll:',e); }
 }
 
 async function admRenderMgrLinks(){
