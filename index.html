@@ -1876,8 +1876,10 @@ async function admRenderMgrLinks(){
 }
 async function admSetMgrLink(userId,managerName){
   try{
-    const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+userId,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({manager_name:managerName||null})});
-    if(!r.ok) throw new Error();
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+userId,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({manager_name:managerName||null})});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const rows=await r.json();
+    if(!rows.length) throw new Error('0 рядків оновлено (перевірте права доступу)');
     toast('Прив\'язку оновлено','s');
   }catch(e){
     toast('Помилка. Перевірте, чи виконано 06_manager_deals_link.sql в Supabase','e');
@@ -1910,11 +1912,13 @@ async function admRenderRoles(){
 }
 async function admSetRole(userId,newRole){
   try{
-    const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+userId,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({role:newRole})});
-    if(!r.ok) throw new Error();
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+userId,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({role:newRole})});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const rows=await r.json();
+    if(!rows.length) throw new Error('0 рядків оновлено (перевірте права доступу)');
     toast('Роль оновлено','s');
   }catch(e){
-    toast('Помилка. Перевірте, чи виконано 05_role_management.sql в Supabase','e');
+    toast('Помилка: '+e.message,'e');
   }
 }
 
