@@ -274,7 +274,6 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
 #pg-crm .crm-rb-title{font-size:11px;font-weight:500;color:var(--amber);}
 #pg-crm .crm-rb-item{font-size:11px;color:var(--text);background:rgba(255,184,48,.15);border-radius:4px;padding:2px 7px;}
 #pg-crm .crm-rb-close{margin-left:auto;font-size:12px;color:var(--text3);cursor:pointer;}
-#pg-crm .crm-stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:.75rem 1rem;background:var(--bg);border-bottom:1px solid var(--border);}
 #pg-crm .crm-sc-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
 #pg-crm .crm-sc-ico.g{background:var(--green2);}
 #pg-crm .crm-sc-ico.b{background:var(--blue2);}
@@ -522,6 +521,40 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
 #pg-crm .crm-acts{display:flex;gap:2px;flex-wrap:nowrap;}
 #pg-crm .crm-ab{display:inline-flex;align-items:center;gap:2px;padding:0 5px;height:21px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid;white-space:nowrap;font-family:var(--font);}
 #pg-crm .crm-cnt{font-size:11px;color:var(--text3);font-family:var(--mono);}
+/* ── Оновлений стиль CRM (картки, вкладки-пігулки, тіні) ── */
+#pg-crm .crm-stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
+#pg-crm .crm-sc{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.75rem .9rem;display:flex;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:box-shadow .15s,transform .15s;}
+#pg-crm .crm-sc:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-1px);}
+#pg-crm .crm-sc-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+#pg-crm .crm-sc-val{font-size:19px;font-weight:700;font-family:var(--mono);line-height:1.1;}
+#pg-crm .crm-sc-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+#pg-crm .crm-tabs{display:flex;padding:8px 12px;gap:2px;border-bottom:1px solid var(--border);background:var(--bg2);overflow-x:auto;}
+#pg-crm .crm-tab{padding:8px 14px;font-size:12.5px;color:var(--text2);cursor:pointer;border:none;background:none;border-radius:9px;display:flex;align-items:center;gap:6px;font-family:var(--font);white-space:nowrap;transition:background .12s,color .12s;}
+#pg-crm .crm-tab:hover{color:var(--text);background:var(--bg3);}
+#pg-crm .crm-tab.active{color:#fff;background:var(--green);font-weight:600;box-shadow:0 2px 6px rgba(0,214,143,.25);}
+#pg-crm .crm-panel{display:none;padding:16px;overflow-y:auto;flex:1;min-height:0;background:var(--bg1);}
+#pg-crm .crm-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:.75rem;flex-wrap:wrap;}
+#pg-crm .crm-sw{position:relative;flex:1;min-width:160px;max-width:260px;}
+#pg-crm .crm-srch{height:32px;padding:0 10px 0 28px;font-size:12.5px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text);width:100%;font-family:var(--font);outline:none;transition:border-color .12s;}
+#pg-crm .crm-srch:focus{border-color:var(--green);}
+#pg-crm .crm-cnt{font-size:11px;color:var(--text3);font-family:var(--mono);}
+#pg-crm .crm-pg-btn{width:27px;height:27px;border-radius:7px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--mono);transition:background .12s;}
+#pg-crm .crm-pg-btn:hover{background:var(--bg3);}
+#pg-crm .crm-pg-btn.active{background:var(--green);color:#fff;border-color:var(--green);}
+#pg-crm .crm-dash-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+#pg-crm .crm-plan-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .15s;}
+#pg-crm .crm-plan-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.07);}
+#pg-crm .crm-tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:auto;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+#pg-crm .crm-form-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:.85rem;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+#pg-crm .crm-btn-sub{display:flex;align-items:center;justify-content:center;gap:5px;padding:0 14px;height:33px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;background:var(--green);color:#fff;white-space:nowrap;font-family:var(--font);transition:filter .12s,transform .12s;}
+#pg-crm .crm-btn-sub:hover{filter:brightness(1.08);}
+#pg-crm .crm-btn-sub:active{transform:scale(.97);}
+#pg-crm .crm-btn-sub.blue{background:var(--blue);}
+#pg-crm .crm-btn-can{display:flex;align-items:center;justify-content:center;gap:4px;padding:0 12px;height:33px;border-radius:9px;font-size:12px;cursor:pointer;font-family:var(--font);border:1px solid var(--border2);background:none;color:var(--text2);white-space:nowrap;margin-top:3px;transition:background .12s;}
+#pg-crm .crm-btn-can:hover{background:var(--bg3);}
+#pg-crm .crm-sbadge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:600;letter-spacing:.01em;}
+#pg-crm select, #pg-crm input[type="date"]{border-radius:8px!important;}
+
 </style>
 </head>
 <body>
@@ -1219,7 +1252,17 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
 
       <!-- МОЇ УГОДИ (з ЖСМ, лише свого менеджера) -->
       <div id="crm-tab-mydeals" class="crm-panel">
-        <div class="crm-arch-banner">🧾 Ваші угоди з ЖСМ. Можна залишати позначки — їх бачать бухгалтери.</div>
+        <div class="crm-arch-banner">🧾 Ваші угоди з ЖСМ. Клікніть на угоду, щоб розкрити позиції. Можна залишати позначки — їх бачать бухгалтери.</div>
+        <div class="crm-toolbar">
+          <div class="crm-sw"><span class="crm-si">🔍</span><input class="crm-srch" id="crm-md-srch" placeholder="Пошук по клієнту або № угоди..." oninput="crmRenderMyDeals()"></div>
+          <input type="date" id="crm-md-from" onchange="crmRenderMyDeals()" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:6px;background:var(--bg3);color:var(--txt);font-family:inherit">
+          <span style="color:var(--txt3);font-size:11px">—</span>
+          <input type="date" id="crm-md-to" onchange="crmRenderMyDeals()" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:6px;background:var(--bg3);color:var(--txt);font-family:inherit">
+          <select id="crm-md-status" onchange="crmRenderMyDeals()" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:6px;background:var(--bg3);color:var(--txt);font-family:inherit">
+            <option value="">Всі статуси</option>
+          </select>
+          <span class="crm-cnt" id="crm-md-cnt"></span>
+        </div>
         <div id="crm-mydeals-list"></div>
       </div>
 
@@ -1268,6 +1311,7 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
     <div style="width:220px;border-right:1px solid var(--brd);overflow-y:auto;flex-shrink:0;background:var(--bg3)">
       <div style="padding:12px 14px;font-weight:700;font-size:12px;color:var(--txt2);border-bottom:1px solid var(--brd)">💬 Чат</div>
       <div class="nav-i on" data-chat="group" onclick="chatOpen(null,this)" style="border-left-color:var(--acc)"><span>👥</span>Загальний чат</div>
+      <div style="padding:10px 14px 4px;font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em">Особисті повідомлення</div>
       <div id="chat-users-list"></div>
     </div>
     <div style="flex:1;display:flex;flex-direction:column;min-width:0">
@@ -3269,61 +3313,101 @@ function crmShowModal(id){ document.getElementById(id).classList.add('show'); if
 
 // ── МОЇ УГОДИ (тільки якщо є прив'язка manager_name, дані отримуємо через безпечну RPC) ──
 let crmDealNotesCache={};
+let crmAllMyDeals=[];
+let crmMyDealsExpanded=new Set();
 async function crmLoadMyDeals(){
   const btn=document.getElementById('crm-tabbtn-mydeals');
   const box=document.getElementById('crm-mydeals-list');
+  box.innerHTML='<div style="padding:20px;color:var(--txt3);font-size:13px">Завантаження...</div>';
   try{
     const r=await sbFetch(SB_URL+'/rest/v1/rpc/get_my_deals',{method:'POST',body:JSON.stringify({p_company_id:currentCompanyId})});
     if(!r.ok) throw new Error();
-    const deals=await r.json();
-    if(!deals.length){
-      if(btn) btn.style.display=''; // показуємо вкладку навіть якщо порожньо (можливо ще не прив'язано)
+    crmAllMyDeals=await r.json();
+    if(btn) btn.style.display='';
+    if(!crmAllMyDeals.length){
       box.innerHTML='<div style="padding:20px;color:var(--txt3);font-size:13px">Угод не знайдено. Якщо ви вважаєте, що це помилка — попросіть Директора прив\'язати ваш акаунт до імені менеджера в ЖСМ (Адміністрування → Зв\'язок менеджера).</div>';
       return;
     }
-    if(btn) btn.style.display='';
-    const ids=deals.map(d=>d.id);
+    const ids=crmAllMyDeals.map(d=>d.id);
     const rn=await sbFetch(SB_URL+'/rest/v1/deal_notes?company_id=eq.'+currentCompanyId+'&deal_id=in.('+ids.map(id=>'"'+id+'"').join(',')+')&order=created_at.asc');
     const notes=rn.ok?await rn.json():[];
     crmDealNotesCache={};
     notes.forEach(n=>{ if(!crmDealNotesCache[n.deal_id])crmDealNotesCache[n.deal_id]=[]; crmDealNotesCache[n.deal_id].push(n); });
-    box.innerHTML=deals.map(d=>{
-      const dn=crmDealNotesCache[d.id]||[];
-      const lines=(d.lines||[]).filter(l=>l.supplier||l.goods);
-      const linesHTML=lines.length?`<div style="margin:8px 0;border:1px solid var(--brd);border-radius:8px;overflow:hidden">
-          <table style="width:100%;font-size:11px;border-collapse:collapse">
-            <thead><tr style="background:var(--bg3)"><th style="text-align:left;padding:5px 8px">Товар</th><th style="text-align:left;padding:5px 8px">Постачальник</th><th style="text-align:right;padding:5px 8px">К-сть</th><th style="text-align:right;padding:5px 8px">Ціна</th><th style="text-align:right;padding:5px 8px">Сума</th></tr></thead>
-            <tbody>${lines.map(l=>`<tr style="border-top:1px solid var(--brd)">
-              <td style="padding:5px 8px">${esc(l.goods||'—')}</td>
-              <td style="padding:5px 8px">${esc(l.supplier||'—')}</td>
-              <td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${l.qty_sell||''}</td>
-              <td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${l.price_sell||''}</td>
-              <td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${l.sum_sell_no_vat?Number(l.sum_sell_no_vat).toLocaleString('uk-UA'):''}</td>
-            </tr>`).join('')}</tbody>
-          </table>
-        </div>`:'';
-      const payHTML=`<div style="font-size:11px;color:var(--txt3);margin-top:4px">Оплата: ${esc(d.pay_status||'—')}${d.client_paid?' · Клієнт сплатив: '+Number(d.client_paid).toLocaleString('uk-UA')+' грн':''}${d.pay_date?' · Дата оплати: '+esc(d.pay_date):''}</div>`;
-      return `<div class="crm-plan-card" style="margin-bottom:10px">
-        <div class="crm-pc-hdr">
-          <div style="flex:1"><div class="crm-pc-name">${esc(d.client||'—')} <span style="font-size:11px;color:var(--txt3);font-family:var(--mono)">#${esc(d.id)}</span></div>
-          <div class="crm-pc-co">${esc(d.date||'')} · ${crmStBadge(d.status)} · <strong>${d.sum_sell?Number(d.sum_sell).toLocaleString('uk-UA')+' грн':''}</strong></div>
-          ${payHTML}</div>
+    // Заповнюємо фільтр статусів реальними значеннями, що трапляються в угодах
+    const statuses=[...new Set(crmAllMyDeals.map(d=>d.status).filter(Boolean))];
+    const stSel=document.getElementById('crm-md-status');
+    if(stSel && stSel.options.length<=1) stSel.innerHTML='<option value="">Всі статуси</option>'+statuses.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+    crmRenderMyDeals();
+  }catch(e){
+    box.innerHTML='<div style="padding:20px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 06_manager_deals_link.sql в Supabase.</div>';
+  }
+}
+function crmRenderMyDeals(){
+  const box=document.getElementById('crm-mydeals-list'); if(!box) return;
+  const q=(document.getElementById('crm-md-srch')?.value||'').toLowerCase();
+  const from=document.getElementById('crm-md-from')?.value||'';
+  const to=document.getElementById('crm-md-to')?.value||'';
+  const st=document.getElementById('crm-md-status')?.value||'';
+  let list=crmAllMyDeals.filter(d=>{
+    if(q && !((d.client||'').toLowerCase().includes(q) || String(d.id).includes(q))) return false;
+    if(from && (!d.date || d.date<from)) return false;
+    if(to && (!d.date || d.date>to)) return false;
+    if(st && d.status!==st) return false;
+    return true;
+  });
+  list=[...list].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const cntEl=document.getElementById('crm-md-cnt'); if(cntEl) cntEl.textContent='Угод: '+list.length;
+  if(!list.length){ box.innerHTML='<div style="padding:20px;color:var(--txt3);font-size:13px;text-align:center">Нічого не знайдено за цими фільтрами</div>'; return; }
+  box.innerHTML=list.map(d=>{
+    const dn=crmDealNotesCache[d.id]||[];
+    const isOpen=crmMyDealsExpanded.has(String(d.id));
+    const lines=(d.lines||[]).filter(l=>l.supplier||l.goods);
+    const linesHTML=lines.length?`<div style="margin:8px 0;border:1px solid var(--brd);border-radius:8px;overflow:hidden">
+        <table style="width:100%;font-size:11px;border-collapse:collapse">
+          <thead><tr style="background:var(--bg3)"><th style="text-align:left;padding:5px 8px">Товар</th><th style="text-align:left;padding:5px 8px">Постачальник</th><th style="text-align:right;padding:5px 8px">К-сть</th><th style="text-align:right;padding:5px 8px">Ціна</th><th style="text-align:right;padding:5px 8px">Сума</th></tr></thead>
+          <tbody>${lines.map(l=>`<tr style="border-top:1px solid var(--brd)">
+            <td style="padding:5px 8px">${esc(l.goods||'—')}</td>
+            <td style="padding:5px 8px">${esc(l.supplier||'—')}</td>
+            <td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${l.qty_sell||''}</td>
+            <td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${l.price_sell||''}</td>
+            <td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${l.sum_sell_no_vat?Number(l.sum_sell_no_vat).toLocaleString('uk-UA'):''}</td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>`:'<div style="font-size:11px;color:var(--txt3);margin:8px 0">Немає позицій</div>';
+    const payHTML=`<div style="font-size:11px;color:var(--txt3);margin-top:4px">Оплата: ${esc(d.pay_status||'—')}${d.client_paid?' · Клієнт сплатив: '+Number(d.client_paid).toLocaleString('uk-UA')+' грн':''}${d.pay_date?' · Дата оплати: '+esc(d.pay_date):''}</div>`;
+    return `<div class="crm-plan-card" style="margin-bottom:8px;padding:0;overflow:hidden">
+      <div onclick="crmToggleMyDeal('${esc(d.id)}')" style="cursor:pointer;padding:12px 14px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:14px;color:var(--acc);transition:transform .15s;transform:rotate(${isOpen?'90':'0'}deg);display:inline-block;flex-shrink:0">▶</span>
+        <div style="flex:1;min-width:0">
+          <div class="crm-pc-name" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span>${esc(d.client||'—')}</span>
+            <span style="font-size:11px;color:var(--txt3);font-family:var(--mono);font-weight:400">#${esc(d.id)}</span>
+            ${dn.length?`<span style="font-size:10px;background:var(--acc2);color:#fff;border-radius:8px;padding:1px 7px">💬 ${dn.length}</span>`:''}
+          </div>
+          <div class="crm-pc-co">${esc(d.date||'')} · ${crmStBadge(d.status)}</div>
         </div>
+        <div style="text-align:right;flex-shrink:0"><strong style="font-size:14px">${d.sum_sell?Number(d.sum_sell).toLocaleString('uk-UA')+' грн':''}</strong></div>
+      </div>
+      <div style="display:${isOpen?'block':'none'};padding:0 14px 14px">
+        ${payHTML}
         ${linesHTML}
         ${d.notes?`<div style="font-size:11px;color:var(--txt2);background:var(--bg3);border-radius:7px;padding:6px 9px;margin:6px 0">📝 Нотатка з ЖСМ: ${esc(d.notes)}</div>`:''}
         <div style="font-size:11px;color:var(--txt3);margin:6px 0 3px">💬 Позначки (бачать і бухгалтери):</div>
         <div id="crm-dealnotes-${esc(d.id)}" style="margin:0 0 8px;display:flex;flex-direction:column;gap:5px">
           ${dn.map(n=>`<div style="background:var(--bg3);border-radius:8px;padding:6px 9px;font-size:12px"><div>${esc(n.note)}</div><div style="font-size:10px;color:var(--txt3);margin-top:2px">${crmMgrEmail(n.created_by)} · ${new Date(n.created_at).toLocaleString('uk-UA')}</div></div>`).join('')||'<div style="font-size:11px;color:var(--txt3)">Позначок немає</div>'}
         </div>
-        <div style="display:flex;gap:6px">
+        <div style="display:flex;gap:6px" onclick="event.stopPropagation()">
           <input id="crm-dn-inp-${esc(d.id)}" placeholder="Додати позначку..." style="flex:1;background:var(--bg3);border:1px solid var(--brd);border-radius:7px;padding:6px 9px;color:var(--txt);font-family:inherit;font-size:12px" onkeydown="if(event.key==='Enter')crmAddDealNote('${esc(d.id)}')">
           <button class="crm-btn-sub blue" style="padding:0 12px" onclick="crmAddDealNote('${esc(d.id)}')">➤</button>
         </div>
-      </div>`;
-    }).join('');
-  }catch(e){
-    box.innerHTML='<div style="padding:20px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 06_manager_deals_link.sql в Supabase.</div>';
-  }
+      </div>
+    </div>`;
+  }).join('');
+}
+function crmToggleMyDeal(id){
+  const key=String(id);
+  if(crmMyDealsExpanded.has(key)) crmMyDealsExpanded.delete(key); else crmMyDealsExpanded.add(key);
+  crmRenderMyDeals();
 }
 async function crmAddDealNote(dealId){
   const inp=document.getElementById('crm-dn-inp-'+dealId);
@@ -3388,7 +3472,9 @@ async function chatLoadMessages(){
     const me=sbSession?.user?.id;
     wrap.innerHTML=rows.map(m=>{
       const mine=m.sender_id===me;
+      const senderLabel=mine?'':(crmProfileEmailById[m.sender_id]||'Колега');
       return `<div style="align-self:${mine?'flex-end':'flex-start'};max-width:70%">
+        ${!mine&&!chatPeerId?`<div style="font-size:10px;color:var(--acc);margin-bottom:2px;font-weight:600">${esc(senderLabel)}</div>`:''}
         <div style="background:${mine?'var(--acc)':'var(--bg3)'};color:${mine?'#fff':'var(--txt)'};padding:7px 11px;border-radius:12px;font-size:12px;word-break:break-word">${esc(m.text)}</div>
         <div style="font-size:9px;color:var(--txt3);margin-top:2px;text-align:${mine?'right':'left'}">${new Date(m.created_at).toLocaleString('uk-UA',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'})}</div>
       </div>`;
