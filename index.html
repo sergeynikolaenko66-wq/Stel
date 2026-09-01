@@ -3518,6 +3518,7 @@ async function crmAddDealNote(dealId){
 }
 
 // ── МІД КОМАНДИ (для sales_head): дельти лише по угодах менеджерів своєї команди ──
+let crmTeamMidGroups=[];
 async function crmLoadTeamMid(){
   const box=document.getElementById('crm-teammid-list');
   box.innerHTML='<div style="padding:20px;color:var(--txt3);font-size:13px">Завантаження...</div>';
@@ -3528,6 +3529,7 @@ async function crmLoadTeamMid(){
     if(!teamDeals.length){
       box.innerHTML='<div style="padding:20px;color:var(--txt3);font-size:13px">Немає угод у вашій команді. Перевірте, чи призначені менеджери вашій команді (Адміністрування → Команди), і чи прив\'язані вони до імені в ЖСМ.</div>';
       document.getElementById('crm-teammid-tot').innerHTML='';
+      crmTeamMidGroups=[];
       return;
     }
     const mgrs={};
@@ -3540,34 +3542,64 @@ async function crmLoadTeamMid(){
       if(fullyClosed) mgrs[m].closed+=+d.delta_closed||0;
       mgrs[m].sell+=+d.sum_sell||0;
     });
-    const sorted=Object.values(mgrs).sort((a,b)=>b.plan-a.plan);
-    const totPlan=sorted.reduce((s,m)=>s+m.plan,0);
-    const totClosed=sorted.reduce((s,m)=>s+m.closed,0);
-    const totSell=sorted.reduce((s,m)=>s+m.sell,0);
+    crmTeamMidGroups=Object.values(mgrs).sort((a,b)=>b.plan-a.plan);
     document.getElementById('crm-teammid-tot').innerHTML=`
       <span>Угод: <strong>${teamDeals.length}</strong></span>
-      <span>Продаж: <strong>₴${Math.round(totSell).toLocaleString('uk-UA')}</strong></span>
-      <span style="color:${totPlan>=0?'var(--grn)':'var(--red)'}">Δ планована: <strong>₴${Math.round(totPlan).toLocaleString('uk-UA')}</strong></span>
-      <span style="color:var(--pur)">Δ закрита: <strong>₴${Math.round(totClosed).toLocaleString('uk-UA')}</strong></span>`;
-    box.innerHTML=sorted.map(m=>`
-      <div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-          <div class="crm-pc-name">${esc(m.name)}</div>
-          <div style="display:flex;gap:14px;font-size:12px;color:var(--txt2)">
-            <span>Угод: <strong>${m.items.length}</strong></span>
-            <span>Продаж: <strong>₴${Math.round(m.sell).toLocaleString('uk-UA')}</strong></span>
-            <span style="color:${m.plan>=0?'var(--grn)':'var(--red)'}">Δ авто: <strong>₴${Math.round(m.plan).toLocaleString('uk-UA')}</strong></span>
-            <span style="color:var(--pur)">Δ закрита: <strong>${m.closed?'₴'+Math.round(m.closed).toLocaleString('uk-UA'):'—'}</strong></span>
-          </div>
-        </div>
-      </div>`).join('');
+      <span>Продаж: <strong>₴${Math.round(crmTeamMidGroups.reduce((s,m)=>s+m.sell,0)).toLocaleString('uk-UA')}</strong></span>
+      <span style="color:${crmTeamMidGroups.reduce((s,m)=>s+m.plan,0)>=0?'var(--grn)':'var(--red)'}">Δ планована: <strong>₴${Math.round(crmTeamMidGroups.reduce((s,m)=>s+m.plan,0)).toLocaleString('uk-UA')}</strong></span>
+      <span style="color:var(--pur)">Δ закрита: <strong>₴${Math.round(crmTeamMidGroups.reduce((s,m)=>s+m.closed,0)).toLocaleString('uk-UA')}</strong></span>`;
+    crmRenderTeamMid();
   }catch(e){
     box.innerHTML='<div style="padding:20px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 14_sales_head_and_invoices.sql в Supabase.</div>';
   }
 }
+function crmRenderTeamMid(){
+  const box=document.getElementById('crm-teammid-list'); if(!box) return;
+  box.innerHTML=crmTeamMidGroups.map(m=>{
+    const mkey='tm_'+m.name.replace(/[^a-zA-Zа-яА-ЯіІїЇєЄ0-9]/g,'_');
+    const isOpen=crmMyDealsExpanded.has(mkey);
+    const dealsHTML=isOpen?`<div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">${[...m.items].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(d=>`
+      <div style="background:var(--bg3);border-radius:9px;padding:8px 11px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <div><span style="font-size:12px">${esc(d.client||'—')}</span> <span style="font-size:10px;color:var(--txt3);font-family:var(--mono)">#${esc(d.id)}</span></div>
+        <div style="display:flex;gap:10px;font-size:11px;color:var(--txt2)">
+          <span>${esc(d.date||'')}</span>${crmStBadge(d.status)}
+          <strong>₴${d.sum_sell?Number(d.sum_sell).toLocaleString('uk-UA'):'0'}</strong>
+        </div>
+      </div>`).join('')}</div>`:'';
+    return `<div class="crm-plan-card" style="margin-bottom:8px;padding:14px;cursor:pointer" onclick="crmToggleTeamMidGroup('${mkey}')">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div class="crm-pc-name" style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:12px;color:var(--acc);transition:transform .15s;transform:rotate(${isOpen?'90':'0'}deg);display:inline-block">▶</span>
+          ${esc(m.name)}
+        </div>
+        <div style="display:flex;gap:14px;font-size:12px;color:var(--txt2)">
+          <span>Угод: <strong>${m.items.length}</strong></span>
+          <span>Продаж: <strong>₴${Math.round(m.sell).toLocaleString('uk-UA')}</strong></span>
+          <span style="color:${m.plan>=0?'var(--grn)':'var(--red)'}">Δ авто: <strong>₴${Math.round(m.plan).toLocaleString('uk-UA')}</strong></span>
+          <span style="color:var(--pur)">Δ закрита: <strong>${m.closed?'₴'+Math.round(m.closed).toLocaleString('uk-UA'):'—'}</strong></span>
+        </div>
+      </div>
+      ${dealsHTML}
+    </div>`;
+  }).join('');
+}
+function crmToggleTeamMidGroup(key){
+  if(crmMyDealsExpanded.has(key)) crmMyDealsExpanded.delete(key); else crmMyDealsExpanded.add(key);
+  crmRenderTeamMid();
+}
+
 
 // ── РАХУНКИ НА ОПЛАТУ ──
 let invCache=[];
+async function invOpenFile(path){
+  try{
+    const r=await sbFetch(SB_URL+'/storage/v1/object/sign/invoices/'+path,{method:'POST',body:JSON.stringify({expiresIn:300})});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data=await r.json();
+    if(!data.signedURL) throw new Error('Не вдалось отримати посилання');
+    window.open(SB_URL+'/storage/v1'+data.signedURL,'_blank');
+  }catch(e){ toast('Не вдалось відкрити файл: '+e.message,'e'); }
+}
 async function invUpload(){
   const fileInp=document.getElementById('inv-file');
   const file=fileInp.files[0];
@@ -3617,7 +3649,6 @@ async function invRender(){
   const canMarkPaid = (myRole==='accountant' || myRole==='chief_accountant' || myRole==='director');
   box.innerHTML=list.map(inv=>{
     const isImg=(inv.file_type||'').startsWith('image/');
-    const fileUrl=SB_URL+'/storage/v1/object/authenticated/invoices/'+inv.file_path;
     return `<div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
       <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
         <div style="flex:1;min-width:200px">
@@ -3630,7 +3661,7 @@ async function invRender(){
           ${inv.amount?`<div style="font-size:13px;font-weight:700;margin-top:4px">₴${Number(inv.amount).toLocaleString('uk-UA')}</div>`:''}
           ${inv.reject_reason?`<div style="font-size:11px;color:var(--red);margin-top:4px">Причина відхилення: ${esc(inv.reject_reason)}</div>`:''}
         </div>
-        <a href="${fileUrl}" target="_blank" style="flex-shrink:0;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);text-decoration:none;border:1px solid var(--brd2);border-radius:8px;padding:7px 11px">${isImg?'🖼':'📄'} Відкрити файл</a>
+        <button onclick="invOpenFile('${esc(inv.file_path)}')" style="flex-shrink:0;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);background:none;border:1px solid var(--brd2);border-radius:8px;padding:7px 11px;cursor:pointer;font-family:inherit">${isImg?'🖼':'📄'} Відкрити файл</button>
       </div>
       ${inv.status==='pending' && canReview?`<div style="display:flex;gap:6px;margin-top:10px">
         <button class="crm-btn-sub" style="padding:0 12px" onclick="invReview(${inv.id},'approved')">✔ Підтвердити</button>
