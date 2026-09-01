@@ -988,8 +988,14 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
 
         <div style="margin-bottom:24px">
           <div style="font-size:13px;font-weight:700;margin-bottom:10px">🎭 Ролі колег</div>
-          <div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Директор / Гол.бух / Бухгалтер — доступ до ЖСМ+CRM. Менеджер — лише CRM.</div>
+          <div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Директор / Гол.бух / Бухгалтер — доступ до ЖСМ+CRM. Менеджер — лише CRM. Керівник відділу продажів — лише CRM (свій + своя команда) + МІД команди.</div>
           <div id="adm-roles-list" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px">👥 Команди відділу продажів</div>
+          <div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Оберіть, якому Керівнику підпорядкований кожен менеджер — керівник побачить лідів/клієнтів і МІД своєї команди.</div>
+          <div id="adm-teams-list" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden"></div>
         </div>
 
         <div style="margin-bottom:24px">
@@ -1117,6 +1123,8 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         <button class="crm-tab" id="crm-tabbtn-stats" onclick="crmShowTab('stats')">📊 Статистика</button>
         <button class="crm-tab" id="crm-tabbtn-plan" onclick="crmShowTab('plan')">📋 План</button>
         <button class="crm-tab" id="crm-tabbtn-mydeals" onclick="crmShowTab('mydeals')" style="display:none">🧾 Мої угоди</button>
+        <button class="crm-tab" id="crm-tabbtn-teammid" onclick="crmShowTab('teammid')" style="display:none">📈 МІД команди</button>
+        <button class="crm-tab" id="crm-tabbtn-invoices" onclick="crmShowTab('invoices')">💳 Рахунки на оплату</button>
       </div>
 
       <!-- DASHBOARD -->
@@ -1266,6 +1274,37 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         <div id="crm-mydeals-list"></div>
       </div>
 
+      <!-- МІД КОМАНДИ (для Керівника відділу продажів) -->
+      <div id="crm-tab-teammid" class="crm-panel">
+        <div class="crm-arch-banner">📈 Дельти по угодах менеджерів вашої команди в ЖСМ.</div>
+        <div id="crm-teammid-tot" style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;font-size:12px;color:var(--txt2)"></div>
+        <div id="crm-teammid-list"></div>
+      </div>
+
+      <!-- РАХУНКИ НА ОПЛАТУ -->
+      <div id="crm-tab-invoices" class="crm-panel">
+        <div class="crm-arch-banner" id="inv-banner">💳 Завантажте фото / PDF / Excel рахунку — він піде на підтвердження керівнику, потім бухгалтеру на оплату.</div>
+        <div class="crm-form-box">
+          <div class="crm-row3">
+            <div class="crm-fg"><label>Файл (фото / PDF / Excel)</label><input type="file" id="inv-file" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.csv"></div>
+            <div class="crm-fg"><label>Сума (необов'язково)</label><input type="number" id="inv-amount" placeholder="0.00" step="0.01"></div>
+            <div class="crm-fg"><label>Опис</label><input type="text" id="inv-desc" placeholder="За що рахунок..."></div>
+          </div>
+          <button class="crm-btn-sub" style="margin-top:8px" onclick="invUpload()">⬆ Завантажити на підтвердження</button>
+        </div>
+        <div class="crm-toolbar">
+          <select id="inv-filter" onchange="invRender()" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:8px;background:var(--bg3);color:var(--txt);font-family:inherit">
+            <option value="">Всі статуси</option>
+            <option value="pending">На підтвердженні</option>
+            <option value="approved">Підтверджено (очікує оплати)</option>
+            <option value="rejected">Відхилено</option>
+            <option value="paid">Оплачено</option>
+          </select>
+          <span class="crm-cnt" id="inv-cnt"></span>
+        </div>
+        <div id="inv-list"></div>
+      </div>
+
     <!-- CRM MODALS (nested INSIDE #pg-crm so scoped CSS hides them by default) -->
     <div class="crm-modal-overlay" id="crm-modal-history" onclick="if(event.target===this)crmCloseModal('crm-modal-history')">
       <div class="crm-modal">
@@ -1310,6 +1349,13 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
   <div style="background:var(--bg2);border:1px solid var(--brd2);border-radius:14px;width:100%;max-width:760px;height:min(600px,85vh);display:flex;overflow:hidden">
     <div style="width:220px;border-right:1px solid var(--brd);overflow-y:auto;flex-shrink:0;background:var(--bg3)">
       <div style="padding:12px 14px;font-weight:700;font-size:12px;color:var(--txt2);border-bottom:1px solid var(--brd)">💬 Чат</div>
+      <div style="padding:8px 14px;border-bottom:1px solid var(--brd)">
+        <div style="font-size:10px;color:var(--txt3);margin-bottom:4px">Ваш нік у чаті:</div>
+        <div style="display:flex;gap:4px">
+          <input id="chat-my-nick" placeholder="Ваш нік" style="flex:1;min-width:0;height:26px;padding:0 7px;font-size:11px;border:1px solid var(--brd2);border-radius:6px;background:var(--bg2);color:var(--txt)" onkeydown="if(event.key==='Enter')chatSaveNickname()">
+          <button onclick="chatSaveNickname()" style="height:26px;padding:0 8px;border-radius:6px;border:1px solid var(--brd2);background:var(--acc);color:#fff;font-size:11px;cursor:pointer">✔</button>
+        </div>
+      </div>
       <div class="nav-i on" data-chat="group" onclick="chatOpen(null,this)" style="border-left-color:var(--acc)"><span>👥</span>Загальний чат</div>
       <div style="padding:10px 14px 4px;font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em">Особисті повідомлення</div>
       <div id="chat-users-list"></div>
@@ -1822,8 +1868,8 @@ async function afterLogin(){
   if(pnlNav) pnlNav.style.display = (isAdmin || myRole==='chief_accountant') ? '' : 'none';
   applyRoleVisibility();
 
-  // Менеджер ніколи не бачить ЖСМ — одразу і назавжди в CRM-оболонці.
-  if(myRole==='manager'){
+  // Менеджер і Керівник відділу продажів ніколи не бачать ЖСМ — одразу і назавжди в CRM-оболонці.
+  if(myRole==='manager' || myRole==='sales_head'){
     document.querySelector('.app').style.display='none';
   }
 
@@ -1843,11 +1889,13 @@ async function fetchIsAdmin(){
   const rows=await r.json();
   return !!(rows[0] && rows[0].is_admin);
 }
+let myNickname=null;
 async function fetchMyRole(){
   if(!sbSession||!sbSession.user) return 'manager';
-  const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+sbSession.user.id+'&select=role');
+  const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+sbSession.user.id+'&select=role,nickname');
   if(!r.ok) return 'manager';
   const rows=await r.json();
+  myNickname=(rows[0] && rows[0].nickname) || null;
   return (rows[0] && rows[0].role) || 'manager';
 }
 
@@ -1890,6 +1938,7 @@ async function renderAdminPage(){
   try{ await admRenderCompanies(); }catch(e){ console.error('admRenderCompanies:',e); }
   try{ await admRenderAccessList(); }catch(e){ console.error('admRenderAccessList:',e); }
   try{ await admRenderRoles(); }catch(e){ console.error('admRenderRoles:',e); }
+  try{ await admRenderTeams(); }catch(e){ console.error('admRenderTeams:',e); }
   try{ await admRenderMgrLinks(); }catch(e){ console.error('admRenderMgrLinks:',e); }
   try{ renderPayroll(); }catch(e){ console.error('renderPayroll:',e); }
 }
@@ -1930,6 +1979,40 @@ async function admSetMgrLink(userId,managerName){
     toast('Помилка. Перевірте, чи виконано 06_manager_deals_link.sql в Supabase','e');
   }
 }
+async function admRenderTeams(){
+  const list=document.getElementById('adm-teams-list'); if(!list) return;
+  list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Завантаження...</div>';
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?select=id,email,role,team_lead_id&order=email.asc');
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const rows=await r.json();
+    const heads=rows.filter(p=>p.role==='sales_head');
+    const managers=rows.filter(p=>p.role==='manager');
+    if(!heads.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Спочатку призначте комусь роль "Керівник відділу продажів" вище.</div>'; return; }
+    if(!managers.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Немає користувачів з роллю "Менеджер"</div>'; return; }
+    list.innerHTML=managers.map(m=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--brd);font-size:12px">
+        <span>${esc(m.email)}</span>
+        <select onchange="admSetTeamLead('${m.id}',this.value)" style="background:var(--bg3);border:1px solid var(--brd);border-radius:6px;padding:5px 8px;color:var(--txt);font-family:inherit;font-size:12px;min-width:200px">
+          <option value="">— без керівника —</option>
+          ${heads.map(h=>`<option value="${h.id}" ${m.team_lead_id===h.id?'selected':''}>${esc(h.email)}</option>`).join('')}
+        </select>
+      </div>`).join('');
+  }catch(e){
+    list.innerHTML='<div style="padding:10px;color:var(--red);font-size:12px">Помилка завантаження</div>';
+  }
+}
+async function admSetTeamLead(userId,leadId){
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+userId,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({team_lead_id:leadId||null})});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const rows=await r.json();
+    if(!rows.length) throw new Error('0 рядків оновлено (перевірте права доступу)');
+    toast('Команду оновлено','s');
+  }catch(e){
+    toast('Помилка: '+e.message,'e');
+  }
+}
 
 async function admRenderRoles(){
   const list=document.getElementById('adm-roles-list'); if(!list) return;
@@ -1943,7 +2026,7 @@ async function admRenderRoles(){
     }
     const rows=await r.json();
     if(!rows.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Нікого не знайдено</div>'; return; }
-    const roleOpts=['director','chief_accountant','accountant','manager'];
+    const roleOpts=['director','chief_accountant','accountant','manager','sales_head'];
     list.innerHTML=rows.map(p=>`
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--brd);font-size:12px">
         <span>${esc(p.email)}${p.id===sbSession?.user?.id?' <span style="color:var(--txt3)">(ви)</span>':''}</span>
@@ -2152,9 +2235,9 @@ async function enterApp(companyId){
   if(lbl) lbl.textContent=currentUserEmail||'';
   await chatInitUsersList();
 
-  if(myRole==='manager'){
-    // Менеджер ніколи не бачить ЖСМ — одразу й назавжди в окремій CRM-оболонці,
-    // важкі дані ЖСМ (угоди/банк) для нього взагалі не завантажуються.
+  if(myRole==='manager' || myRole==='sales_head'){
+    // Менеджер і Керівник відділу продажів ніколи не бачать ЖСМ — одразу й назавжди
+    // в окремій CRM-оболонці, важкі дані ЖСМ (угоди/банк) для них не завантажуються.
     document.querySelector('.app').style.display='none';
     const shell=document.getElementById('crm-shell'); shell.style.display='flex';
     document.getElementById('crm-switch-zhsm-btn').style.display='none';
@@ -2586,7 +2669,7 @@ const TITLES={dashboard:'Дашборд',deals:'Журнал угод',bank:'Б�
   approvals:'Підтвердження'};
 // ── РОЛІ: Менеджер працює лише в CRM (окрема повноекранна оболонка),
 //    Директор/Гол.бух/Бухгалтер працюють в ЖСМ і можуть перемкнутись у CRM ──
-const ROLE_LABELS={director:'Директор',chief_accountant:'Гол. бухгалтер',accountant:'Бухгалтер',manager:'Менеджер'};
+const ROLE_LABELS={director:'Директор',chief_accountant:'Гол. бухгалтер',accountant:'Бухгалтер',manager:'Менеджер',sales_head:'Керівник відділу продажів'};
 let myRole='manager';
 function applyRoleVisibility(){
   const adminNav=document.getElementById('nav-admin');
@@ -2602,7 +2685,7 @@ function applyRoleVisibility(){
 function switchToCrm(){
   document.querySelector('.app').style.display='none';
   document.getElementById('crm-shell').style.display='flex';
-  document.getElementById('crm-switch-zhsm-btn').style.display = (myRole==='manager') ? 'none' : '';
+  document.getElementById('crm-switch-zhsm-btn').style.display = (myRole==='manager'||myRole==='sales_head') ? 'none' : '';
   updateCrmShellHeader();
   crmEnsureLoaded();
 }
@@ -2616,7 +2699,17 @@ function updateCrmShellHeader(){
 }
 function openChatOverlay(){
   document.getElementById('chat-overlay').style.display='flex';
+  const nickInp=document.getElementById('chat-my-nick');
+  if(nickInp) nickInp.value=myNickname||'';
   if(!chatCompanyProfiles.length) chatInitUsersList(); else chatOpen(null,document.querySelector('.nav-i[data-chat="group"]'));
+}
+async function chatSaveNickname(){
+  const val=(document.getElementById('chat-my-nick').value||'').trim();
+  try{
+    await sbFetch(SB_URL+'/rest/v1/rpc/set_my_nickname',{method:'POST',body:JSON.stringify({new_nickname:val})});
+    myNickname=val||null;
+    toast('Нік збережено','s');
+  }catch(e){ toast('Не вдалось зберегти нік','e'); }
 }
 function closeChatOverlay(){
   document.getElementById('chat-overlay').style.display='none';
@@ -2687,6 +2780,7 @@ async function crmLoadAll(){
   crmLoaded=true;
   crmApplyManagerColumnVisibility();
   const mdBtn=document.getElementById('crm-tabbtn-mydeals'); if(mdBtn) mdBtn.style.display = (myRole==='manager') ? '' : 'none';
+  const tmBtn=document.getElementById('crm-tabbtn-teammid'); if(tmBtn) tmBtn.style.display = (myRole==='sales_head') ? '' : 'none';
   crmUpdateStats();
   crmRenderLeads(); crmRenderClients(); crmRenderArchive();
   crmCheckReminders();
@@ -2759,6 +2853,8 @@ function crmShowTab(t, skipLoad){
   if(t==='plan'){crmRenderPlan();crmRenderAtpList();}
   if(t==='dash')crmRenderDash();
   if(t==='mydeals')crmLoadMyDeals();
+  if(t==='teammid')crmLoadTeamMid();
+  if(t==='invoices')invRender();
 }
 
 // ── ФОРМА ЛІДА ──
@@ -3421,6 +3517,158 @@ async function crmAddDealNote(dealId){
   }catch(e){ toast('Не вдалось зберегти позначку','e'); }
 }
 
+// ── МІД КОМАНДИ (для sales_head): дельти лише по угодах менеджерів своєї команди ──
+async function crmLoadTeamMid(){
+  const box=document.getElementById('crm-teammid-list');
+  box.innerHTML='<div style="padding:20px;color:var(--txt3);font-size:13px">Завантаження...</div>';
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/rpc/get_team_mid_deals',{method:'POST',body:JSON.stringify({cid:currentCompanyId})});
+    if(!r.ok) throw new Error();
+    const teamDeals=await r.json();
+    if(!teamDeals.length){
+      box.innerHTML='<div style="padding:20px;color:var(--txt3);font-size:13px">Немає угод у вашій команді. Перевірте, чи призначені менеджери вашій команді (Адміністрування → Команди), і чи прив\'язані вони до імені в ЖСМ.</div>';
+      document.getElementById('crm-teammid-tot').innerHTML='';
+      return;
+    }
+    const mgrs={};
+    teamDeals.forEach(d=>{
+      const m=d.manager||'—';
+      if(!mgrs[m]) mgrs[m]={name:m,items:[],plan:0,closed:0,sell:0};
+      mgrs[m].items.push(d);
+      mgrs[m].plan+=+d.delta_auto||0;
+      const fullyClosed=d.status==='-' && (d.client_paid>=d.sum_sell) && (d.bank_paid>=d.sum_buy_no_vat_calc||0);
+      if(fullyClosed) mgrs[m].closed+=+d.delta_closed||0;
+      mgrs[m].sell+=+d.sum_sell||0;
+    });
+    const sorted=Object.values(mgrs).sort((a,b)=>b.plan-a.plan);
+    const totPlan=sorted.reduce((s,m)=>s+m.plan,0);
+    const totClosed=sorted.reduce((s,m)=>s+m.closed,0);
+    const totSell=sorted.reduce((s,m)=>s+m.sell,0);
+    document.getElementById('crm-teammid-tot').innerHTML=`
+      <span>Угод: <strong>${teamDeals.length}</strong></span>
+      <span>Продаж: <strong>₴${Math.round(totSell).toLocaleString('uk-UA')}</strong></span>
+      <span style="color:${totPlan>=0?'var(--grn)':'var(--red)'}">Δ планована: <strong>₴${Math.round(totPlan).toLocaleString('uk-UA')}</strong></span>
+      <span style="color:var(--pur)">Δ закрита: <strong>₴${Math.round(totClosed).toLocaleString('uk-UA')}</strong></span>`;
+    box.innerHTML=sorted.map(m=>`
+      <div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+          <div class="crm-pc-name">${esc(m.name)}</div>
+          <div style="display:flex;gap:14px;font-size:12px;color:var(--txt2)">
+            <span>Угод: <strong>${m.items.length}</strong></span>
+            <span>Продаж: <strong>₴${Math.round(m.sell).toLocaleString('uk-UA')}</strong></span>
+            <span style="color:${m.plan>=0?'var(--grn)':'var(--red)'}">Δ авто: <strong>₴${Math.round(m.plan).toLocaleString('uk-UA')}</strong></span>
+            <span style="color:var(--pur)">Δ закрита: <strong>${m.closed?'₴'+Math.round(m.closed).toLocaleString('uk-UA'):'—'}</strong></span>
+          </div>
+        </div>
+      </div>`).join('');
+  }catch(e){
+    box.innerHTML='<div style="padding:20px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 14_sales_head_and_invoices.sql в Supabase.</div>';
+  }
+}
+
+// ── РАХУНКИ НА ОПЛАТУ ──
+let invCache=[];
+async function invUpload(){
+  const fileInp=document.getElementById('inv-file');
+  const file=fileInp.files[0];
+  if(!file){ toast('Оберіть файл','e'); return; }
+  if(file.size>15*1024*1024){ toast('Файл занадто великий (макс 15МБ)','e'); return; }
+  try{
+    const ext=file.name.split('.').pop();
+    const path=currentCompanyId+'/'+sbSession.user.id+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,8)+'.'+ext;
+    const upR=await fetch(SB_URL+'/storage/v1/object/invoices/'+path,{
+      method:'POST',
+      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+sbSession.access_token,'Content-Type':file.type||'application/octet-stream'},
+      body:file
+    });
+    if(!upR.ok) throw new Error('Помилка завантаження файлу: HTTP '+upR.status);
+    const amount=document.getElementById('inv-amount').value;
+    const desc=document.getElementById('inv-desc').value.trim();
+    const r=await sbFetch(SB_URL+'/rest/v1/invoices',{method:'POST',headers:{'Prefer':'return=representation'},body:JSON.stringify({
+      company_id:currentCompanyId, file_path:path, file_name:file.name, file_type:file.type,
+      description:desc||null, amount:amount||null, uploaded_by:sbSession.user.id
+    })});
+    if(!r.ok) throw new Error('Помилка створення заявки');
+    const rows=await r.json();
+    if(!rows.length) throw new Error('0 рядків створено (перевірте права доступу)');
+    toast('Рахунок відправлено на підтвердження','s');
+    fileInp.value=''; document.getElementById('inv-amount').value=''; document.getElementById('inv-desc').value='';
+    invRender();
+  }catch(e){ toast(e.message||'Помилка завантаження','e'); }
+}
+async function invRender(){
+  const box=document.getElementById('inv-list'); if(!box) return;
+  box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px">Завантаження...</div>';
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/invoices?company_id=eq.'+currentCompanyId+'&select=*&order=created_at.desc');
+    if(!r.ok) throw new Error();
+    invCache=await r.json();
+  }catch(e){
+    box.innerHTML='<div style="padding:16px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 14_sales_head_and_invoices.sql в Supabase.</div>';
+    return;
+  }
+  const filter=document.getElementById('inv-filter')?.value||'';
+  let list=filter?invCache.filter(x=>x.status===filter):invCache;
+  const cntEl=document.getElementById('inv-cnt'); if(cntEl) cntEl.textContent='Рахунків: '+list.length;
+  if(!list.length){ box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px;text-align:center">Немає рахунків</div>'; return; }
+  const stLabel={pending:'⏳ На підтвердженні',approved:'✅ Підтверджено (очікує оплати)',rejected:'❌ Відхилено',paid:'💰 Оплачено'};
+  const stColor={pending:'var(--amb)',approved:'var(--acc)',rejected:'var(--red)',paid:'var(--grn)'};
+  const canReview = (myRole==='sales_head' || myRole==='director');
+  const canMarkPaid = (myRole==='accountant' || myRole==='chief_accountant' || myRole==='director');
+  box.innerHTML=list.map(inv=>{
+    const isImg=(inv.file_type||'').startsWith('image/');
+    const fileUrl=SB_URL+'/storage/v1/object/authenticated/invoices/'+inv.file_path;
+    return `<div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
+      <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span class="crm-pc-name" style="font-size:13px">${esc(inv.file_name||'Файл')}</span>
+            <span style="font-size:10.5px;font-weight:600;color:${stColor[inv.status]}">${stLabel[inv.status]}</span>
+          </div>
+          <div style="font-size:11px;color:var(--txt3);margin-top:3px">${crmMgrEmail(inv.uploaded_by)} · ${new Date(inv.created_at).toLocaleString('uk-UA')}</div>
+          ${inv.description?`<div style="font-size:12px;color:var(--txt2);margin-top:4px">${esc(inv.description)}</div>`:''}
+          ${inv.amount?`<div style="font-size:13px;font-weight:700;margin-top:4px">₴${Number(inv.amount).toLocaleString('uk-UA')}</div>`:''}
+          ${inv.reject_reason?`<div style="font-size:11px;color:var(--red);margin-top:4px">Причина відхилення: ${esc(inv.reject_reason)}</div>`:''}
+        </div>
+        <a href="${fileUrl}" target="_blank" style="flex-shrink:0;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);text-decoration:none;border:1px solid var(--brd2);border-radius:8px;padding:7px 11px">${isImg?'🖼':'📄'} Відкрити файл</a>
+      </div>
+      ${inv.status==='pending' && canReview?`<div style="display:flex;gap:6px;margin-top:10px">
+        <button class="crm-btn-sub" style="padding:0 12px" onclick="invReview(${inv.id},'approved')">✔ Підтвердити</button>
+        <button class="crm-btn-can" onclick="invReview(${inv.id},'rejected')">✕ Відхилити</button>
+      </div>`:''}
+      ${inv.status==='approved' && canMarkPaid?`<div style="margin-top:10px">
+        <button class="crm-btn-sub blue" style="padding:0 12px" onclick="invMarkPaid(${inv.id})">💰 Позначити оплаченим</button>
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+async function invReview(id,status){
+  let reject_reason=null;
+  if(status==='rejected'){ reject_reason=prompt('Причина відхилення (необов\'язково):')||''; }
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/invoices?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({
+      status, reviewed_by:sbSession.user.id, reviewed_at:new Date().toISOString(), reject_reason:reject_reason||null
+    })});
+    if(!r.ok) throw new Error();
+    const rows=await r.json();
+    if(!rows.length) throw new Error('0 рядків оновлено');
+    toast(status==='approved'?'Підтверджено':'Відхилено','s');
+    invRender();
+  }catch(e){ toast('Помилка: '+e.message,'e'); }
+}
+async function invMarkPaid(id){
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/invoices?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({
+      status:'paid', paid_by:sbSession.user.id, paid_at:new Date().toISOString()
+    })});
+    if(!r.ok) throw new Error();
+    const rows=await r.json();
+    if(!rows.length) throw new Error('0 рядків оновлено');
+    toast('Позначено оплаченим','s');
+    invRender();
+  }catch(e){ toast('Помилка: '+e.message,'e'); }
+}
+
 function crmCloseModal(id){ document.getElementById(id).classList.remove('show'); }
 
 
@@ -3430,21 +3678,15 @@ function crmCloseModal(id){ document.getElementById(id).classList.remove('show')
 let chatPeerId=null; let chatCompanyProfiles=[]; let chatPollTimer=null;
 async function chatInitUsersList(){
   try{
-    // Двокроково (без покладання на FK-embed, якому може бракувати іменованого constraint):
-    // 1) хто має доступ до цієї компанії, 2) їхні профілі (email/роль)
-    const r1=await sbFetch(SB_URL+'/rest/v1/company_access?company_id=eq.'+currentCompanyId+'&select=user_id');
-    const accessRows=r1.ok?await r1.json():[];
-    const ids=[...new Set(accessRows.map(x=>x.user_id))].filter(id=>id!==sbSession?.user?.id);
-    if(ids.length){
-      const r2=await sbFetch(SB_URL+'/rest/v1/profiles?id=in.('+ids.join(',')+')&select=id,email,role');
-      chatCompanyProfiles=r2.ok?await r2.json():[];
-      chatCompanyProfiles.forEach(p=>{ crmProfileEmailById[p.id]=p.email; });
-    }else chatCompanyProfiles=[];
+    const r=await sbFetch(SB_URL+'/rest/v1/rpc/get_company_teammates',{method:'POST',body:JSON.stringify({cid:currentCompanyId})});
+    const rows=r.ok?await r.json():[];
+    chatCompanyProfiles=rows.filter(p=>p.id!==sbSession?.user?.id);
+    chatCompanyProfiles.forEach(p=>{ crmProfileEmailById[p.id]=p.nickname||p.email; });
   }catch(e){ chatCompanyProfiles=[]; }
   const list=document.getElementById('chat-users-list');
-  if(list) list.innerHTML=chatCompanyProfiles.map(p=>`
-    <div class="nav-i" data-chat="${p.id}" onclick="chatOpen('${p.id}',this)"><span>👤</span>${esc(p.email)} <span style="opacity:.5;font-size:9px;margin-left:auto">${ROLE_LABELS[p.role]||''}</span></div>
-  `).join('');
+  if(list) list.innerHTML=chatCompanyProfiles.length?chatCompanyProfiles.map(p=>`
+    <div class="nav-i" data-chat="${p.id}" onclick="chatOpen('${p.id}',this)"><span>👤</span>${esc(p.nickname||p.email)} <span style="opacity:.5;font-size:9px;margin-left:auto">${ROLE_LABELS[p.role]||''}</span></div>
+  `).join(''):'<div style="padding:10px 14px;font-size:11px;color:var(--txt3)">Немає колег з доступом до цієї компанії</div>';
   chatOpen(null,document.querySelector('.nav-i[data-chat="group"]'));
 }
 function chatOpen(peerId,el){
@@ -3472,7 +3714,7 @@ async function chatLoadMessages(){
     const me=sbSession?.user?.id;
     wrap.innerHTML=rows.map(m=>{
       const mine=m.sender_id===me;
-      const senderLabel=mine?'':(crmProfileEmailById[m.sender_id]||'Колега');
+      const senderLabel=mine?'':(crmProfileEmailById[m.sender_id]||'Учасник чату');
       return `<div style="align-self:${mine?'flex-end':'flex-start'};max-width:70%">
         ${!mine&&!chatPeerId?`<div style="font-size:10px;color:var(--acc);margin-bottom:2px;font-weight:600">${esc(senderLabel)}</div>`:''}
         <div style="background:${mine?'var(--acc)':'var(--bg3)'};color:${mine?'#fff':'var(--txt)'};padding:7px 11px;border-radius:12px;font-size:12px;word-break:break-word">${esc(m.text)}</div>
