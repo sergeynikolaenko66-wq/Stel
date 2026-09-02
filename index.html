@@ -240,8 +240,8 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
   .toast{left:12px;right:12px;max-width:none;bottom:12px}
 }
 
-/* ══════════ CRM MODULE STYLES (scoped to #pg-crm) ══════════ */
-#pg-crm{
+/* ══════════ CRM MODULE STYLES (scoped to .crm-vars) ══════════ */
+.crm-vars{
   --bg:var(--bg2);--bg2:var(--bg3);--bg3:var(--bg4);
   --border:var(--brd);--border2:var(--brd2);
   --text:var(--txt);--text2:var(--txt2);--text3:var(--txt3);
@@ -253,307 +253,307 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
   --radius:var(--r);--mono:'JetBrains Mono',monospace;
   display:flex;flex-direction:column;overflow:hidden;flex:1;min-height:0;background:var(--bg);
 }
-#pg-crm .crm-gsearch-bar{padding:.5rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);}
-#pg-crm .crm-gsearch-wrap{position:relative;max-width:500px;}
-#pg-crm .crm-gsearch-wrap .crm-gsi{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text3);pointer-events:none;}
-#pg-crm .crm-gsearch-inp{width:100%;height:32px;padding:0 10px 0 32px;font-size:13px;border:1px solid var(--border);border-radius:8px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;}
-#pg-crm .crm-gsearch-inp:focus{border-color:var(--green);}
-#pg-crm .crm-gsearch-inp::placeholder{color:var(--text3);}
-#pg-crm .crm-gsearch-results{position:absolute;top:38px;left:0;right:0;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);z-index:200;max-height:320px;overflow-y:auto;display:none;box-shadow:0 8px 32px rgba(0,0,0,.4);}
-#pg-crm .crm-gsr-item{padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:10px;}
-#pg-crm .crm-gsr-item:last-child{border-bottom:none;}
-#pg-crm .crm-gsr-item:hover{background:var(--bg3);}
-#pg-crm .crm-gsr-badge{font-size:10px;padding:2px 6px;border-radius:10px;flex-shrink:0;}
-#pg-crm .crm-gsr-badge.lead{background:var(--blue2);color:var(--blue);}
-#pg-crm .crm-gsr-badge.client{background:var(--green2);color:var(--green);}
-#pg-crm .crm-gsr-badge.arch{background:var(--purple2);color:var(--purple);}
-#pg-crm .crm-gsr-name{font-size:13px;font-weight:500;}
-#pg-crm .crm-gsr-sub{font-size:11px;color:var(--text3);}
-#pg-crm .crm-remind-banner{background:var(--amber2);border-bottom:1px solid rgba(255,184,48,.2);padding:.4rem 1rem;display:none;align-items:center;gap:8px;flex-wrap:wrap;}
-#pg-crm .crm-remind-banner.show{display:flex;}
-#pg-crm .crm-rb-title{font-size:11px;font-weight:500;color:var(--amber);}
-#pg-crm .crm-rb-item{font-size:11px;color:var(--text);background:rgba(255,184,48,.15);border-radius:4px;padding:2px 7px;}
-#pg-crm .crm-rb-close{margin-left:auto;font-size:12px;color:var(--text3);cursor:pointer;}
-#pg-crm .crm-sc-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-#pg-crm .crm-sc-ico.g{background:var(--green2);}
-#pg-crm .crm-sc-ico.b{background:var(--blue2);}
-#pg-crm .crm-sc-ico.a{background:var(--amber2);}
-#pg-crm .crm-sc-ico.p{background:var(--purple2);}
-#pg-crm .crm-sc-val{font-size:17px;font-weight:600;font-family:var(--mono);}
-#pg-crm .crm-sc-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;}
-#pg-crm .crm-tabs{display:flex;padding:0 1rem;border-bottom:1px solid var(--border);background:var(--bg2);overflow-x:auto;}
-#pg-crm .crm-tab:hover{color:var(--text);}
-#pg-crm .crm-tab.active{color:var(--green);border-bottom-color:var(--green);font-weight:500;}
-#pg-crm .crm-panel{display:none;padding:1rem;overflow-y:auto;flex:1;min-height:0;}
-#pg-crm .crm-panel.active{display:block;}
-#pg-crm .crm-form-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem .9rem;margin-bottom:.85rem;}
-#pg-crm .crm-form-box.editing{border-color:rgba(255,184,48,.35);}
-#pg-crm .crm-fb-title{font-size:11px;color:var(--text3);margin-bottom:.55rem;display:flex;align-items:center;gap:5px;}
-#pg-crm .crm-edit-banner{background:var(--amber2);border:1px solid rgba(255,184,48,.3);border-radius:6px;padding:5px 9px;font-size:11px;color:var(--amber);margin-bottom:.5rem;display:none;align-items:center;gap:5px;}
-#pg-crm .crm-fg{display:flex;flex-direction:column;gap:3px;}
-#pg-crm .crm-fg label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;}
-#pg-crm .crm-fg input, #pg-crm .crm-fg select{height:31px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);width:100%;font-family:var(--font);outline:none;}
-#pg-crm .crm-fg input:focus, #pg-crm .crm-fg select:focus{border-color:var(--green);}
-#pg-crm .crm-fg input::placeholder{color:var(--text3);font-size:11px;}
-#pg-crm .crm-row2{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px;}
-#pg-crm .crm-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:7px;}
-#pg-crm .crm-row4e{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:7px;align-items:flex-end;}
-#pg-crm .crm-btn-sub{display:flex;align-items:center;gap:4px;padding:0 12px;height:31px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:var(--green);color:#001a0e;white-space:nowrap;font-family:var(--font);}
-#pg-crm .crm-btn-sub.amber{background:var(--amber);}
-#pg-crm .crm-btn-sub.blue{background:var(--blue);color:#001430;}
-#pg-crm .crm-btn-can{display:flex;align-items:center;gap:4px;padding:0 9px;height:31px;border-radius:6px;font-size:11px;cursor:pointer;font-family:var(--font);border:1px solid var(--border2);background:none;color:var(--text2);white-space:nowrap;margin-top:3px;}
-#pg-crm .crm-toolbar{display:flex;align-items:center;gap:7px;margin-bottom:.6rem;flex-wrap:wrap;}
-#pg-crm .crm-sw{position:relative;flex:1;min-width:140px;max-width:220px;}
-#pg-crm .crm-sw .crm-si{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text3);pointer-events:none;}
-#pg-crm .crm-srch{height:29px;padding:0 8px 0 26px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--text);width:100%;font-family:var(--font);outline:none;}
-#pg-crm .crm-srch:focus{border-color:var(--green);}
-#pg-crm .crm-srch::placeholder{color:var(--text3);}
-#pg-crm .crm-cnt{font-size:11px;color:var(--text3);font-family:var(--mono);}
-#pg-crm .crm-pg-btns{display:flex;gap:3px;margin-left:auto;align-items:center;}
-#pg-crm .crm-pg-btn{width:25px;height:25px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--mono);}
-#pg-crm .crm-pg-btn:hover:not(:disabled){background:var(--bg3);}
-#pg-crm .crm-pg-btn:disabled{opacity:.3;cursor:default;}
-#pg-crm .crm-pg-btn.active{background:var(--green);color:#001a0e;border-color:var(--green);font-weight:600;}
-#pg-crm .crm-pg-info{font-size:11px;color:var(--text3);padding:0 2px;}
-#pg-crm .crm-tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:auto;}
-#pg-crm table{width:100%;border-collapse:collapse;font-size:12px;table-layout:auto;}
-#pg-crm th:hover{color:var(--text2);}
-#pg-crm th .crm-sort-arrow{margin-left:3px;opacity:.4;font-size:9px;}
-#pg-crm th.crm-sort-asc .crm-sort-arrow::after{content:'▲';opacity:1;}
-#pg-crm th.crm-sort-desc .crm-sort-arrow::after{content:'▼';opacity:1;}
-#pg-crm th .crm-sort-arrow::after{content:'⇅';}
-#pg-crm td:hover{overflow:visible;white-space:normal;word-break:break-word;position:relative;z-index:2;background:var(--bg2);}
-#pg-crm tr.crm-editing-row td{background:rgba(255,184,48,.04);}
-#pg-crm .crm-phone-a{color:var(--green);text-decoration:none;font-family:var(--mono);font-size:11px;}
-#pg-crm .crm-phone-a:hover{text-decoration:underline;}
-#pg-crm .crm-email-a{color:var(--blue);text-decoration:none;font-size:11px;}
-#pg-crm .crm-email-a:hover{text-decoration:underline;}
-#pg-crm .crm-sbadge{display:inline-block;padding:2px 6px;border-radius:20px;font-size:10px;font-weight:500;}
-#pg-crm .crm-sb-new{background:var(--blue2);color:var(--blue);}
-#pg-crm .crm-sb-call{background:var(--amber2);color:var(--amber);}
-#pg-crm .crm-sb-nego{background:var(--purple2);color:var(--purple);}
-#pg-crm .crm-sb-think{background:rgba(255,255,255,.08);color:var(--text2);}
-#pg-crm .crm-sb-reject{background:var(--red2);color:var(--red);}
-#pg-crm .crm-days-ago{font-size:10px;font-family:var(--mono);}
-#pg-crm .crm-days-ok{color:var(--text3);}
-#pg-crm .crm-days-warn{color:var(--amber);}
-#pg-crm .crm-days-bad{color:var(--red);}
-#pg-crm .crm-acts{display:flex;gap:2px;flex-wrap:nowrap;}
-#pg-crm .crm-ab{display:inline-flex;align-items:center;gap:2px;padding:0 5px;height:21px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid;white-space:nowrap;font-family:var(--font);}
-#pg-crm .crm-ab.star{border-color:rgba(0,214,143,.4);color:var(--green);background:var(--green3);}
-#pg-crm .crm-ab.back{border-color:rgba(77,159,255,.35);color:var(--blue);background:var(--blue2);}
-#pg-crm .crm-ab.edt{border-color:rgba(255,184,48,.35);color:var(--amber);background:var(--amber2);}
-#pg-crm .crm-ab.del{border-color:rgba(255,107,107,.3);color:var(--red);background:var(--red2);}
-#pg-crm .crm-ab.arch{border-color:rgba(167,139,250,.35);color:var(--purple);background:var(--purple2);}
-#pg-crm .crm-ab.hist{border-color:var(--border2);color:var(--text2);background:var(--bg3);}
-#pg-crm .crm-confirm-box{background:rgba(0,0,0,.55);border-radius:10px;padding:1rem;margin-top:.5rem;display:none;text-align:center;}
-#pg-crm .crm-confirm-box p{color:var(--text2);font-size:13px;margin-bottom:.85rem;}
-#pg-crm .crm-confirm-box .crm-cbbtns{display:flex;gap:8px;justify-content:center;}
-#pg-crm .crm-confirm-box .crm-cbbtns button{height:30px;padding:0 16px;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--font);}
-#pg-crm .crm-empty{text-align:center;padding:2rem 1rem;color:var(--text3);}
-#pg-crm .crm-empty .crm-eico{font-size:30px;display:block;margin-bottom:8px;opacity:.4;}
-#pg-crm .crm-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem;}
-#pg-crm .crm-modal-overlay.show{display:flex;}
-#pg-crm .crm-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.25rem;width:100%;max-width:540px;max-height:85vh;overflow-y:auto;position:relative;}
-#pg-crm .crm-modal-title{font-size:14px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:7px;}
-#pg-crm .crm-modal-close{position:absolute;top:.9rem;right:.9rem;font-size:17px;cursor:pointer;color:var(--text3);background:none;border:none;}
-#pg-crm .crm-hist-item{background:var(--bg3);border-radius:7px;padding:.65rem;border-left:3px solid var(--green);}
-#pg-crm .crm-hist-date{font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:3px;}
-#pg-crm .crm-hist-text{font-size:13px;color:var(--text);}
-#pg-crm .crm-hist-who{font-size:10px;color:var(--text3);margin-top:3px;}
-#pg-crm .crm-hist-add{display:flex;gap:7px;margin-top:.85rem;}
-#pg-crm .crm-hist-add textarea{flex:1;padding:7px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--font);resize:none;height:65px;outline:none;}
-#pg-crm .crm-hist-add textarea:focus{border-color:var(--green);}
-#pg-crm .crm-hist-add button{padding:0 12px;border-radius:6px;background:var(--green);color:#001a0e;border:none;cursor:pointer;font-size:12px;font-weight:500;font-family:var(--font);}
-#pg-crm .crm-remind-item{background:var(--bg3);border-radius:7px;padding:.6rem .85rem;display:flex;align-items:center;gap:10px;margin-bottom:6px;}
-#pg-crm .crm-ri-overdue{border-left:3px solid var(--red);}
-#pg-crm .crm-ri-today{border-left:3px solid var(--amber);}
-#pg-crm .crm-ri-future{border-left:3px solid var(--green);}
-#pg-crm .crm-ri-date{font-size:10px;color:var(--text3);font-family:var(--mono);}
-#pg-crm .crm-ri-text{font-size:13px;color:var(--text);flex:1;}
-#pg-crm .crm-ri-del{font-size:15px;cursor:pointer;color:var(--text3);}
-#pg-crm .crm-ri-del:hover{color:var(--red);}
-#pg-crm .crm-ssub{font-size:11px;font-weight:500;color:var(--text3);margin-bottom:.45rem;margin-top:.85rem;text-transform:uppercase;letter-spacing:.05em;}
-#pg-crm .crm-dbar{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
-#pg-crm .crm-dbar-lbl{font-size:11px;color:var(--text3);width:26px;font-family:var(--mono);}
-#pg-crm .crm-dbar-lbl.wide{width:90px;}
-#pg-crm .crm-dbar-bg{flex:1;background:rgba(255,255,255,.06);border-radius:4px;height:19px;overflow:hidden;}
-#pg-crm [data-theme="light"] .crm-dbar-bg{background:rgba(0,0,0,.06);}
-#pg-crm .crm-dbar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:7px;transition:width .5s cubic-bezier(.4,0,.2,1);}
-#pg-crm .crm-dbar-fill span{font-size:11px;font-weight:500;font-family:var(--mono);}
-#pg-crm .crm-dbar-n{font-size:11px;color:var(--text2);width:18px;text-align:right;font-family:var(--mono);}
-#pg-crm .crm-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-#pg-crm .crm-heatmap-wrap{overflow-x:auto;}
-#pg-crm .crm-heatmap{display:flex;flex-direction:column;gap:3px;}
-#pg-crm .crm-hm-months{display:flex;gap:3px;margin-bottom:3px;padding-left:22px;}
-#pg-crm .crm-hm-month{font-size:10px;color:var(--text3);font-family:var(--mono);}
-#pg-crm .crm-hm-row{display:flex;align-items:center;gap:3px;}
-#pg-crm .crm-hm-day-lbl{font-size:9px;color:var(--text3);width:18px;font-family:var(--mono);text-align:right;}
-#pg-crm .crm-hm-cells{display:flex;gap:3px;}
-#pg-crm .crm-hm-cell{width:12px;height:12px;border-radius:2px;cursor:default;transition:transform .1s;}
-#pg-crm .crm-hm-cell:hover{transform:scale(1.4);z-index:1;position:relative;}
-#pg-crm .crm-hm-0{background:rgba(255,255,255,.05);}
-#pg-crm [data-theme="light"] .crm-hm-0{background:rgba(0,0,0,.07);}
-#pg-crm .crm-hm-1{background:rgba(0,214,143,.3);}
-#pg-crm .crm-hm-2{background:rgba(0,214,143,.55);}
-#pg-crm .crm-hm-3{background:rgba(0,214,143,.8);}
-#pg-crm .crm-hm-4{background:#00d68f;}
-#pg-crm .crm-hm-legend{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:10px;color:var(--text3);}
-#pg-crm .crm-hm-legend-cells{display:flex;gap:3px;}
-#pg-crm .crm-conv-chart{display:flex;align-items:flex-end;gap:5px;height:120px;margin-top:.5rem;}
-#pg-crm .crm-conv-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
-#pg-crm .crm-conv-bar-bg{width:100%;background:rgba(255,255,255,.06);border-radius:4px 4px 0 0;position:relative;display:flex;flex-direction:column;justify-content:flex-end;height:100px;}
-#pg-crm [data-theme="light"] .crm-conv-bar-bg{background:rgba(0,0,0,.06);}
-#pg-crm .crm-conv-bar-fill{width:100%;border-radius:4px 4px 0 0;background:var(--green);transition:height .4s;}
-#pg-crm .crm-conv-bar-pct{font-size:9px;color:var(--text3);font-family:var(--mono);}
-#pg-crm .crm-conv-bar-lbl{font-size:9px;color:var(--text3);font-family:var(--mono);}
-#pg-crm .crm-dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
-#pg-crm .crm-dash-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem;}
-#pg-crm .crm-dash-card.full{grid-column:1/-1;}
-#pg-crm .crm-dash-card-title{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.65rem;display:flex;align-items:center;gap:6px;}
-#pg-crm .crm-dash-plan-item{padding:.5rem .6rem;border-radius:7px;background:var(--bg3);margin-bottom:5px;display:flex;align-items:center;gap:8px;}
-#pg-crm .crm-dash-plan-item:last-child{margin-bottom:0;}
-#pg-crm .crm-dash-remind-item{padding:.45rem .6rem;border-radius:6px;background:var(--red2);margin-bottom:4px;font-size:12px;color:var(--red);display:flex;align-items:center;gap:7px;}
-#pg-crm .crm-dash-remind-item.today{background:var(--amber2);color:var(--amber);}
-#pg-crm .crm-dash-client-item{display:flex;align-items:center;gap:8px;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:12px;}
-#pg-crm .crm-dash-client-item:last-child{border-bottom:none;}
-#pg-crm .crm-week-stat{display:flex;justify-content:space-between;gap:.5rem;margin-bottom:.65rem;}
-#pg-crm .crm-ws-item{flex:1;background:var(--bg3);border-radius:7px;padding:.5rem .6rem;text-align:center;}
-#pg-crm .crm-ws-val{font-size:18px;font-weight:600;font-family:var(--mono);color:var(--green);}
-#pg-crm .crm-ws-lbl{font-size:10px;color:var(--text3);}
-#pg-crm .crm-arch-banner{background:var(--purple2);border:1px solid rgba(167,139,250,.2);border-radius:7px;padding:.45rem .7rem;font-size:12px;color:var(--purple);margin-bottom:.65rem;}
-#pg-crm .crm-plan-date-bar{display:flex;align-items:center;gap:8px;margin-bottom:.85rem;flex-wrap:wrap;}
-#pg-crm .crm-plan-date-lbl{font-size:13px;font-weight:500;}
-#pg-crm .crm-plan-date-inp{height:29px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--text);font-family:var(--font);outline:none;}
-#pg-crm .crm-plan-date-inp:focus{border-color:var(--green);}
-#pg-crm .crm-atp-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:.85rem;}
-#pg-crm .crm-atp-hdr{padding:.6rem .9rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:500;user-select:none;}
-#pg-crm .crm-atp-hdr:hover{background:var(--bg3);}
-#pg-crm .crm-atp-arr{transition:transform .2s;font-size:11px;}
-#pg-crm .crm-atp-arr.open{transform:rotate(180deg);}
-#pg-crm .crm-atp-body{display:none;padding:.7rem .9rem;}
-#pg-crm .crm-atp-body.open{display:block;}
-#pg-crm .crm-atp-search{width:100%;height:30px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;margin-bottom:.5rem;}
-#pg-crm .crm-atp-search:focus{border-color:var(--green);}
-#pg-crm .crm-atp-list{max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;}
-#pg-crm .crm-atp-item{display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:6px;cursor:pointer;}
-#pg-crm .crm-atp-item:hover{background:var(--bg3);}
-#pg-crm .crm-atp-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
-#pg-crm .crm-atp-dot.g{background:var(--green);}
-#pg-crm .crm-atp-dot.b{background:var(--blue);}
-#pg-crm .crm-atp-nm{font-size:13px;font-weight:500;}
-#pg-crm .crm-atp-co{font-size:11px;color:var(--text3);}
-#pg-crm .crm-plan-cards{display:flex;flex-direction:column;gap:.7rem;}
-#pg-crm .crm-plan-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-#pg-crm .crm-pc-hdr{padding:.6rem .9rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;}
-#pg-crm .crm-pc-name{font-size:14px;font-weight:600;}
-#pg-crm .crm-pc-co{font-size:11px;color:var(--text3);}
-#pg-crm .crm-pc-rem{font-size:13px;cursor:pointer;color:var(--text3);}
-#pg-crm .crm-pc-rem:hover{color:var(--red);}
-#pg-crm .crm-pc-body{padding:.65rem .9rem;display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-#pg-crm .crm-task-chip{display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--bg3);user-select:none;}
-#pg-crm .crm-task-chip:hover{border-color:var(--border2);}
-#pg-crm .crm-task-chip.checked{border-color:rgba(0,214,143,.4);background:var(--green3);}
-#pg-crm .crm-tc-box{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;}
-#pg-crm .crm-task-chip.checked .crm-tc-box{background:var(--green);border-color:var(--green);color:#001a0e;}
-#pg-crm .crm-tc-lbl{font-size:12px;color:var(--text2);}
-#pg-crm .crm-task-chip.checked .crm-tc-lbl{color:var(--green);}
-#pg-crm .crm-pc-note{padding:.65rem .9rem;border-top:1px solid var(--border);}
-#pg-crm .crm-pc-note textarea{width:100%;padding:6px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;font-family:var(--font);resize:none;height:55px;outline:none;}
-#pg-crm .crm-pc-note textarea:focus{border-color:var(--green);}
-#pg-crm .crm-pc-note-save{margin-top:4px;padding:3px 11px;font-size:11px;border-radius:5px;background:var(--green);color:#001a0e;border:none;cursor:pointer;font-family:var(--font);}
-#pg-crm .crm-empty-plan{text-align:center;padding:2rem;color:var(--text3);font-size:13px;}
+.crm-vars .crm-gsearch-bar{padding:.5rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);}
+.crm-vars .crm-gsearch-wrap{position:relative;max-width:500px;}
+.crm-vars .crm-gsearch-wrap .crm-gsi{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text3);pointer-events:none;}
+.crm-vars .crm-gsearch-inp{width:100%;height:32px;padding:0 10px 0 32px;font-size:13px;border:1px solid var(--border);border-radius:8px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;}
+.crm-vars .crm-gsearch-inp:focus{border-color:var(--green);}
+.crm-vars .crm-gsearch-inp::placeholder{color:var(--text3);}
+.crm-vars .crm-gsearch-results{position:absolute;top:38px;left:0;right:0;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);z-index:200;max-height:320px;overflow-y:auto;display:none;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.crm-vars .crm-gsr-item{padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:10px;}
+.crm-vars .crm-gsr-item:last-child{border-bottom:none;}
+.crm-vars .crm-gsr-item:hover{background:var(--bg3);}
+.crm-vars .crm-gsr-badge{font-size:10px;padding:2px 6px;border-radius:10px;flex-shrink:0;}
+.crm-vars .crm-gsr-badge.lead{background:var(--blue2);color:var(--blue);}
+.crm-vars .crm-gsr-badge.client{background:var(--green2);color:var(--green);}
+.crm-vars .crm-gsr-badge.arch{background:var(--purple2);color:var(--purple);}
+.crm-vars .crm-gsr-name{font-size:13px;font-weight:500;}
+.crm-vars .crm-gsr-sub{font-size:11px;color:var(--text3);}
+.crm-vars .crm-remind-banner{background:var(--amber2);border-bottom:1px solid rgba(255,184,48,.2);padding:.4rem 1rem;display:none;align-items:center;gap:8px;flex-wrap:wrap;}
+.crm-vars .crm-remind-banner.show{display:flex;}
+.crm-vars .crm-rb-title{font-size:11px;font-weight:500;color:var(--amber);}
+.crm-vars .crm-rb-item{font-size:11px;color:var(--text);background:rgba(255,184,48,.15);border-radius:4px;padding:2px 7px;}
+.crm-vars .crm-rb-close{margin-left:auto;font-size:12px;color:var(--text3);cursor:pointer;}
+.crm-vars .crm-sc-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.crm-vars .crm-sc-ico.g{background:var(--green2);}
+.crm-vars .crm-sc-ico.b{background:var(--blue2);}
+.crm-vars .crm-sc-ico.a{background:var(--amber2);}
+.crm-vars .crm-sc-ico.p{background:var(--purple2);}
+.crm-vars .crm-sc-val{font-size:17px;font-weight:600;font-family:var(--mono);}
+.crm-vars .crm-sc-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;}
+.crm-vars .crm-tabs{display:flex;padding:0 1rem;border-bottom:1px solid var(--border);background:var(--bg2);overflow-x:auto;}
+.crm-vars .crm-tab:hover{color:var(--text);}
+.crm-vars .crm-tab.active{color:var(--green);border-bottom-color:var(--green);font-weight:500;}
+.crm-vars .crm-panel{display:none;padding:1rem;overflow-y:auto;flex:1;min-height:0;}
+.crm-vars .crm-panel.active{display:block;}
+.crm-vars .crm-form-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem .9rem;margin-bottom:.85rem;}
+.crm-vars .crm-form-box.editing{border-color:rgba(255,184,48,.35);}
+.crm-vars .crm-fb-title{font-size:11px;color:var(--text3);margin-bottom:.55rem;display:flex;align-items:center;gap:5px;}
+.crm-vars .crm-edit-banner{background:var(--amber2);border:1px solid rgba(255,184,48,.3);border-radius:6px;padding:5px 9px;font-size:11px;color:var(--amber);margin-bottom:.5rem;display:none;align-items:center;gap:5px;}
+.crm-vars .crm-fg{display:flex;flex-direction:column;gap:3px;}
+.crm-vars .crm-fg label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;}
+.crm-vars .crm-fg input, .crm-vars .crm-fg select{height:31px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);width:100%;font-family:var(--font);outline:none;}
+.crm-vars .crm-fg input:focus, .crm-vars .crm-fg select:focus{border-color:var(--green);}
+.crm-vars .crm-fg input::placeholder{color:var(--text3);font-size:11px;}
+.crm-vars .crm-row2{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px;}
+.crm-vars .crm-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:7px;}
+.crm-vars .crm-row4e{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:7px;align-items:flex-end;}
+.crm-vars .crm-btn-sub{display:flex;align-items:center;gap:4px;padding:0 12px;height:31px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:var(--green);color:#001a0e;white-space:nowrap;font-family:var(--font);}
+.crm-vars .crm-btn-sub.amber{background:var(--amber);}
+.crm-vars .crm-btn-sub.blue{background:var(--blue);color:#001430;}
+.crm-vars .crm-btn-can{display:flex;align-items:center;gap:4px;padding:0 9px;height:31px;border-radius:6px;font-size:11px;cursor:pointer;font-family:var(--font);border:1px solid var(--border2);background:none;color:var(--text2);white-space:nowrap;margin-top:3px;}
+.crm-vars .crm-toolbar{display:flex;align-items:center;gap:7px;margin-bottom:.6rem;flex-wrap:wrap;}
+.crm-vars .crm-sw{position:relative;flex:1;min-width:140px;max-width:220px;}
+.crm-vars .crm-sw .crm-si{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text3);pointer-events:none;}
+.crm-vars .crm-srch{height:29px;padding:0 8px 0 26px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--text);width:100%;font-family:var(--font);outline:none;}
+.crm-vars .crm-srch:focus{border-color:var(--green);}
+.crm-vars .crm-srch::placeholder{color:var(--text3);}
+.crm-vars .crm-cnt{font-size:11px;color:var(--text3);font-family:var(--mono);}
+.crm-vars .crm-pg-btns{display:flex;gap:3px;margin-left:auto;align-items:center;}
+.crm-vars .crm-pg-btn{width:25px;height:25px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--mono);}
+.crm-vars .crm-pg-btn:hover:not(:disabled){background:var(--bg3);}
+.crm-vars .crm-pg-btn:disabled{opacity:.3;cursor:default;}
+.crm-vars .crm-pg-btn.active{background:var(--green);color:#001a0e;border-color:var(--green);font-weight:600;}
+.crm-vars .crm-pg-info{font-size:11px;color:var(--text3);padding:0 2px;}
+.crm-vars .crm-tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:auto;}
+.crm-vars table{width:100%;border-collapse:collapse;font-size:12px;table-layout:auto;}
+.crm-vars th:hover{color:var(--text2);}
+.crm-vars th .crm-sort-arrow{margin-left:3px;opacity:.4;font-size:9px;}
+.crm-vars th.crm-sort-asc .crm-sort-arrow::after{content:'▲';opacity:1;}
+.crm-vars th.crm-sort-desc .crm-sort-arrow::after{content:'▼';opacity:1;}
+.crm-vars th .crm-sort-arrow::after{content:'⇅';}
+.crm-vars td:hover{overflow:visible;white-space:normal;word-break:break-word;position:relative;z-index:2;background:var(--bg2);}
+.crm-vars tr.crm-editing-row td{background:rgba(255,184,48,.04);}
+.crm-vars .crm-phone-a{color:var(--green);text-decoration:none;font-family:var(--mono);font-size:11px;}
+.crm-vars .crm-phone-a:hover{text-decoration:underline;}
+.crm-vars .crm-email-a{color:var(--blue);text-decoration:none;font-size:11px;}
+.crm-vars .crm-email-a:hover{text-decoration:underline;}
+.crm-vars .crm-sbadge{display:inline-block;padding:2px 6px;border-radius:20px;font-size:10px;font-weight:500;}
+.crm-vars .crm-sb-new{background:var(--blue2);color:var(--blue);}
+.crm-vars .crm-sb-call{background:var(--amber2);color:var(--amber);}
+.crm-vars .crm-sb-nego{background:var(--purple2);color:var(--purple);}
+.crm-vars .crm-sb-think{background:rgba(255,255,255,.08);color:var(--text2);}
+.crm-vars .crm-sb-reject{background:var(--red2);color:var(--red);}
+.crm-vars .crm-days-ago{font-size:10px;font-family:var(--mono);}
+.crm-vars .crm-days-ok{color:var(--text3);}
+.crm-vars .crm-days-warn{color:var(--amber);}
+.crm-vars .crm-days-bad{color:var(--red);}
+.crm-vars .crm-acts{display:flex;gap:2px;flex-wrap:nowrap;}
+.crm-vars .crm-ab{display:inline-flex;align-items:center;gap:2px;padding:0 5px;height:21px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid;white-space:nowrap;font-family:var(--font);}
+.crm-vars .crm-ab.star{border-color:rgba(0,214,143,.4);color:var(--green);background:var(--green3);}
+.crm-vars .crm-ab.back{border-color:rgba(77,159,255,.35);color:var(--blue);background:var(--blue2);}
+.crm-vars .crm-ab.edt{border-color:rgba(255,184,48,.35);color:var(--amber);background:var(--amber2);}
+.crm-vars .crm-ab.del{border-color:rgba(255,107,107,.3);color:var(--red);background:var(--red2);}
+.crm-vars .crm-ab.arch{border-color:rgba(167,139,250,.35);color:var(--purple);background:var(--purple2);}
+.crm-vars .crm-ab.hist{border-color:var(--border2);color:var(--text2);background:var(--bg3);}
+.crm-vars .crm-confirm-box{background:rgba(0,0,0,.55);border-radius:10px;padding:1rem;margin-top:.5rem;display:none;text-align:center;}
+.crm-vars .crm-confirm-box p{color:var(--text2);font-size:13px;margin-bottom:.85rem;}
+.crm-vars .crm-confirm-box .crm-cbbtns{display:flex;gap:8px;justify-content:center;}
+.crm-vars .crm-confirm-box .crm-cbbtns button{height:30px;padding:0 16px;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--font);}
+.crm-vars .crm-empty{text-align:center;padding:2rem 1rem;color:var(--text3);}
+.crm-vars .crm-empty .crm-eico{font-size:30px;display:block;margin-bottom:8px;opacity:.4;}
+.crm-vars .crm-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem;}
+.crm-vars .crm-modal-overlay.show{display:flex;}
+.crm-vars .crm-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.25rem;width:100%;max-width:540px;max-height:85vh;overflow-y:auto;position:relative;}
+.crm-vars .crm-modal-title{font-size:14px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:7px;}
+.crm-vars .crm-modal-close{position:absolute;top:.9rem;right:.9rem;font-size:17px;cursor:pointer;color:var(--text3);background:none;border:none;}
+.crm-vars .crm-hist-item{background:var(--bg3);border-radius:7px;padding:.65rem;border-left:3px solid var(--green);}
+.crm-vars .crm-hist-date{font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:3px;}
+.crm-vars .crm-hist-text{font-size:13px;color:var(--text);}
+.crm-vars .crm-hist-who{font-size:10px;color:var(--text3);margin-top:3px;}
+.crm-vars .crm-hist-add{display:flex;gap:7px;margin-top:.85rem;}
+.crm-vars .crm-hist-add textarea{flex:1;padding:7px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--font);resize:none;height:65px;outline:none;}
+.crm-vars .crm-hist-add textarea:focus{border-color:var(--green);}
+.crm-vars .crm-hist-add button{padding:0 12px;border-radius:6px;background:var(--green);color:#001a0e;border:none;cursor:pointer;font-size:12px;font-weight:500;font-family:var(--font);}
+.crm-vars .crm-remind-item{background:var(--bg3);border-radius:7px;padding:.6rem .85rem;display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.crm-vars .crm-ri-overdue{border-left:3px solid var(--red);}
+.crm-vars .crm-ri-today{border-left:3px solid var(--amber);}
+.crm-vars .crm-ri-future{border-left:3px solid var(--green);}
+.crm-vars .crm-ri-date{font-size:10px;color:var(--text3);font-family:var(--mono);}
+.crm-vars .crm-ri-text{font-size:13px;color:var(--text);flex:1;}
+.crm-vars .crm-ri-del{font-size:15px;cursor:pointer;color:var(--text3);}
+.crm-vars .crm-ri-del:hover{color:var(--red);}
+.crm-vars .crm-ssub{font-size:11px;font-weight:500;color:var(--text3);margin-bottom:.45rem;margin-top:.85rem;text-transform:uppercase;letter-spacing:.05em;}
+.crm-vars .crm-dbar{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.crm-vars .crm-dbar-lbl{font-size:11px;color:var(--text3);width:26px;font-family:var(--mono);}
+.crm-vars .crm-dbar-lbl.wide{width:90px;}
+.crm-vars .crm-dbar-bg{flex:1;background:rgba(255,255,255,.06);border-radius:4px;height:19px;overflow:hidden;}
+.crm-vars [data-theme="light"] .crm-dbar-bg{background:rgba(0,0,0,.06);}
+.crm-vars .crm-dbar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:7px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.crm-vars .crm-dbar-fill span{font-size:11px;font-weight:500;font-family:var(--mono);}
+.crm-vars .crm-dbar-n{font-size:11px;color:var(--text2);width:18px;text-align:right;font-family:var(--mono);}
+.crm-vars .crm-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.crm-vars .crm-heatmap-wrap{overflow-x:auto;}
+.crm-vars .crm-heatmap{display:flex;flex-direction:column;gap:3px;}
+.crm-vars .crm-hm-months{display:flex;gap:3px;margin-bottom:3px;padding-left:22px;}
+.crm-vars .crm-hm-month{font-size:10px;color:var(--text3);font-family:var(--mono);}
+.crm-vars .crm-hm-row{display:flex;align-items:center;gap:3px;}
+.crm-vars .crm-hm-day-lbl{font-size:9px;color:var(--text3);width:18px;font-family:var(--mono);text-align:right;}
+.crm-vars .crm-hm-cells{display:flex;gap:3px;}
+.crm-vars .crm-hm-cell{width:12px;height:12px;border-radius:2px;cursor:default;transition:transform .1s;}
+.crm-vars .crm-hm-cell:hover{transform:scale(1.4);z-index:1;position:relative;}
+.crm-vars .crm-hm-0{background:rgba(255,255,255,.05);}
+.crm-vars [data-theme="light"] .crm-hm-0{background:rgba(0,0,0,.07);}
+.crm-vars .crm-hm-1{background:rgba(0,214,143,.3);}
+.crm-vars .crm-hm-2{background:rgba(0,214,143,.55);}
+.crm-vars .crm-hm-3{background:rgba(0,214,143,.8);}
+.crm-vars .crm-hm-4{background:#00d68f;}
+.crm-vars .crm-hm-legend{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:10px;color:var(--text3);}
+.crm-vars .crm-hm-legend-cells{display:flex;gap:3px;}
+.crm-vars .crm-conv-chart{display:flex;align-items:flex-end;gap:5px;height:120px;margin-top:.5rem;}
+.crm-vars .crm-conv-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
+.crm-vars .crm-conv-bar-bg{width:100%;background:rgba(255,255,255,.06);border-radius:4px 4px 0 0;position:relative;display:flex;flex-direction:column;justify-content:flex-end;height:100px;}
+.crm-vars [data-theme="light"] .crm-conv-bar-bg{background:rgba(0,0,0,.06);}
+.crm-vars .crm-conv-bar-fill{width:100%;border-radius:4px 4px 0 0;background:var(--green);transition:height .4s;}
+.crm-vars .crm-conv-bar-pct{font-size:9px;color:var(--text3);font-family:var(--mono);}
+.crm-vars .crm-conv-bar-lbl{font-size:9px;color:var(--text3);font-family:var(--mono);}
+.crm-vars .crm-dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.crm-vars .crm-dash-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem;}
+.crm-vars .crm-dash-card.full{grid-column:1/-1;}
+.crm-vars .crm-dash-card-title{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.65rem;display:flex;align-items:center;gap:6px;}
+.crm-vars .crm-dash-plan-item{padding:.5rem .6rem;border-radius:7px;background:var(--bg3);margin-bottom:5px;display:flex;align-items:center;gap:8px;}
+.crm-vars .crm-dash-plan-item:last-child{margin-bottom:0;}
+.crm-vars .crm-dash-remind-item{padding:.45rem .6rem;border-radius:6px;background:var(--red2);margin-bottom:4px;font-size:12px;color:var(--red);display:flex;align-items:center;gap:7px;}
+.crm-vars .crm-dash-remind-item.today{background:var(--amber2);color:var(--amber);}
+.crm-vars .crm-dash-client-item{display:flex;align-items:center;gap:8px;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:12px;}
+.crm-vars .crm-dash-client-item:last-child{border-bottom:none;}
+.crm-vars .crm-week-stat{display:flex;justify-content:space-between;gap:.5rem;margin-bottom:.65rem;}
+.crm-vars .crm-ws-item{flex:1;background:var(--bg3);border-radius:7px;padding:.5rem .6rem;text-align:center;}
+.crm-vars .crm-ws-val{font-size:18px;font-weight:600;font-family:var(--mono);color:var(--green);}
+.crm-vars .crm-ws-lbl{font-size:10px;color:var(--text3);}
+.crm-vars .crm-arch-banner{background:var(--purple2);border:1px solid rgba(167,139,250,.2);border-radius:7px;padding:.45rem .7rem;font-size:12px;color:var(--purple);margin-bottom:.65rem;}
+.crm-vars .crm-plan-date-bar{display:flex;align-items:center;gap:8px;margin-bottom:.85rem;flex-wrap:wrap;}
+.crm-vars .crm-plan-date-lbl{font-size:13px;font-weight:500;}
+.crm-vars .crm-plan-date-inp{height:29px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--text);font-family:var(--font);outline:none;}
+.crm-vars .crm-plan-date-inp:focus{border-color:var(--green);}
+.crm-vars .crm-atp-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:.85rem;}
+.crm-vars .crm-atp-hdr{padding:.6rem .9rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:500;user-select:none;}
+.crm-vars .crm-atp-hdr:hover{background:var(--bg3);}
+.crm-vars .crm-atp-arr{transition:transform .2s;font-size:11px;}
+.crm-vars .crm-atp-arr.open{transform:rotate(180deg);}
+.crm-vars .crm-atp-body{display:none;padding:.7rem .9rem;}
+.crm-vars .crm-atp-body.open{display:block;}
+.crm-vars .crm-atp-search{width:100%;height:30px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;margin-bottom:.5rem;}
+.crm-vars .crm-atp-search:focus{border-color:var(--green);}
+.crm-vars .crm-atp-list{max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;}
+.crm-vars .crm-atp-item{display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:6px;cursor:pointer;}
+.crm-vars .crm-atp-item:hover{background:var(--bg3);}
+.crm-vars .crm-atp-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.crm-vars .crm-atp-dot.g{background:var(--green);}
+.crm-vars .crm-atp-dot.b{background:var(--blue);}
+.crm-vars .crm-atp-nm{font-size:13px;font-weight:500;}
+.crm-vars .crm-atp-co{font-size:11px;color:var(--text3);}
+.crm-vars .crm-plan-cards{display:flex;flex-direction:column;gap:.7rem;}
+.crm-vars .crm-plan-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.crm-vars .crm-pc-hdr{padding:.6rem .9rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;}
+.crm-vars .crm-pc-name{font-size:14px;font-weight:600;}
+.crm-vars .crm-pc-co{font-size:11px;color:var(--text3);}
+.crm-vars .crm-pc-rem{font-size:13px;cursor:pointer;color:var(--text3);}
+.crm-vars .crm-pc-rem:hover{color:var(--red);}
+.crm-vars .crm-pc-body{padding:.65rem .9rem;display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.crm-vars .crm-task-chip{display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--bg3);user-select:none;}
+.crm-vars .crm-task-chip:hover{border-color:var(--border2);}
+.crm-vars .crm-task-chip.checked{border-color:rgba(0,214,143,.4);background:var(--green3);}
+.crm-vars .crm-tc-box{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;}
+.crm-vars .crm-task-chip.checked .crm-tc-box{background:var(--green);border-color:var(--green);color:#001a0e;}
+.crm-vars .crm-tc-lbl{font-size:12px;color:var(--text2);}
+.crm-vars .crm-task-chip.checked .crm-tc-lbl{color:var(--green);}
+.crm-vars .crm-pc-note{padding:.65rem .9rem;border-top:1px solid var(--border);}
+.crm-vars .crm-pc-note textarea{width:100%;padding:6px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;font-family:var(--font);resize:none;height:55px;outline:none;}
+.crm-vars .crm-pc-note textarea:focus{border-color:var(--green);}
+.crm-vars .crm-pc-note-save{margin-top:4px;padding:3px 11px;font-size:11px;border-radius:5px;background:var(--green);color:#001a0e;border:none;cursor:pointer;font-family:var(--font);}
+.crm-vars .crm-empty-plan{text-align:center;padding:2rem;color:var(--text3);font-size:13px;}
 @media(max-width:640px){
-#pg-crm .crm-stats-bar{grid-template-columns:1fr 1fr;}
-#pg-crm .crm-row3, #pg-crm .crm-row4e{grid-template-columns:1fr 1fr;}
-#pg-crm .crm-dash-grid{grid-template-columns:1fr;}
-#pg-crm .crm-stats-grid{grid-template-columns:1fr;}
-#pg-crm .crm-pc-body{grid-template-columns:1fr;}
-#pg-crm .crm-week-stat{flex-wrap:wrap;}
-#pg-crm table{font-size:11px;}
-#pg-crm td, #pg-crm th{padding:6px 6px;}
+.crm-vars .crm-stats-bar{grid-template-columns:1fr 1fr;}
+.crm-vars .crm-row3, .crm-vars .crm-row4e{grid-template-columns:1fr 1fr;}
+.crm-vars .crm-dash-grid{grid-template-columns:1fr;}
+.crm-vars .crm-stats-grid{grid-template-columns:1fr;}
+.crm-vars .crm-pc-body{grid-template-columns:1fr;}
+.crm-vars .crm-week-stat{flex-wrap:wrap;}
+.crm-vars table{font-size:11px;}
+.crm-vars td, .crm-vars th{padding:6px 6px;}
 }
 @media(max-width:400px){
-#pg-crm .crm-stats-bar{grid-template-columns:1fr 1fr;}
-#pg-crm .crm-sc-lbl{display:none;}
-#pg-crm .crm-panel{padding:.65rem;}
+.crm-vars .crm-stats-bar{grid-template-columns:1fr 1fr;}
+.crm-vars .crm-sc-lbl{display:none;}
+.crm-vars .crm-panel{padding:.65rem;}
 }
-#pg-crm .crm-ab{position:relative;}
-#pg-crm .crm-ab .crm-tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1a2340;border:1px solid rgba(255,255,255,0.15);color:#e8eaf0;font-size:11px;white-space:nowrap;padding:4px 8px;border-radius:5px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:999;}
-#pg-crm .crm-ab .crm-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:#1a2340;}
-#pg-crm .crm-ab:hover .crm-tip{opacity:1;}
-#pg-crm .crm-arch-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:550;display:none;align-items:center;justify-content:center;padding:1rem;}
-#pg-crm .crm-arch-modal.show{display:flex;}
-#pg-crm .crm-arch-modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.5rem;width:100%;max-width:400px;}
-#pg-crm .crm-arch-modal-title{font-size:15px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
-#pg-crm .crm-stats-filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem;padding:.75rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);}
-#pg-crm .crm-stats-filter-bar label{font-size:12px;color:var(--text3);white-space:nowrap;}
-#pg-crm .crm-sfsel{height:30px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;cursor:pointer;}
-#pg-crm .crm-sfsel:focus{border-color:var(--green);}
-#pg-crm .crm-sf-inp{height:30px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;width:120px;}
-#pg-crm .crm-sf-inp:focus{border-color:var(--green);}
-#pg-crm .crm-sf-btn{height:30px;padding:0 12px;font-size:12px;border-radius:6px;border:none;background:var(--green);color:#001a0e;cursor:pointer;font-weight:500;font-family:var(--font);}
-#pg-crm .crm-sf-btn.reset{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
-#pg-crm .crm-pc-tasks-view{padding:.6rem .9rem;display:flex;flex-direction:column;gap:5px;}
-#pg-crm .crm-pc-task-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;user-select:none;transition:all .15s;}
-#pg-crm .crm-pc-task-row:hover{border-color:var(--border2);}
-#pg-crm .crm-pc-task-row.done{background:var(--green3);border-color:rgba(0,214,143,.35);}
-#pg-crm .crm-pc-task-row.done .crm-pct-lbl{color:var(--green);text-decoration:line-through;text-decoration-color:rgba(0,214,143,.5);}
-#pg-crm .crm-pc-task-row.done .crm-pct-check{background:var(--green);border-color:var(--green);color:#001a0e;}
-#pg-crm .crm-pc-edit-btn{font-size:11px;color:var(--text3);background:none;border:1px solid var(--border);border-radius:5px;padding:3px 8px;cursor:pointer;margin-left:auto;font-family:var(--font);}
-#pg-crm .crm-pc-edit-btn:hover{color:var(--text);border-color:var(--border2);}
-#pg-crm .crm-pc-tasks-edit{padding:.6rem .9rem;display:none;}
-#pg-crm .crm-pc-tasks-edit.open{display:block;}
-#pg-crm .crm-pc-tasks-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:.6rem;}
-#pg-crm .crm-pc-save-tasks-btn{width:100%;height:32px;border-radius:7px;background:var(--green);color:#001a0e;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--font);}
-#pg-crm .crm-pc-save-tasks-btn:hover{opacity:.85;}
-#pg-crm .crm-pc-no-tasks{font-size:12px;color:var(--text3);padding:.5rem 0;display:flex;align-items:center;gap:8px;}#pg-crm .crm-history-list{display:flex;flex-direction:column;gap:7px;max-height:340px;overflow-y:auto}
-#pg-crm .crm-hbtn{display:flex;align-items:center;gap:4px;padding:0 9px;height:28px;border-radius:6px;font-size:11px;cursor:pointer;border:1px solid var(--border2);color:var(--text2);background:transparent;white-space:nowrap}
-#pg-crm .crm-hbtn:hover{background:var(--bg3);color:var(--text)}
+.crm-vars .crm-ab{position:relative;}
+.crm-vars .crm-ab .crm-tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1a2340;border:1px solid rgba(255,255,255,0.15);color:#e8eaf0;font-size:11px;white-space:nowrap;padding:4px 8px;border-radius:5px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:999;}
+.crm-vars .crm-ab .crm-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:#1a2340;}
+.crm-vars .crm-ab:hover .crm-tip{opacity:1;}
+.crm-vars .crm-arch-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:550;display:none;align-items:center;justify-content:center;padding:1rem;}
+.crm-vars .crm-arch-modal.show{display:flex;}
+.crm-vars .crm-arch-modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.5rem;width:100%;max-width:400px;}
+.crm-vars .crm-arch-modal-title{font-size:15px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+.crm-vars .crm-stats-filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem;padding:.75rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);}
+.crm-vars .crm-stats-filter-bar label{font-size:12px;color:var(--text3);white-space:nowrap;}
+.crm-vars .crm-sfsel{height:30px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;cursor:pointer;}
+.crm-vars .crm-sfsel:focus{border-color:var(--green);}
+.crm-vars .crm-sf-inp{height:30px;padding:0 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text);font-family:var(--font);outline:none;width:120px;}
+.crm-vars .crm-sf-inp:focus{border-color:var(--green);}
+.crm-vars .crm-sf-btn{height:30px;padding:0 12px;font-size:12px;border-radius:6px;border:none;background:var(--green);color:#001a0e;cursor:pointer;font-weight:500;font-family:var(--font);}
+.crm-vars .crm-sf-btn.reset{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+.crm-vars .crm-pc-tasks-view{padding:.6rem .9rem;display:flex;flex-direction:column;gap:5px;}
+.crm-vars .crm-pc-task-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;user-select:none;transition:all .15s;}
+.crm-vars .crm-pc-task-row:hover{border-color:var(--border2);}
+.crm-vars .crm-pc-task-row.done{background:var(--green3);border-color:rgba(0,214,143,.35);}
+.crm-vars .crm-pc-task-row.done .crm-pct-lbl{color:var(--green);text-decoration:line-through;text-decoration-color:rgba(0,214,143,.5);}
+.crm-vars .crm-pc-task-row.done .crm-pct-check{background:var(--green);border-color:var(--green);color:#001a0e;}
+.crm-vars .crm-pc-edit-btn{font-size:11px;color:var(--text3);background:none;border:1px solid var(--border);border-radius:5px;padding:3px 8px;cursor:pointer;margin-left:auto;font-family:var(--font);}
+.crm-vars .crm-pc-edit-btn:hover{color:var(--text);border-color:var(--border2);}
+.crm-vars .crm-pc-tasks-edit{padding:.6rem .9rem;display:none;}
+.crm-vars .crm-pc-tasks-edit.open{display:block;}
+.crm-vars .crm-pc-tasks-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:.6rem;}
+.crm-vars .crm-pc-save-tasks-btn{width:100%;height:32px;border-radius:7px;background:var(--green);color:#001a0e;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--font);}
+.crm-vars .crm-pc-save-tasks-btn:hover{opacity:.85;}
+.crm-vars .crm-pc-no-tasks{font-size:12px;color:var(--text3);padding:.5rem 0;display:flex;align-items:center;gap:8px;}.crm-vars .crm-history-list{display:flex;flex-direction:column;gap:7px;max-height:340px;overflow-y:auto}
+.crm-vars .crm-hbtn{display:flex;align-items:center;gap:4px;padding:0 9px;height:28px;border-radius:6px;font-size:11px;cursor:pointer;border:1px solid var(--border2);color:var(--text2);background:transparent;white-space:nowrap}
+.crm-vars .crm-hbtn:hover{background:var(--bg3);color:var(--text)}
 
-#pg-crm .crm-tab{padding:8px 12px;font-size:12px;color:var(--text2);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;display:flex;align-items:center;gap:5px;font-family:var(--font);white-space:nowrap;}
-#pg-crm .crm-fg{display:flex;flex-direction:column;gap:3px;}
-#pg-crm th{text-align:left;padding:7px 8px;font-size:10px;font-weight:500;color:var(--text3);border-bottom:1px solid var(--border);background:var(--bg3);white-space:nowrap;text-transform:uppercase;letter-spacing:.04em;resize:horizontal;overflow:hidden;min-width:55px;cursor:pointer;user-select:none;}
-#pg-crm td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-#pg-crm .crm-si{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text3);pointer-events:none;}
-#pg-crm .crm-sw{position:relative;flex:1;min-width:140px;max-width:220px;}
-#pg-crm .crm-sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .8rem;display:flex;align-items:center;gap:8px;}
-#pg-crm .crm-acts{display:flex;gap:2px;flex-wrap:nowrap;}
-#pg-crm .crm-ab{display:inline-flex;align-items:center;gap:2px;padding:0 5px;height:21px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid;white-space:nowrap;font-family:var(--font);}
-#pg-crm .crm-cnt{font-size:11px;color:var(--text3);font-family:var(--mono);}
+.crm-vars .crm-tab{padding:8px 12px;font-size:12px;color:var(--text2);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;display:flex;align-items:center;gap:5px;font-family:var(--font);white-space:nowrap;}
+.crm-vars .crm-fg{display:flex;flex-direction:column;gap:3px;}
+.crm-vars th{text-align:left;padding:7px 8px;font-size:10px;font-weight:500;color:var(--text3);border-bottom:1px solid var(--border);background:var(--bg3);white-space:nowrap;text-transform:uppercase;letter-spacing:.04em;resize:horizontal;overflow:hidden;min-width:55px;cursor:pointer;user-select:none;}
+.crm-vars td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.crm-vars .crm-si{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text3);pointer-events:none;}
+.crm-vars .crm-sw{position:relative;flex:1;min-width:140px;max-width:220px;}
+.crm-vars .crm-sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .8rem;display:flex;align-items:center;gap:8px;}
+.crm-vars .crm-acts{display:flex;gap:2px;flex-wrap:nowrap;}
+.crm-vars .crm-ab{display:inline-flex;align-items:center;gap:2px;padding:0 5px;height:21px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid;white-space:nowrap;font-family:var(--font);}
+.crm-vars .crm-cnt{font-size:11px;color:var(--text3);font-family:var(--mono);}
 /* ── Оновлений стиль CRM (картки, вкладки-пігулки, тіні) ── */
-#pg-crm .crm-stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
-#pg-crm .crm-sc{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.75rem .9rem;display:flex;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:box-shadow .15s,transform .15s;}
-#pg-crm .crm-sc:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-1px);}
-#pg-crm .crm-sc-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-#pg-crm .crm-sc-val{font-size:19px;font-weight:700;font-family:var(--mono);line-height:1.1;}
-#pg-crm .crm-sc-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
-#pg-crm .crm-tabs{display:flex;padding:8px 12px;gap:2px;border-bottom:1px solid var(--border);background:var(--bg2);overflow-x:auto;}
-#pg-crm .crm-tab{padding:8px 14px;font-size:12.5px;color:var(--text2);cursor:pointer;border:none;background:none;border-radius:9px;display:flex;align-items:center;gap:6px;font-family:var(--font);white-space:nowrap;transition:background .12s,color .12s;}
-#pg-crm .crm-tab:hover{color:var(--text);background:var(--bg3);}
-#pg-crm .crm-tab.active{color:#fff;background:var(--green);font-weight:600;box-shadow:0 2px 6px rgba(0,214,143,.25);}
-#pg-crm .crm-panel{display:none;padding:16px;overflow-y:auto;flex:1;min-height:0;background:var(--bg1);}
-#pg-crm .crm-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:.75rem;flex-wrap:wrap;}
-#pg-crm .crm-sw{position:relative;flex:1;min-width:160px;max-width:260px;}
-#pg-crm .crm-srch{height:32px;padding:0 10px 0 28px;font-size:12.5px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text);width:100%;font-family:var(--font);outline:none;transition:border-color .12s;}
-#pg-crm .crm-srch:focus{border-color:var(--green);}
-#pg-crm .crm-cnt{font-size:11px;color:var(--text3);font-family:var(--mono);}
-#pg-crm .crm-pg-btn{width:27px;height:27px;border-radius:7px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--mono);transition:background .12s;}
-#pg-crm .crm-pg-btn:hover{background:var(--bg3);}
-#pg-crm .crm-pg-btn.active{background:var(--green);color:#fff;border-color:var(--green);}
-#pg-crm .crm-dash-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.04);}
-#pg-crm .crm-plan-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .15s;}
-#pg-crm .crm-plan-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.07);}
-#pg-crm .crm-tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:auto;box-shadow:0 1px 3px rgba(0,0,0,.04);}
-#pg-crm .crm-form-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:.85rem;box-shadow:0 1px 3px rgba(0,0,0,.04);}
-#pg-crm .crm-btn-sub{display:flex;align-items:center;justify-content:center;gap:5px;padding:0 14px;height:33px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;background:var(--green);color:#fff;white-space:nowrap;font-family:var(--font);transition:filter .12s,transform .12s;}
-#pg-crm .crm-btn-sub:hover{filter:brightness(1.08);}
-#pg-crm .crm-btn-sub:active{transform:scale(.97);}
-#pg-crm .crm-btn-sub.blue{background:var(--blue);}
-#pg-crm .crm-btn-can{display:flex;align-items:center;justify-content:center;gap:4px;padding:0 12px;height:33px;border-radius:9px;font-size:12px;cursor:pointer;font-family:var(--font);border:1px solid var(--border2);background:none;color:var(--text2);white-space:nowrap;margin-top:3px;transition:background .12s;}
-#pg-crm .crm-btn-can:hover{background:var(--bg3);}
-#pg-crm .crm-sbadge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:600;letter-spacing:.01em;}
-#pg-crm select, #pg-crm input[type="date"]{border-radius:8px!important;}
+.crm-vars .crm-stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
+.crm-vars .crm-sc{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.75rem .9rem;display:flex;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:box-shadow .15s,transform .15s;}
+.crm-vars .crm-sc:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-1px);}
+.crm-vars .crm-sc-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.crm-vars .crm-sc-val{font-size:19px;font-weight:700;font-family:var(--mono);line-height:1.1;}
+.crm-vars .crm-sc-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+.crm-vars .crm-tabs{display:flex;padding:8px 12px;gap:2px;border-bottom:1px solid var(--border);background:var(--bg2);overflow-x:auto;}
+.crm-vars .crm-tab{padding:8px 14px;font-size:12.5px;color:var(--text2);cursor:pointer;border:none;background:none;border-radius:9px;display:flex;align-items:center;gap:6px;font-family:var(--font);white-space:nowrap;transition:background .12s,color .12s;}
+.crm-vars .crm-tab:hover{color:var(--text);background:var(--bg3);}
+.crm-vars .crm-tab.active{color:#fff;background:var(--green);font-weight:600;box-shadow:0 2px 6px rgba(0,214,143,.25);}
+.crm-vars .crm-panel{display:none;padding:16px;overflow-y:auto;flex:1;min-height:0;background:var(--bg1);}
+.crm-vars .crm-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:.75rem;flex-wrap:wrap;}
+.crm-vars .crm-sw{position:relative;flex:1;min-width:160px;max-width:260px;}
+.crm-vars .crm-srch{height:32px;padding:0 10px 0 28px;font-size:12.5px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text);width:100%;font-family:var(--font);outline:none;transition:border-color .12s;}
+.crm-vars .crm-srch:focus{border-color:var(--green);}
+.crm-vars .crm-cnt{font-size:11px;color:var(--text3);font-family:var(--mono);}
+.crm-vars .crm-pg-btn{width:27px;height:27px;border-radius:7px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--mono);transition:background .12s;}
+.crm-vars .crm-pg-btn:hover{background:var(--bg3);}
+.crm-vars .crm-pg-btn.active{background:var(--green);color:#fff;border-color:var(--green);}
+.crm-vars .crm-dash-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.crm-vars .crm-plan-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .15s;}
+.crm-vars .crm-plan-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.07);}
+.crm-vars .crm-tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:auto;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.crm-vars .crm-form-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:.85rem;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.crm-vars .crm-btn-sub{display:flex;align-items:center;justify-content:center;gap:5px;padding:0 14px;height:33px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;background:var(--green);color:#fff;white-space:nowrap;font-family:var(--font);transition:filter .12s,transform .12s;}
+.crm-vars .crm-btn-sub:hover{filter:brightness(1.08);}
+.crm-vars .crm-btn-sub:active{transform:scale(.97);}
+.crm-vars .crm-btn-sub.blue{background:var(--blue);}
+.crm-vars .crm-btn-can{display:flex;align-items:center;justify-content:center;gap:4px;padding:0 12px;height:33px;border-radius:9px;font-size:12px;cursor:pointer;font-family:var(--font);border:1px solid var(--border2);background:none;color:var(--text2);white-space:nowrap;margin-top:3px;transition:background .12s;}
+.crm-vars .crm-btn-can:hover{background:var(--bg3);}
+.crm-vars .crm-sbadge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:600;letter-spacing:.01em;}
+.crm-vars select, .crm-vars input[type="date"]{border-radius:8px!important;}
 
 </style>
 </head>
@@ -613,6 +613,8 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
     <div class="nav-i" id="nav-pnl" data-page="pnl" onclick="nav('pnl')" style="display:none"><span>📊</span>P&amp;L (прибуток)</div>
     <div style="height:1px;background:var(--brd);margin:6px 14px"></div>
     <div class="nav-i" id="nav-chat" onclick="openChatOverlay()"><span>💬</span>Чат</div>
+    <div class="nav-i" id="nav-invoices" onclick="openInvoicesOverlay()" style="display:none"><span>💳</span>Рахунки на оплату</div>
+    <div class="nav-i" id="nav-invreq" onclick="openInvoiceRequestsOverlay()" style="display:none"><span>📋</span>Запити на рахунки</div>
     <div class="nav-i" id="nav-approvals" data-page="approvals" onclick="nav('approvals')" style="display:none"><span>✅</span>Підтвердження <span id="appr-badge" style="display:none;background:var(--red);color:#fff;border-radius:8px;padding:1px 6px;font-size:9px;margin-left:auto"></span></div>
     <div class="nav-i" id="nav-goto-crm" onclick="switchToCrm()" style="display:none"><span>🧾</span>Перейти в CRM</div>
   </div>
@@ -1092,7 +1094,7 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
     <button onclick="doLogout()" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;border:1px solid var(--brd2);background:transparent;color:var(--txt2);cursor:pointer" title="Вийти">⏻</button>
   </div>
     <!-- ═══════════════ CRM: ПОВНИЙ МОДУЛЬ (Ліди/Постійні/Архів/Статистика/План) ═══════════════ -->
-    <div class="pg" id="pg-crm" style="padding:0">
+    <div class="pg crm-vars" id="pg-crm" style="padding:0">
       <div class="crm-stats-bar">
         <div class="crm-sc"><div class="crm-sc-ico g">👥</div><div><div class="crm-sc-val" id="crm-s-leads">0</div><div class="crm-sc-lbl">Лідів</div></div></div>
         <div class="crm-sc"><div class="crm-sc-ico b">⭐</div><div><div class="crm-sc-val" id="crm-s-pay">0</div><div class="crm-sc-lbl">Постійних</div></div></div>
@@ -1124,7 +1126,8 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         <button class="crm-tab" id="crm-tabbtn-plan" onclick="crmShowTab('plan')">📋 План</button>
         <button class="crm-tab" id="crm-tabbtn-mydeals" onclick="crmShowTab('mydeals')" style="display:none">🧾 Мої угоди</button>
         <button class="crm-tab" id="crm-tabbtn-teammid" onclick="crmShowTab('teammid')" style="display:none">📈 МІД команди</button>
-        <button class="crm-tab" id="crm-tabbtn-invoices" onclick="crmShowTab('invoices')">💳 Рахунки на оплату</button>
+        <button class="crm-tab" id="crm-tabbtn-invreq" onclick="openInvoiceRequestsOverlay()" style="display:none">📋 Запит на рахунок</button>
+        <button class="crm-tab" id="crm-tabbtn-invoices" onclick="openInvoicesOverlay()" style="display:none">💳 Рахунки на оплату</button>
       </div>
 
       <!-- DASHBOARD -->
@@ -1282,28 +1285,7 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
       </div>
 
       <!-- РАХУНКИ НА ОПЛАТУ -->
-      <div id="crm-tab-invoices" class="crm-panel">
-        <div class="crm-arch-banner" id="inv-banner">💳 Завантажте фото / PDF / Excel рахунку — він піде на підтвердження керівнику, потім бухгалтеру на оплату.</div>
-        <div class="crm-form-box">
-          <div class="crm-row3">
-            <div class="crm-fg"><label>Файл (фото / PDF / Excel)</label><input type="file" id="inv-file" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.csv"></div>
-            <div class="crm-fg"><label>Сума (необов'язково)</label><input type="number" id="inv-amount" placeholder="0.00" step="0.01"></div>
-            <div class="crm-fg"><label>Опис</label><input type="text" id="inv-desc" placeholder="За що рахунок..."></div>
-          </div>
-          <button class="crm-btn-sub" style="margin-top:8px" onclick="invUpload()">⬆ Завантажити на підтвердження</button>
-        </div>
-        <div class="crm-toolbar">
-          <select id="inv-filter" onchange="invRender()" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:8px;background:var(--bg3);color:var(--txt);font-family:inherit">
-            <option value="">Всі статуси</option>
-            <option value="pending">На підтвердженні</option>
-            <option value="approved">Підтверджено (очікує оплати)</option>
-            <option value="rejected">Відхилено</option>
-            <option value="paid">Оплачено</option>
-          </select>
-          <span class="crm-cnt" id="inv-cnt"></span>
-        </div>
-        <div id="inv-list"></div>
-      </div>
+      <div id="crm-tab-invoices" class="crm-panel" style="display:none"></div>
 
     <!-- CRM MODALS (nested INSIDE #pg-crm so scoped CSS hides them by default) -->
     <div class="crm-modal-overlay" id="crm-modal-history" onclick="if(event.target===this)crmCloseModal('crm-modal-history')">
@@ -1365,10 +1347,72 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         <button onclick="closeChatOverlay()" style="background:none;border:none;color:var(--txt3);font-size:14px;cursor:pointer">✕</button>
       </div>
       <div id="chat-msgs" style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px"></div>
-      <div style="display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--brd)">
+      <div style="display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--brd);align-items:center">
+        <input type="file" id="chat-file-input" style="display:none" onchange="chatSendFile()">
+        <button onclick="document.getElementById('chat-file-input').click()" title="Прикріпити файл" style="flex-shrink:0;width:32px;height:32px;border-radius:8px;border:1px solid var(--brd2);background:none;color:var(--txt2);cursor:pointer;font-size:14px">📎</button>
         <input class="fi" id="chat-input" style="flex:1" placeholder="Повідомлення..." onkeydown="if(event.key==='Enter')chatSend()">
         <button class="btn pri sm" onclick="chatSend()">➤</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ГЛОБАЛЬНІ РАХУНКИ НА ОПЛАТУ (доступні звідусіль, залежно від ролі) -->
+<div id="invoices-overlay" style="display:none;position:fixed;inset:0;z-index:910;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px">
+  <div class="crm-vars" style="background:var(--bg2);border:1px solid var(--brd2);border-radius:14px;width:100%;max-width:820px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;flex:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--brd)">
+      <div style="font-weight:700;font-size:13px">💳 Рахунки на оплату</div>
+      <button onclick="closeInvoicesOverlay()" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer">✕</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:16px">
+      <div class="crm-arch-banner" id="inv-banner">💳 Завантажте фото / PDF / Excel рахунку — він піде на підтвердження керівнику, потім бухгалтеру на оплату.</div>
+      <div class="crm-form-box" id="inv-upload-box">
+        <div class="crm-row3">
+          <div class="crm-fg"><label>Файли (фото / PDF / Excel) — можна кілька</label><input type="file" id="inv-file" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.csv" multiple></div>
+          <div class="crm-fg"><label>Сума (необов'язково)</label><input type="number" id="inv-amount" placeholder="0.00" step="0.01"></div>
+          <div class="crm-fg"><label>Опис</label><input type="text" id="inv-desc" placeholder="За що рахунок..."></div>
+        </div>
+        <button class="crm-btn-sub" style="margin-top:8px" onclick="invUpload()">⬆ Завантажити на підтвердження</button>
+      </div>
+      <div class="crm-toolbar">
+        <select id="inv-filter" onchange="invRender()" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:8px;background:var(--bg3);color:var(--txt);font-family:inherit">
+          <option value="">Всі статуси</option>
+          <option value="pending">На підтвердженні</option>
+          <option value="approved">Підтверджено (очікує оплати)</option>
+          <option value="rejected">Відхилено</option>
+          <option value="paid">Оплачено</option>
+        </select>
+        <span class="crm-cnt" id="inv-cnt"></span>
+      </div>
+      <div id="inv-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ГЛОБАЛЬНИЙ ЗАПИТ НА РАХУНОК (менеджер → бухгалтер → менеджер) -->
+<div id="invreq-overlay" style="display:none;position:fixed;inset:0;z-index:910;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px">
+  <div class="crm-vars" style="background:var(--bg2);border:1px solid var(--brd2);border-radius:14px;width:100%;max-width:820px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;flex:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--brd)">
+      <div style="font-weight:700;font-size:13px">📋 Запит на рахунок бухгалтеру</div>
+      <button onclick="closeInvoiceRequestsOverlay()" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer">✕</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:16px">
+      <div class="crm-arch-banner" id="invreq-banner">📋 Вкажіть позиції — бухгалтер сформує рахунок і поверне вам файл.</div>
+      <div class="crm-form-box" id="invreq-form-box">
+        <div id="invreq-items"></div>
+        <button class="crm-btn-can" style="margin-top:6px" onclick="invreqAddItem()">➕ Додати позицію</button>
+        <div class="crm-fg" style="margin-top:10px"><label>Коментар</label><input type="text" id="invreq-comment" placeholder="Додаткова інформація..."></div>
+        <button class="crm-btn-sub" style="margin-top:8px" onclick="invreqSubmit()">➤ Відправити бухгалтеру</button>
+      </div>
+      <div class="crm-toolbar">
+        <select id="invreq-filter" onchange="invreqRender()" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:8px;background:var(--bg3);color:var(--txt);font-family:inherit">
+          <option value="">Всі статуси</option>
+          <option value="new">Нові</option>
+          <option value="fulfilled">Виконані</option>
+        </select>
+        <span class="crm-cnt" id="invreq-cnt"></span>
+      </div>
+      <div id="invreq-list"></div>
     </div>
   </div>
 </div>
@@ -2026,7 +2070,7 @@ async function admRenderRoles(){
     }
     const rows=await r.json();
     if(!rows.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Нікого не знайдено</div>'; return; }
-    const roleOpts=['director','chief_accountant','accountant','manager','sales_head'];
+    const roleOpts=['director','chief_accountant','accountant','manager','sales_head','senior_accountant'];
     list.innerHTML=rows.map(p=>`
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--brd);font-size:12px">
         <span>${esc(p.email)}${p.id===sbSession?.user?.id?' <span style="color:var(--txt3)">(ви)</span>':''}</span>
@@ -2669,8 +2713,12 @@ const TITLES={dashboard:'Дашборд',deals:'Журнал угод',bank:'Б�
   approvals:'Підтвердження'};
 // ── РОЛІ: Менеджер працює лише в CRM (окрема повноекранна оболонка),
 //    Директор/Гол.бух/Бухгалтер працюють в ЖСМ і можуть перемкнутись у CRM ──
-const ROLE_LABELS={director:'Директор',chief_accountant:'Гол. бухгалтер',accountant:'Бухгалтер',manager:'Менеджер',sales_head:'Керівник відділу продажів'};
+const ROLE_LABELS={director:'Директор',chief_accountant:'Гол. бухгалтер',accountant:'Бухгалтер',manager:'Менеджер',sales_head:'Керівник відділу продажів',senior_accountant:'Старший бухгалтер'};
 let myRole='manager';
+const ZHSM_PAGE_WHITELIST={
+  accountant:['mid','bank'],
+  senior_accountant:['deals','mid','bank','debts','svirka','import']
+};
 function applyRoleVisibility(){
   const adminNav=document.getElementById('nav-admin');
   if(adminNav) adminNav.style.display = (isAdmin || myRole==='chief_accountant') ? '' : 'none';
@@ -2679,7 +2727,20 @@ function applyRoleVisibility(){
   const apprNav=document.getElementById('nav-approvals');
   if(apprNav) apprNav.style.display = (myRole==='director') ? '' : 'none';
   const gotoCrm=document.getElementById('nav-goto-crm');
-  if(gotoCrm) gotoCrm.style.display = ''; // ЖСМ-ролі завжди можуть перейти в CRM подивитись лідів/клієнтів
+  if(gotoCrm) gotoCrm.style.display = (myRole==='accountant'||myRole==='senior_accountant') ? 'none' : '';
+  // Обмежені ролі: Бухгалтер і Старший бухгалтер бачать лише окремі розділи ЖСМ
+  const whitelist=ZHSM_PAGE_WHITELIST[myRole];
+  if(whitelist){
+    document.querySelectorAll('.app .sb-nav .nav-i[data-page]').forEach(el=>{
+      const p=el.dataset.page;
+      if(p==='admin'||p==='pnl'||p==='approvals') return; // керуються окремо вище
+      el.style.display = whitelist.includes(p) ? '' : 'none';
+    });
+  }
+  const invNav=document.getElementById('nav-invoices');
+  if(invNav) invNav.style.display = ['sales_head','accountant','senior_accountant','chief_accountant','director'].includes(myRole) ? '' : 'none';
+  const invReqNav=document.getElementById('nav-invreq');
+  if(invReqNav) invReqNav.style.display = ['accountant','senior_accountant','chief_accountant','director'].includes(myRole) ? '' : 'none';
   if(myRole==='director') refreshApprovalBadge();
 }
 function switchToCrm(){
@@ -2715,6 +2776,10 @@ function closeChatOverlay(){
   document.getElementById('chat-overlay').style.display='none';
   if(chatPollTimer) clearInterval(chatPollTimer);
 }
+function openInvoicesOverlay(){ document.getElementById('invoices-overlay').style.display='flex'; invRender(); }
+function closeInvoicesOverlay(){ document.getElementById('invoices-overlay').style.display='none'; }
+function openInvoiceRequestsOverlay(){ document.getElementById('invreq-overlay').style.display='flex'; if(!invreqItemsDraft.length) invreqAddItem(); invreqRender(); }
+function closeInvoiceRequestsOverlay(){ document.getElementById('invreq-overlay').style.display='none'; }
 
 // ══════════════════════════════════════════════════════════
 // CRM: ПОВНИЙ МОДУЛЬ — Дашборд / Ліди / Постійні / Архів / Статистика / План
@@ -2781,6 +2846,8 @@ async function crmLoadAll(){
   crmApplyManagerColumnVisibility();
   const mdBtn=document.getElementById('crm-tabbtn-mydeals'); if(mdBtn) mdBtn.style.display = (myRole==='manager') ? '' : 'none';
   const tmBtn=document.getElementById('crm-tabbtn-teammid'); if(tmBtn) tmBtn.style.display = (myRole==='sales_head') ? '' : 'none';
+  const irBtn=document.getElementById('crm-tabbtn-invreq'); if(irBtn) irBtn.style.display = (myRole==='manager') ? '' : 'none';
+  const ivBtn=document.getElementById('crm-tabbtn-invoices'); if(ivBtn) ivBtn.style.display = (myRole==='manager'||myRole==='sales_head') ? '' : 'none';
   crmUpdateStats();
   crmRenderLeads(); crmRenderClients(); crmRenderArchive();
   crmCheckReminders();
@@ -3591,6 +3658,7 @@ function crmToggleTeamMidGroup(key){
 
 // ── РАХУНКИ НА ОПЛАТУ ──
 let invCache=[];
+let invExtraFiles={};
 async function invOpenFile(path){
   try{
     const r=await sbFetch(SB_URL+'/storage/v1/object/sign/invoices/'+path,{method:'POST',body:JSON.stringify({expiresIn:300})});
@@ -3600,30 +3668,41 @@ async function invOpenFile(path){
     window.open(SB_URL+'/storage/v1'+data.signedURL,'_blank');
   }catch(e){ toast('Не вдалось відкрити файл: '+e.message,'e'); }
 }
+async function invUploadFileToStorage(bucket,file){
+  const ext=file.name.split('.').pop();
+  const path=currentCompanyId+'/'+sbSession.user.id+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,8)+'.'+ext;
+  const upR=await fetch(SB_URL+'/storage/v1/object/'+bucket+'/'+path,{
+    method:'POST',
+    headers:{'apikey':SB_ANON,'Authorization':'Bearer '+sbSession.access_token,'Content-Type':file.type||'application/octet-stream'},
+    body:file
+  });
+  if(!upR.ok) throw new Error('Помилка завантаження файлу: HTTP '+upR.status);
+  return path;
+}
 async function invUpload(){
   const fileInp=document.getElementById('inv-file');
-  const file=fileInp.files[0];
-  if(!file){ toast('Оберіть файл','e'); return; }
-  if(file.size>15*1024*1024){ toast('Файл занадто великий (макс 15МБ)','e'); return; }
+  const files=[...fileInp.files];
+  if(!files.length){ toast('Оберіть хоча б один файл','e'); return; }
+  for(const f of files){ if(f.size>15*1024*1024){ toast('Файл "'+f.name+'" завеликий (макс 15МБ)','e'); return; } }
   try{
-    const ext=file.name.split('.').pop();
-    const path=currentCompanyId+'/'+sbSession.user.id+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,8)+'.'+ext;
-    const upR=await fetch(SB_URL+'/storage/v1/object/invoices/'+path,{
-      method:'POST',
-      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+sbSession.access_token,'Content-Type':file.type||'application/octet-stream'},
-      body:file
-    });
-    if(!upR.ok) throw new Error('Помилка завантаження файлу: HTTP '+upR.status);
+    const paths=[];
+    for(const f of files){ paths.push({path:await invUploadFileToStorage('invoices',f), file:f}); }
     const amount=document.getElementById('inv-amount').value;
     const desc=document.getElementById('inv-desc').value.trim();
+    const first=paths[0];
     const r=await sbFetch(SB_URL+'/rest/v1/invoices',{method:'POST',headers:{'Prefer':'return=representation'},body:JSON.stringify({
-      company_id:currentCompanyId, file_path:path, file_name:file.name, file_type:file.type,
+      company_id:currentCompanyId, file_path:first.path, file_name:first.file.name, file_type:first.file.type,
       description:desc||null, amount:amount||null, uploaded_by:sbSession.user.id
     })});
     if(!r.ok) throw new Error('Помилка створення заявки');
     const rows=await r.json();
     if(!rows.length) throw new Error('0 рядків створено (перевірте права доступу)');
-    toast('Рахунок відправлено на підтвердження','s');
+    const invoiceId=rows[0].id;
+    if(paths.length>1){
+      const extra=paths.slice(1).map(p=>({invoice_id:invoiceId, file_path:p.path, file_name:p.file.name, file_type:p.file.type}));
+      await sbFetch(SB_URL+'/rest/v1/invoice_files',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(extra)});
+    }
+    toast('Рахунок ('+files.length+' файл(ів)) відправлено на підтвердження','s');
     fileInp.value=''; document.getElementById('inv-amount').value=''; document.getElementById('inv-desc').value='';
     invRender();
   }catch(e){ toast(e.message||'Помилка завантаження','e'); }
@@ -3635,8 +3714,15 @@ async function invRender(){
     const r=await sbFetch(SB_URL+'/rest/v1/invoices?company_id=eq.'+currentCompanyId+'&select=*&order=created_at.desc');
     if(!r.ok) throw new Error();
     invCache=await r.json();
+    const ids=invCache.map(x=>x.id);
+    if(ids.length){
+      const rf=await sbFetch(SB_URL+'/rest/v1/invoice_files?invoice_id=in.('+ids.join(',')+')');
+      const extraFiles=rf.ok?await rf.json():[];
+      invExtraFiles={};
+      extraFiles.forEach(f=>{ if(!invExtraFiles[f.invoice_id])invExtraFiles[f.invoice_id]=[]; invExtraFiles[f.invoice_id].push(f); });
+    }else invExtraFiles={};
   }catch(e){
-    box.innerHTML='<div style="padding:16px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 14_sales_head_and_invoices.sql в Supabase.</div>';
+    box.innerHTML='<div style="padding:16px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 14/15 SQL-файли в Supabase.</div>';
     return;
   }
   const filter=document.getElementById('inv-filter')?.value||'';
@@ -3646,14 +3732,18 @@ async function invRender(){
   const stLabel={pending:'⏳ На підтвердженні',approved:'✅ Підтверджено (очікує оплати)',rejected:'❌ Відхилено',paid:'💰 Оплачено'};
   const stColor={pending:'var(--amb)',approved:'var(--acc)',rejected:'var(--red)',paid:'var(--grn)'};
   const canReview = (myRole==='sales_head' || myRole==='director');
-  const canMarkPaid = (myRole==='accountant' || myRole==='chief_accountant' || myRole==='director');
+  const canMarkPaid = (myRole==='accountant' || myRole==='senior_accountant' || myRole==='chief_accountant' || myRole==='director');
   box.innerHTML=list.map(inv=>{
-    const isImg=(inv.file_type||'').startsWith('image/');
+    const allFiles=[{file_path:inv.file_path,file_name:inv.file_name,file_type:inv.file_type},...(invExtraFiles[inv.id]||[])];
+    const filesHTML=allFiles.map(f=>{
+      const isImg=(f.file_type||'').startsWith('image/');
+      return `<button onclick="invOpenFile('${esc(f.file_path)}')" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);background:none;border:1px solid var(--brd2);border-radius:8px;padding:6px 10px;cursor:pointer;font-family:inherit">${isImg?'🖼':'📄'} ${esc(f.file_name||'Файл')}</button>`;
+    }).join('');
     return `<div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
       <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
         <div style="flex:1;min-width:200px">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            <span class="crm-pc-name" style="font-size:13px">${esc(inv.file_name||'Файл')}</span>
+            <span class="crm-pc-name" style="font-size:13px">Рахунок №${inv.id}${allFiles.length>1?' ('+allFiles.length+' файли)':''}</span>
             <span style="font-size:10.5px;font-weight:600;color:${stColor[inv.status]}">${stLabel[inv.status]}</span>
           </div>
           <div style="font-size:11px;color:var(--txt3);margin-top:3px">${crmMgrEmail(inv.uploaded_by)} · ${new Date(inv.created_at).toLocaleString('uk-UA')}</div>
@@ -3661,7 +3751,7 @@ async function invRender(){
           ${inv.amount?`<div style="font-size:13px;font-weight:700;margin-top:4px">₴${Number(inv.amount).toLocaleString('uk-UA')}</div>`:''}
           ${inv.reject_reason?`<div style="font-size:11px;color:var(--red);margin-top:4px">Причина відхилення: ${esc(inv.reject_reason)}</div>`:''}
         </div>
-        <button onclick="invOpenFile('${esc(inv.file_path)}')" style="flex-shrink:0;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);background:none;border:1px solid var(--brd2);border-radius:8px;padding:7px 11px;cursor:pointer;font-family:inherit">${isImg?'🖼':'📄'} Відкрити файл</button>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0">${filesHTML}</div>
       </div>
       ${inv.status==='pending' && canReview?`<div style="display:flex;gap:6px;margin-top:10px">
         <button class="crm-btn-sub" style="padding:0 12px" onclick="invReview(${inv.id},'approved')">✔ Підтвердити</button>
@@ -3697,6 +3787,102 @@ async function invMarkPaid(id){
     if(!rows.length) throw new Error('0 рядків оновлено');
     toast('Позначено оплаченим','s');
     invRender();
+  }catch(e){ toast('Помилка: '+e.message,'e'); }
+}
+
+// ── ЗАПИТ НА РАХУНОК: менеджер формує позиції → бухгалтер завантажує рахунок у відповідь ──
+let invreqItemsDraft=[];
+let invreqCache=[];
+function invreqAddItem(){
+  invreqItemsDraft.push({name:'',qty:1,unit:'шт',price:''});
+  invreqRenderItems();
+}
+function invreqRemoveItem(i){ invreqItemsDraft.splice(i,1); invreqRenderItems(); }
+function invreqUpdateItem(i,field,val){ invreqItemsDraft[i][field]=val; }
+function invreqRenderItems(){
+  const box=document.getElementById('invreq-items'); if(!box) return;
+  box.innerHTML=invreqItemsDraft.map((it,i)=>`
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:6px;margin-bottom:6px;align-items:center">
+      <input placeholder="Назва позиції" value="${esc(it.name)}" oninput="invreqUpdateItem(${i},'name',this.value)" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:6px;background:var(--bg3);color:var(--txt)">
+      <input type="number" placeholder="К-сть" value="${it.qty}" oninput="invreqUpdateItem(${i},'qty',this.value)" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:6px;background:var(--bg3);color:var(--txt)">
+      <input placeholder="Од." value="${esc(it.unit)}" oninput="invreqUpdateItem(${i},'unit',this.value)" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:6px;background:var(--bg3);color:var(--txt)">
+      <input type="number" placeholder="Ціна" value="${it.price}" oninput="invreqUpdateItem(${i},'price',this.value)" style="height:31px;padding:0 8px;font-size:12px;border:1px solid var(--brd);border-radius:6px;background:var(--bg3);color:var(--txt)">
+      <button onclick="invreqRemoveItem(${i})" style="width:31px;height:31px;border-radius:6px;border:1px solid var(--brd2);background:none;color:var(--red);cursor:pointer">✕</button>
+    </div>`).join('');
+}
+async function invreqSubmit(){
+  const items=invreqItemsDraft.filter(it=>it.name.trim());
+  if(!items.length){ toast('Додайте хоча б одну позицію з назвою','e'); return; }
+  const comment=document.getElementById('invreq-comment').value.trim();
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/invoice_requests',{method:'POST',headers:{'Prefer':'return=representation'},body:JSON.stringify({
+      company_id:currentCompanyId, requested_by:sbSession.user.id, items, comment:comment||null
+    })});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const rows=await r.json();
+    if(!rows.length) throw new Error('0 рядків створено');
+    toast('Запит відправлено бухгалтеру','s');
+    invreqItemsDraft=[]; invreqAddItem();
+    document.getElementById('invreq-comment').value='';
+    invreqRender();
+  }catch(e){ toast('Помилка: '+e.message,'e'); }
+}
+async function invreqRender(){
+  const box=document.getElementById('invreq-list'); if(!box) return;
+  box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px">Завантаження...</div>';
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/invoice_requests?company_id=eq.'+currentCompanyId+'&select=*&order=created_at.desc');
+    if(!r.ok) throw new Error();
+    invreqCache=await r.json();
+  }catch(e){
+    box.innerHTML='<div style="padding:16px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 15_multifile_roles_requests.sql в Supabase.</div>';
+    return;
+  }
+  const filter=document.getElementById('invreq-filter')?.value||'';
+  let list=filter?invreqCache.filter(x=>x.status===filter):invreqCache;
+  const cntEl=document.getElementById('invreq-cnt'); if(cntEl) cntEl.textContent='Запитів: '+list.length;
+  const canRespond=['accountant','senior_accountant','chief_accountant','director'].includes(myRole);
+  if(!list.length){ box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px;text-align:center">Немає запитів</div>'; return; }
+  box.innerHTML=list.map(rq=>{
+    const itemsHTML=(rq.items||[]).map(it=>`<tr style="border-top:1px solid var(--brd)"><td style="padding:5px 8px">${esc(it.name)}</td><td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${it.qty||''} ${esc(it.unit||'')}</td><td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${it.price?Number(it.price).toLocaleString('uk-UA'):''}</td></tr>`).join('');
+    return `<div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div class="crm-pc-name" style="font-size:13px">Запит №${rq.id} — ${crmMgrEmail(rq.requested_by)}</div>
+        <span style="font-size:10.5px;font-weight:600;color:${rq.status==='new'?'var(--amb)':'var(--grn)'}">${rq.status==='new'?'⏳ Новий':'✅ Виконано'}</span>
+      </div>
+      <div style="font-size:11px;color:var(--txt3);margin:3px 0 8px">${new Date(rq.created_at).toLocaleString('uk-UA')}</div>
+      ${rq.comment?`<div style="font-size:12px;color:var(--txt2);margin-bottom:8px">${esc(rq.comment)}</div>`:''}
+      <div style="border:1px solid var(--brd);border-radius:8px;overflow:hidden">
+        <table style="width:100%;font-size:11px;border-collapse:collapse">
+          <thead><tr style="background:var(--bg3)"><th style="text-align:left;padding:5px 8px">Позиція</th><th style="text-align:right;padding:5px 8px">К-сть</th><th style="text-align:right;padding:5px 8px">Ціна</th></tr></thead>
+          <tbody>${itemsHTML}</tbody>
+        </table>
+      </div>
+      ${rq.status==='fulfilled'?`<div style="margin-top:10px">
+        <button onclick="invOpenFile('${esc(rq.response_file_path)}')" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);background:none;border:1px solid var(--brd2);border-radius:8px;padding:7px 11px;cursor:pointer;font-family:inherit">📄 ${esc(rq.response_file_name||'Рахунок')}</button>
+      </div>`:''}
+      ${rq.status==='new' && canRespond?`<div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input type="file" id="invreq-resp-file-${rq.id}" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.csv" style="font-size:11px">
+        <button class="crm-btn-sub" style="padding:0 12px" onclick="invreqRespond(${rq.id})">⬆ Завантажити рахунок і завершити</button>
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+async function invreqRespond(id){
+  const fileInp=document.getElementById('invreq-resp-file-'+id);
+  const file=fileInp.files[0];
+  if(!file){ toast('Оберіть файл рахунку','e'); return; }
+  try{
+    const path=await invUploadFileToStorage('invoice-requests',file);
+    const r=await sbFetch(SB_URL+'/rest/v1/invoice_requests?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({
+      status:'fulfilled', response_file_path:path, response_file_name:file.name,
+      responded_by:sbSession.user.id, responded_at:new Date().toISOString()
+    })});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const rows=await r.json();
+    if(!rows.length) throw new Error('0 рядків оновлено');
+    toast('Рахунок надіслано менеджеру','s');
+    invreqRender();
   }catch(e){ toast('Помилка: '+e.message,'e'); }
 }
 
@@ -3746,14 +3932,25 @@ async function chatLoadMessages(){
     wrap.innerHTML=rows.map(m=>{
       const mine=m.sender_id===me;
       const senderLabel=mine?'':(crmProfileEmailById[m.sender_id]||'Учасник чату');
+      const isImg=(m.file_type||'').startsWith('image/');
+      const fileHTML=m.file_path?`<div onclick="chatOpenFile('${esc(m.file_path)}')" style="cursor:pointer;display:flex;align-items:center;gap:6px;background:${mine?'rgba(255,255,255,.15)':'var(--bg2)'};border-radius:10px;padding:6px 10px;margin-top:${m.text?'5px':'0'};font-size:11px">${isImg?'🖼':'📎'} ${esc(m.file_name||'Файл')}</div>`:'';
       return `<div style="align-self:${mine?'flex-end':'flex-start'};max-width:70%">
         ${!mine&&!chatPeerId?`<div style="font-size:10px;color:var(--acc);margin-bottom:2px;font-weight:600">${esc(senderLabel)}</div>`:''}
-        <div style="background:${mine?'var(--acc)':'var(--bg3)'};color:${mine?'#fff':'var(--txt)'};padding:7px 11px;border-radius:12px;font-size:12px;word-break:break-word">${esc(m.text)}</div>
+        <div style="background:${mine?'var(--acc)':'var(--bg3)'};color:${mine?'#fff':'var(--txt)'};padding:7px 11px;border-radius:12px;font-size:12px;word-break:break-word">${m.text?esc(m.text):''}${fileHTML}</div>
         <div style="font-size:9px;color:var(--txt3);margin-top:2px;text-align:${mine?'right':'left'}">${new Date(m.created_at).toLocaleString('uk-UA',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'})}</div>
       </div>`;
     }).join('');
     wrap.scrollTop=wrap.scrollHeight;
   }catch(e){}
+}
+async function chatOpenFile(path){
+  try{
+    const r=await sbFetch(SB_URL+'/storage/v1/object/sign/chat-files/'+path,{method:'POST',body:JSON.stringify({expiresIn:300})});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data=await r.json();
+    if(!data.signedURL) throw new Error('Не вдалось отримати посилання');
+    window.open(SB_URL+'/storage/v1'+data.signedURL,'_blank');
+  }catch(e){ toast('Не вдалось відкрити файл: '+e.message,'e'); }
 }
 async function chatSend(){
   const inp=document.getElementById('chat-input');
@@ -3765,6 +3962,20 @@ async function chatSend(){
     })});
     chatLoadMessages();
   }catch(e){ toast('Не вдалось надіслати','e'); }
+}
+async function chatSendFile(){
+  const inp=document.getElementById('chat-file-input');
+  const file=inp.files[0]; if(!file) return;
+  if(file.size>15*1024*1024){ toast('Файл завеликий (макс 15МБ)','e'); inp.value=''; return; }
+  try{
+    const path=await invUploadFileToStorage('chat-files',file);
+    await sbFetch(SB_URL+'/rest/v1/chat_messages',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({
+      company_id:currentCompanyId, sender_id:sbSession?.user?.id, recipient_id:chatPeerId, text:'',
+      file_path:path, file_name:file.name, file_type:file.type
+    })});
+    inp.value='';
+    chatLoadMessages();
+  }catch(e){ toast('Не вдалось надіслати файл: '+e.message,'e'); }
 }
 
 // ══════════════════════════════════════════════════════════
