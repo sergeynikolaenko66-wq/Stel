@@ -14,6 +14,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ЖСМ">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --bg:#17141f;--bg2:#100e17;--bg3:#1d1a29;--bg4:#241f33;
@@ -555,6 +556,8 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
 .crm-vars .crm-sbadge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:600;letter-spacing:.01em;}
 .crm-vars select, .crm-vars input[type="date"]{border-radius:8px!important;}
 
+.notif-badge{display:none;background:var(--red);color:#fff;border-radius:9px;padding:1px 6px;font-size:9.5px;font-weight:700;margin-left:auto}
+.notif-badge.show{display:inline-block}
 </style>
 </head>
 <body>
@@ -612,10 +615,10 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
     <div class="nav-i" id="nav-admin" data-page="admin" onclick="nav('admin')" style="display:none"><span>⚙</span>Адміністрування</div>
     <div class="nav-i" id="nav-pnl" data-page="pnl" onclick="nav('pnl')" style="display:none"><span>📊</span>P&amp;L (прибуток)</div>
     <div style="height:1px;background:var(--brd);margin:6px 14px"></div>
-    <div class="nav-i" id="nav-chat" onclick="openChatOverlay()"><span>💬</span>Чат</div>
-    <div class="nav-i" id="nav-invoices" onclick="openInvoicesOverlay()" style="display:none"><span>💳</span>Рахунки на оплату</div>
-    <div class="nav-i" id="nav-invreq" onclick="openInvoiceRequestsOverlay()" style="display:none"><span>📋</span>Запити на рахунки</div>
-    <div class="nav-i" id="nav-dealact" onclick="openDealActionsOverlay()" style="display:none"><span>🧾</span>Дії по угодах</div>
+    <div class="nav-i" id="nav-chat" onclick="openChatOverlay()"><span>💬</span>Чат <span class="notif-badge" id="badge-chat"></span></div>
+    <div class="nav-i" id="nav-invoices" onclick="openInvoicesOverlay()" style="display:none"><span>💳</span>Рахунки на оплату <span class="notif-badge" id="badge-invoices"></span></div>
+    <div class="nav-i" id="nav-invreq" onclick="openInvoiceRequestsOverlay()" style="display:none"><span>📋</span>Запити на рахунки <span class="notif-badge" id="badge-invreq"></span></div>
+    <div class="nav-i" id="nav-dealact" onclick="openDealActionsOverlay()" style="display:none"><span>🧾</span>Дії по угодах <span class="notif-badge" id="badge-dealact"></span></div>
     <div class="nav-i" id="nav-approvals" data-page="approvals" onclick="nav('approvals')" style="display:none"><span>✅</span>Підтвердження <span id="appr-badge" style="display:none;background:var(--red);color:#fff;border-radius:8px;padding:1px 6px;font-size:9px;margin-left:auto"></span></div>
     <div class="nav-i" id="nav-goto-crm" onclick="switchToCrm()" style="display:none"><span>🧾</span>Перейти в CRM</div>
   </div>
@@ -1002,6 +1005,15 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         </div>
 
         <div style="margin-bottom:24px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px">🛡 Аудит-лог (лише Директор)</div>
+          <div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Хто, що і коли змінював — ролі, підтвердження оплат, доступи.</div>
+          <div style="display:flex;gap:8px;margin-bottom:8px">
+            <button class="btn sm" onclick="admLoadAuditLog()">🔄 Оновити</button>
+          </div>
+          <div id="adm-audit-list" style="border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;max-height:320px;overflow-y:auto"></div>
+        </div>
+
+        <div style="margin-bottom:24px">
           <div style="font-size:13px;font-weight:700;margin-bottom:10px">👤 Доступ колег до компаній</div>
           <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
             <input id="adm-grant-email" type="email" placeholder="email колеги" style="flex:1;min-width:180px;background:var(--bg3);border:1px solid var(--brd);border-radius:var(--r);padding:7px 10px;color:var(--txt);font-family:inherit;font-size:12px">
@@ -1088,8 +1100,11 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
   <div style="display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--brd);background:var(--bg2);flex-shrink:0">
     <div style="font-weight:800;color:var(--acc);letter-spacing:.1em;font-size:12px;text-transform:uppercase">🧾 CRM — Ліди / Клієнти</div>
     <span style="flex:1"></span>
-    <button class="crm-hbtn-shell" onclick="openChatOverlay()" title="Чат" style="display:flex;align-items:center;gap:5px;height:30px;padding:0 12px;border-radius:7px;font-size:12px;cursor:pointer;border:1px solid var(--brd2);color:var(--txt2);background:transparent">💬 Чат</button>
+    <button class="crm-hbtn-shell" onclick="openChatOverlay()" title="Чат" style="display:flex;align-items:center;gap:5px;height:30px;padding:0 12px;border-radius:7px;font-size:12px;cursor:pointer;border:1px solid var(--brd2);color:var(--txt2);background:transparent">💬 Чат <span class="notif-badge" id="badge-chat-shell"></span></button>
     <button id="crm-switch-zhsm-btn" onclick="switchToZhsm()" style="display:none;align-items:center;gap:5px;height:30px;padding:0 12px;border-radius:7px;font-size:12px;cursor:pointer;border:1px solid var(--brd2);color:var(--txt2);background:transparent">⇄ Перейти в ЖСМ</button>
+    <button onclick="crmExportBackup()" title="Зберегти копію моєї бази лідів/клієнтів" style="display:flex;align-items:center;gap:5px;height:30px;padding:0 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1px solid var(--brd2);color:var(--txt2);background:transparent">⬇ Зберегти базу</button>
+    <input type="file" id="crm-import-file" accept=".json" style="display:none" onchange="crmImportBackup()">
+    <button onclick="document.getElementById('crm-import-file').click()" title="Завантажити базу з файлу" style="display:flex;align-items:center;gap:5px;height:30px;padding:0 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1px solid var(--brd2);color:var(--txt2);background:transparent">⬆ Завантажити базу</button>
     <button onclick="toggleTheme()" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;border:1px solid var(--brd2);background:transparent;color:var(--txt2);cursor:pointer">☀</button>
     <span id="crm-shell-user-lbl" style="font-size:11px;color:var(--txt3);white-space:nowrap"></span>
     <button onclick="doLogout()" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;border:1px solid var(--brd2);background:transparent;color:var(--txt2);cursor:pointer" title="Вийти">⏻</button>
@@ -1127,8 +1142,8 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
         <button class="crm-tab" id="crm-tabbtn-plan" onclick="crmShowTab('plan')">📋 План</button>
         <button class="crm-tab" id="crm-tabbtn-mydeals" onclick="crmShowTab('mydeals')" style="display:none">🧾 Мої угоди</button>
         <button class="crm-tab" id="crm-tabbtn-teammid" onclick="crmShowTab('teammid')" style="display:none">📈 МІД команди</button>
-        <button class="crm-tab" id="crm-tabbtn-invreq" onclick="openInvoiceRequestsOverlay()" style="display:none">📋 Запит на рахунок</button>
-        <button class="crm-tab" id="crm-tabbtn-invoices" onclick="openInvoicesOverlay()" style="display:none">💳 Рахунки на оплату</button>
+        <button class="crm-tab" id="crm-tabbtn-invreq" onclick="openInvoiceRequestsOverlay()" style="display:none">📋 Запит на рахунок <span class="notif-badge" id="badge-invreq-shell"></span></button>
+        <button class="crm-tab" id="crm-tabbtn-invoices" onclick="openInvoicesOverlay()" style="display:none">💳 Рахунки на оплату <span class="notif-badge" id="badge-invoices-shell"></span></button>
       </div>
 
       <!-- DASHBOARD -->
@@ -2006,6 +2021,7 @@ async function renderAdminPage(){
   try{ await admRenderAccessList(); }catch(e){ console.error('admRenderAccessList:',e); }
   try{ await admRenderRoles(); }catch(e){ console.error('admRenderRoles:',e); }
   try{ await admRenderTeams(); }catch(e){ console.error('admRenderTeams:',e); }
+  if(myRole==='director'){ try{ await admLoadAuditLog(); }catch(e){ console.error('admLoadAuditLog:',e); } }
   try{ await admRenderMgrLinks(); }catch(e){ console.error('admRenderMgrLinks:',e); }
   try{ renderPayroll(); }catch(e){ console.error('renderPayroll:',e); }
 }
@@ -2069,6 +2085,31 @@ async function admRenderTeams(){
     list.innerHTML='<div style="padding:10px;color:var(--red);font-size:12px">Помилка завантаження</div>';
   }
 }
+async function admLoadAuditLog(){
+  const list=document.getElementById('adm-audit-list'); if(!list) return;
+  list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Завантаження...</div>';
+  const ACTION_LABELS={
+    role_changed:'🎭 Змінено роль', invoice_approved:'✅ Підтверджено рахунок', invoice_rejected:'❌ Відхилено рахунок',
+    invoice_paid:'💰 Оплачено рахунок', approval_approved:'✅ Підтверджено заявку', approval_rejected:'❌ Відхилено заявку',
+    access_granted:'👤 Надано доступ', access_revoked:'👤 Забрано доступ'
+  };
+  try{
+    const r=await sbFetch(SB_URL+'/rest/v1/audit_log?company_id=eq.'+currentCompanyId+'&select=*&order=created_at.desc&limit=100');
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const rows=await r.json();
+    if(!rows.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Записів ще немає</div>'; return; }
+    list.innerHTML=rows.map(l=>`
+      <div style="padding:8px 12px;border-bottom:1px solid var(--brd);font-size:11.5px">
+        <div style="display:flex;justify-content:space-between;gap:8px">
+          <span>${ACTION_LABELS[l.action]||l.action}</span>
+          <span style="color:var(--txt3);font-family:var(--mono)">${new Date(l.created_at).toLocaleString('uk-UA')}</span>
+        </div>
+        <div style="color:var(--txt3);margin-top:2px">${crmMgrEmail(l.user_id)}${l.details?' · '+esc(JSON.stringify(l.details)):''}</div>
+      </div>`).join('');
+  }catch(e){
+    list.innerHTML='<div style="padding:10px;color:var(--red);font-size:12px">Помилка завантаження. Перевірте, чи виконано 17_notifications_audit_security.sql</div>';
+  }
+}
 async function admSetTeamLead(userId,leadId){
   try{
     const r=await sbFetch(SB_URL+'/rest/v1/profiles?id=eq.'+userId,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({team_lead_id:leadId||null})});
@@ -2112,6 +2153,7 @@ async function admSetRole(userId,newRole){
     const rows=await r.json();
     if(!rows.length) throw new Error('0 рядків оновлено (перевірте права доступу)');
     toast('Роль оновлено','s');
+    logAudit('role_changed',{target_user:userId,target_email:rows[0].email,new_role:newRole});
   }catch(e){
     toast('Помилка: '+e.message,'e');
   }
@@ -2293,6 +2335,87 @@ function showCompanyScreen(){
   document.getElementById('company-screen').style.display='flex';
 }
 
+// ══════════════════════════════════════════════════════════
+// СПОВІЩЕННЯ / ЛІЧИЛЬНИКИ
+// ══════════════════════════════════════════════════════════
+function setBadge(ids,count){
+  ids.forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    if(count>0){ el.textContent=count>99?'99+':count; el.classList.add('show'); }
+    else el.classList.remove('show');
+  });
+}
+function chatGroupLastSeenKey(){ return 'jsm_chat_seen_'+currentCompanyId; }
+function chatMarkGroupSeen(){ localStorage.setItem(chatGroupLastSeenKey(), new Date().toISOString()); refreshNotifBadges(); }
+async function refreshNotifBadges(){
+  if(!currentCompanyId||!sbSession) return;
+  try{
+    // Особисті непрочитані повідомлення
+    const r1=await sbFetch(SB_URL+'/rest/v1/chat_messages?company_id=eq.'+currentCompanyId+'&recipient_id=eq.'+sbSession.user.id+'&read_at=is.null&select=id');
+    const personalUnread=r1.ok?(await r1.json()).length:0;
+    // Непрочитані в загальному чаті (по локальній позначці "востаннє бачив")
+    const lastSeen=localStorage.getItem(chatGroupLastSeenKey())||'1970-01-01';
+    const r2=await sbFetch(SB_URL+'/rest/v1/chat_messages?company_id=eq.'+currentCompanyId+'&recipient_id=is.null&created_at=gt.'+encodeURIComponent(lastSeen)+'&sender_id=neq.'+sbSession.user.id+'&select=id');
+    const groupUnread=r2.ok?(await r2.json()).length:0;
+    setBadge(['badge-chat','badge-chat-shell'], personalUnread+groupUnread);
+
+    if(['sales_head','director'].includes(myRole)){
+      const ri=await sbFetch(SB_URL+'/rest/v1/invoices?company_id=eq.'+currentCompanyId+'&status=eq.pending&select=id');
+      setBadge(['badge-invoices','badge-invoices-shell'], ri.ok?(await ri.json()).length:0);
+    }else if(['accountant','senior_accountant','chief_accountant'].includes(myRole)){
+      const ri=await sbFetch(SB_URL+'/rest/v1/invoices?company_id=eq.'+currentCompanyId+'&status=eq.approved&select=id');
+      setBadge(['badge-invoices','badge-invoices-shell'], ri.ok?(await ri.json()).length:0);
+    }
+
+    if(['accountant','senior_accountant','chief_accountant','director'].includes(myRole)){
+      const rq=await sbFetch(SB_URL+'/rest/v1/invoice_requests?company_id=eq.'+currentCompanyId+'&status=eq.new&select=id');
+      setBadge(['badge-invreq','badge-invreq-shell'], rq.ok?(await rq.json()).length:0);
+      const rd=await sbFetch(SB_URL+'/rest/v1/deal_action_requests?company_id=eq.'+currentCompanyId+'&status=eq.new&select=id');
+      setBadge(['badge-dealact'], rd.ok?(await rd.json()).length:0);
+    }
+    if(myRole==='director') refreshApprovalBadge();
+  }catch(e){}
+}
+
+// ── REALTIME (тільки для живих оновлень; авторизація й дані як і раніше через REST) ──
+let sbRealtime=null;
+function setupRealtime(){
+  try{
+    if(!window.supabase || !currentCompanyId) return;
+    if(sbRealtime) return; // вже підписані цю сесію
+    sbRealtime=window.supabase.createClient(SB_URL, SB_ANON, {auth:{persistSession:false}});
+    const ch=sbRealtime.channel('company-'+currentCompanyId);
+    ch.on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_messages',filter:'company_id=eq.'+currentCompanyId},payload=>{
+      refreshNotifBadges();
+      const msg=payload.new;
+      const chatOpenNow=document.getElementById('chat-overlay')?.style.display==='flex';
+      if(chatOpenNow && ((msg.recipient_id===null && !chatPeerId) || msg.recipient_id===chatPeerId || msg.sender_id===chatPeerId)){
+        chatLoadMessages();
+      }
+    }).on('postgres_changes',{event:'*',schema:'public',table:'invoices',filter:'company_id=eq.'+currentCompanyId},()=>{
+      refreshNotifBadges();
+      if(document.getElementById('invoices-overlay')?.style.display==='flex') invRender();
+    }).on('postgres_changes',{event:'*',schema:'public',table:'invoice_requests',filter:'company_id=eq.'+currentCompanyId},()=>{
+      refreshNotifBadges();
+      if(document.getElementById('invreq-overlay')?.style.display==='flex') invreqRender();
+    }).on('postgres_changes',{event:'*',schema:'public',table:'deal_action_requests',filter:'company_id=eq.'+currentCompanyId},()=>{
+      refreshNotifBadges();
+      if(document.getElementById('dealact-overlay')?.style.display==='flex') dealactRender();
+    }).on('postgres_changes',{event:'*',schema:'public',table:'approval_requests',filter:'company_id=eq.'+currentCompanyId},()=>{
+      if(myRole==='director') refreshApprovalBadge();
+    }).subscribe();
+  }catch(e){ console.error('Realtime setup failed:',e); }
+}
+
+// ── АУДИТ-ЛОГ ──
+async function logAudit(action,details){
+  try{
+    await sbFetch(SB_URL+'/rest/v1/audit_log',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({
+      company_id:currentCompanyId, user_id:sbSession?.user?.id, action, details:details||null
+    })});
+  }catch(e){}
+}
+
 async function enterApp(companyId){
   currentCompanyId=companyId;
   localStorage.setItem('jsm_last_company', String(companyId));
@@ -2301,6 +2424,8 @@ async function enterApp(companyId){
   const lbl=document.getElementById('current-user-lbl');
   if(lbl) lbl.textContent=currentUserEmail||'';
   await chatInitUsersList();
+  refreshNotifBadges();
+  setupRealtime();
 
   if(myRole==='manager' || myRole==='sales_head'){
     // Менеджер і Керівник відділу продажів ніколи не бачать ЖСМ — одразу й назавжди
@@ -2882,6 +3007,55 @@ async function crmLoadAll(){
   crmShowTab(document.querySelector('#pg-crm .crm-tab.active')?.id==='crm-tabbtn-dash'?'dash':'leads', true);
 }
 async function crmEnsureLoaded(){ if(!crmLoaded) await crmLoadAll(); }
+
+// ── РЕЗЕРВНА КОПІЯ БАЗИ (для менеджера — власні ліди/клієнти/архів + нотатки) ──
+async function crmExportBackup(){
+  try{
+    toast('Готуємо файл...','i');
+    const r=await sbFetch(SB_URL+'/rest/v1/contractors?company_id=eq.'+currentCompanyId+'&assigned_to=eq.'+sbSession.user.id+'&select=*');
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const contractors=await r.json();
+    const ids=contractors.map(c=>c.id);
+    let notes=[];
+    if(ids.length){
+      const rn=await sbFetch(SB_URL+'/rest/v1/contractor_notes?contractor_id=in.('+ids.join(',')+')&select=*');
+      notes=rn.ok?await rn.json():[];
+    }
+    const backup={exported_at:new Date().toISOString(),exported_by:sbSession.user.email,company_id:currentCompanyId,contractors,notes};
+    const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download='crm_backup_'+sbSession.user.email.replace(/[@.]/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('Збережено: '+contractors.length+' записів','s');
+  }catch(e){ toast('Помилка збереження: '+e.message,'e'); }
+}
+async function crmImportBackup(){
+  const inp=document.getElementById('crm-import-file');
+  const file=inp.files[0]; if(!file) return;
+  try{
+    const text=await file.text();
+    const backup=JSON.parse(text);
+    if(!backup.contractors || !Array.isArray(backup.contractors)) throw new Error('Невірний формат файлу');
+    if(!confirm('Буде додано '+backup.contractors.length+' записів як нові (дублі можливі, якщо це та сама база). Продовжити?')){ inp.value=''; return; }
+    let ok=0, fail=0;
+    for(const c of backup.contractors){
+      const payload={
+        company_id:currentCompanyId, company:c.company||null, name:c.name||'—', phone:c.phone||null, email:c.email||null,
+        position:c.position||null, business:c.business||null, status:c.status||null, kind:c.kind||'lead',
+        registered_at:c.registered_at||null, last_contact_at:c.last_contact_at||null, remind_at:c.remind_at||null,
+        archived:c.archived||false, archived_at:c.archived_at||null, archived_reason:c.archived_reason||null, archived_comment:c.archived_comment||null,
+        assigned_to:sbSession.user.id, created_by:sbSession.user.id
+      };
+      const r=await sbFetch(SB_URL+'/rest/v1/contractors',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(payload)});
+      if(r.ok) ok++; else fail++;
+    }
+    toast('Відновлено: '+ok+(fail?', помилок: '+fail:''),'s');
+    inp.value='';
+    crmLoadAll();
+  }catch(e){ toast('Помилка завантаження: '+e.message,'e'); inp.value=''; }
+}
 function crmApplyManagerColumnVisibility(){
   const show = myRole!=='manager';
   const th1=document.getElementById('crm-lead-th-mgr'); if(th1) th1.style.display=show?'':'none';
@@ -3852,6 +4026,7 @@ async function invReview(id,status){
     const rows=await r.json();
     if(!rows.length) throw new Error('0 рядків оновлено');
     toast(status==='approved'?'Підтверджено':'Відхилено','s');
+    logAudit(status==='approved'?'invoice_approved':'invoice_rejected',{invoice_id:id,reject_reason});
     invRender();
   }catch(e){ toast('Помилка: '+e.message,'e'); }
 }
@@ -3864,6 +4039,7 @@ async function invMarkPaid(id){
     const rows=await r.json();
     if(!rows.length) throw new Error('0 рядків оновлено');
     toast('Позначено оплаченим','s');
+    logAudit('invoice_paid',{invoice_id:id});
     invRender();
   }catch(e){ toast('Помилка: '+e.message,'e'); }
 }
@@ -4041,8 +4217,17 @@ function chatOpen(peerId,el){
   document.querySelectorAll('#chat-overlay .nav-i').forEach(n=>n.classList.remove('on'));
   if(el) el.classList.add('on');
   chatLoadMessages();
+  if(peerId===null) chatMarkGroupSeen(); else chatMarkPersonalRead(peerId);
   if(chatPollTimer) clearInterval(chatPollTimer);
-  chatPollTimer=setInterval(chatLoadMessages,5000);
+  chatPollTimer=setInterval(chatLoadMessages,15000); // резервний опитувач — realtime покриває більшість оновлень
+}
+async function chatMarkPersonalRead(peerId){
+  try{
+    await sbFetch(SB_URL+'/rest/v1/chat_messages?recipient_id=eq.'+sbSession.user.id+'&sender_id=eq.'+peerId+'&read_at=is.null',{
+      method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({read_at:new Date().toISOString()})
+    });
+    refreshNotifBadges();
+  }catch(e){}
 }
 async function chatLoadMessages(){
   const wrap=document.getElementById('chat-msgs'); if(!wrap) return;
@@ -4158,6 +4343,7 @@ async function approvalDecide(id,status){
       status, reviewed_by:sbSession?.user?.id, reviewed_at:new Date().toISOString()
     })});
     toast(status==='approved'?'Підтверджено':'Відхилено','s');
+    logAudit('approval_'+status,{approval_id:id});
     renderApprovalsPage(); refreshApprovalBadge();
   }catch(e){ toast('Помилка','e'); }
 }
