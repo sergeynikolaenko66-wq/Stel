@@ -2030,7 +2030,7 @@ async function admRenderMgrLinks(){
   const list=document.getElementById('adm-mgrlink-list'); if(!list) return;
   list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Завантаження...</div>';
   try{
-    const r=await sbFetch(SB_URL+'/rest/v1/profiles?select=id,email,role,manager_name&role=eq.manager&order=email.asc');
+    const r=await sbFetch(SB_URL+'/rest/v1/profiles?select=id,email,role,manager_name&role=in.(manager,sales_head)&order=email.asc');
     if(!r.ok){
       const errBody=await r.text();
       list.innerHTML='<div style="padding:10px;color:var(--red);font-size:12px">Помилка '+r.status+': '+esc(errBody.slice(0,200))+'</div>';
@@ -2038,10 +2038,10 @@ async function admRenderMgrLinks(){
     }
     const rows=await r.json();
     const zhsmManagerNames=[...new Set(deals.map(d=>d.manager).filter(Boolean))].sort();
-    if(!rows.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Немає користувачів з роллю "Менеджер"</div>'; return; }
+    if(!rows.length){ list.innerHTML='<div style="padding:10px;color:var(--txt3);font-size:12px">Немає користувачів з роллю "Менеджер" або "Керівник відділу продажів"</div>'; return; }
     list.innerHTML=rows.map(p=>`
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--brd);font-size:12px">
-        <span>${esc(p.email)}</span>
+        <span>${esc(p.email)} <span style="color:var(--txt3);font-size:10.5px">(${esc(ROLE_LABELS[p.role]||p.role)})</span></span>
         <select onchange="admSetMgrLink('${p.id}',this.value)" style="background:var(--bg3);border:1px solid var(--brd);border-radius:6px;padding:5px 8px;color:var(--txt);font-family:inherit;font-size:12px;min-width:160px">
           <option value="">— не прив'язано —</option>
           ${zhsmManagerNames.map(n=>`<option value="${esc(n)}" ${p.manager_name===n?'selected':''}>${esc(n)}</option>`).join('')}
@@ -2996,7 +2996,7 @@ async function crmLoadAll(){
   }catch(e){ crmPlans={}; }
   crmLoaded=true;
   crmApplyManagerColumnVisibility();
-  const mdBtn=document.getElementById('crm-tabbtn-mydeals'); if(mdBtn) mdBtn.style.display = (myRole==='manager') ? '' : 'none';
+  const mdBtn=document.getElementById('crm-tabbtn-mydeals'); if(mdBtn) mdBtn.style.display = (myRole==='manager'||myRole==='sales_head') ? '' : 'none';
   const tmBtn=document.getElementById('crm-tabbtn-teammid'); if(tmBtn) tmBtn.style.display = (myRole==='sales_head') ? '' : 'none';
   const irBtn=document.getElementById('crm-tabbtn-invreq'); if(irBtn) irBtn.style.display = (myRole==='manager') ? '' : 'none';
   const ivBtn=document.getElementById('crm-tabbtn-invoices'); if(ivBtn) ivBtn.style.display = (myRole==='manager'||myRole==='sales_head') ? '' : 'none';
