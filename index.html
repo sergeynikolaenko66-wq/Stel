@@ -616,9 +616,9 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
     <div class="nav-i" id="nav-pnl" data-page="pnl" onclick="nav('pnl')" style="display:none"><span>📊</span>P&amp;L (прибуток)</div>
     <div style="height:1px;background:var(--brd);margin:6px 14px"></div>
     <div class="nav-i" id="nav-chat" onclick="openChatOverlay()"><span>💬</span>Чат <span class="notif-badge" id="badge-chat"></span></div>
-    <div class="nav-i" id="nav-invoices" onclick="openInvoicesOverlay()" style="display:none"><span>💳</span>Рахунки на оплату <span class="notif-badge" id="badge-invoices"></span></div>
-    <div class="nav-i" id="nav-invreq" onclick="openInvoiceRequestsOverlay()" style="display:none"><span>📋</span>Запити на рахунки <span class="notif-badge" id="badge-invreq"></span></div>
-    <div class="nav-i" id="nav-dealact" onclick="openDealActionsOverlay()" style="display:none"><span>🧾</span>Дії по угодах <span class="notif-badge" id="badge-dealact"></span></div>
+    <div class="nav-i" id="nav-invoices" data-page="invoices" onclick="nav('invoices')" style="display:none"><span>💳</span>Рахунки на оплату <span class="notif-badge" id="badge-invoices"></span></div>
+    <div class="nav-i" id="nav-invreq" data-page="invreq" onclick="nav('invreq')" style="display:none"><span>📋</span>Запити на рахунки <span class="notif-badge" id="badge-invreq"></span></div>
+    <div class="nav-i" id="nav-dealact" data-page="dealact" onclick="nav('dealact')" style="display:none"><span>🧾</span>Дії по угодах <span class="notif-badge" id="badge-dealact"></span></div>
     <div class="nav-i" id="nav-approvals" data-page="approvals" onclick="nav('approvals')" style="display:none"><span>✅</span>Підтвердження <span id="appr-badge" style="display:none;background:var(--red);color:#fff;border-radius:8px;padding:1px 6px;font-size:9px;margin-left:auto"></span></div>
     <div class="nav-i" id="nav-goto-crm" onclick="switchToCrm()" style="display:none"><span>🧾</span>Перейти в CRM</div>
   </div>
@@ -1090,6 +1090,51 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
     <div class="pg" id="pg-approvals">
       <div class="fbar"><span style="font-size:12px;color:var(--txt3)">Заявки від Гол. бухгалтера, що очікують вашого рішення</span></div>
       <div style="flex:1;overflow:auto;padding:14px" id="appr-wrap"></div>
+    </div>
+
+    <!-- РАХУНКИ НА ОПЛАТУ (повноцінна сторінка ЖСМ) -->
+    <div class="pg crm-vars" id="pg-invoices">
+      <div class="fbar">
+        <div style="display:flex;gap:6px" id="zhinv-tabs">
+          <button class="crm-tab active" id="zhinv-tab-active" onclick="zhInvSetTab('active')">⏳ Активні</button>
+          <button class="crm-tab" id="zhinv-tab-archive" onclick="zhInvSetTab('archive')">📦 Архів</button>
+        </div>
+        <span style="flex:1"></span>
+        <span class="crm-cnt" id="zhinv-cnt"></span>
+      </div>
+      <div style="flex:1;overflow:auto;padding:14px">
+        <div id="zhinv-list"></div>
+      </div>
+    </div>
+
+    <!-- ЗАПИТИ НА РАХУНКИ (повноцінна сторінка ЖСМ) -->
+    <div class="pg crm-vars" id="pg-invreq">
+      <div class="fbar">
+        <div style="display:flex;gap:6px">
+          <button class="crm-tab active" id="zhinvreq-tab-active" onclick="zhInvreqSetTab('new')">⏳ Активні</button>
+          <button class="crm-tab" id="zhinvreq-tab-archive" onclick="zhInvreqSetTab('fulfilled')">📦 Архів</button>
+        </div>
+        <span style="flex:1"></span>
+        <span class="crm-cnt" id="zhinvreq-cnt"></span>
+      </div>
+      <div style="flex:1;overflow:auto;padding:14px">
+        <div id="zhinvreq-list"></div>
+      </div>
+    </div>
+
+    <!-- ДІЇ ПО УГОДАХ (повноцінна сторінка ЖСМ) -->
+    <div class="pg crm-vars" id="pg-dealact">
+      <div class="fbar">
+        <div style="display:flex;gap:6px">
+          <button class="crm-tab active" id="zhdealact-tab-active" onclick="zhDealactSetTab('new')">⏳ Активні</button>
+          <button class="crm-tab" id="zhdealact-tab-archive" onclick="zhDealactSetTab('done')">📦 Архів</button>
+        </div>
+        <span style="flex:1"></span>
+        <span class="crm-cnt" id="zhdealact-cnt"></span>
+      </div>
+      <div style="flex:1;overflow:auto;padding:14px">
+        <div id="zhdealact-list"></div>
+      </div>
     </div>
 
   </div><!-- /content -->
@@ -2395,12 +2440,15 @@ function setupRealtime(){
     }).on('postgres_changes',{event:'*',schema:'public',table:'invoices',filter:'company_id=eq.'+currentCompanyId},()=>{
       refreshNotifBadges();
       if(document.getElementById('invoices-overlay')?.style.display==='flex') invRender();
+      if(document.getElementById('pg-invoices')?.classList.contains('on')) zhInvRender();
     }).on('postgres_changes',{event:'*',schema:'public',table:'invoice_requests',filter:'company_id=eq.'+currentCompanyId},()=>{
       refreshNotifBadges();
       if(document.getElementById('invreq-overlay')?.style.display==='flex') invreqRender();
+      if(document.getElementById('pg-invreq')?.classList.contains('on')) zhInvreqRender();
     }).on('postgres_changes',{event:'*',schema:'public',table:'deal_action_requests',filter:'company_id=eq.'+currentCompanyId},()=>{
       refreshNotifBadges();
       if(document.getElementById('dealact-overlay')?.style.display==='flex') dealactRender();
+      if(document.getElementById('pg-dealact')?.classList.contains('on')) zhDealactRender();
     }).on('postgres_changes',{event:'*',schema:'public',table:'approval_requests',filter:'company_id=eq.'+currentCompanyId},()=>{
       if(myRole==='director') refreshApprovalBadge();
     }).subscribe();
@@ -2491,6 +2539,77 @@ function setConnStatus(online){
     txt.title='';
   }
 }
+// ══════════════════════════════════════════════════════════
+// ТРИСТОРОННЄ ЗЛИТТЯ ДАНИХ (base/local/remote) — щоб одночасні
+// правки РІЗНИХ записів двома людьми не затирали одна одну.
+// Затирання лишається можливим лише якщо ДВОЄ людей одночасно
+// змінили ОДИН і той самий запис по-різному — тоді це справжній
+// конфлікт, і ми явно попереджаємо, а не тихо губимо чиїсь дані.
+// ══════════════════════════════════════════════════════════
+let baseSnapshot=null; // стан даних станом на останній відомий успішний pull/push
+function captureBaseSnapshot(){
+  baseSnapshot=JSON.parse(JSON.stringify({deals,bank,managers,archiveDeals,closedMIDs,employees,payrollAdvances,payrollArchive,pnlRecurring,pnlOneOff,pnlArchive}));
+}
+function mergeArrayByKey(baseArr,localArr,remoteArr,keyFn){
+  baseArr=baseArr||[]; localArr=localArr||[]; remoteArr=remoteArr||[];
+  const bMap=new Map(baseArr.map(x=>[keyFn(x),x]));
+  const lMap=new Map(localArr.map(x=>[keyFn(x),x]));
+  const rMap=new Map(remoteArr.map(x=>[keyFn(x),x]));
+  const allKeys=new Set([...bMap.keys(),...lMap.keys(),...rMap.keys()]);
+  const merged=[]; const conflicts=[];
+  for(const k of allKeys){
+    const b=bMap.get(k), l=lMap.get(k), r=rMap.get(k);
+    const lStr=JSON.stringify(l), rStr=JSON.stringify(r), bStr=JSON.stringify(b);
+    const lChanged=lStr!==bStr, rChanged=rStr!==bStr;
+    if(!lChanged && !rChanged){ if(b) merged.push(b); continue; }
+    if(lChanged && !rChanged){ if(l) merged.push(l); continue; }
+    if(!lChanged && rChanged){ if(r) merged.push(r); continue; }
+    if(lStr===rStr){ if(l) merged.push(l); continue; }
+    conflicts.push({key:k,base:b,local:l,remote:r});
+    if(l) merged.push(l); // на випадок справжнього конфлікту лишаємо ЛОКАЛЬНУ версію, але повідомляємо
+  }
+  return {merged,conflicts};
+}
+function mergeStringSet(baseArr,localArr,remoteArr){
+  baseArr=baseArr||[]; localArr=localArr||[]; remoteArr=remoteArr||[];
+  const added=remoteArr.filter(x=>!baseArr.includes(x)); // те, що з'явилось віддалено
+  return [...new Set([...localArr, ...added])].sort();
+}
+function mergeScalar(base,local,remote){
+  if(local===remote) return {value:local,conflict:false};
+  if(local===base) return {value:remote,conflict:false}; // локально не міняли — беремо чуже
+  if(remote===base) return {value:local,conflict:false};  // віддалено не міняли — лишаємо своє
+  return {value:local,conflict:true}; // обидва змінили по-різному
+}
+function mergeKeyedObjectOfArrays(base,local,remote,keyFn){
+  base=base||{}; local=local||{}; remote=remote||{};
+  const allMonths=new Set([...Object.keys(base),...Object.keys(local),...Object.keys(remote)]);
+  const merged={}; const conflicts=[];
+  for(const mo of allMonths){
+    const {merged:m,conflicts:c}=mergeArrayByKey(base[mo]||[],local[mo]||[],remote[mo]||[],keyFn);
+    if(m.length) merged[mo]=m;
+    c.forEach(x=>conflicts.push({...x,month:mo}));
+  }
+  return {merged,conflicts};
+}
+function mergeKeyedObjectOfScalarMaps(base,local,remote){
+  base=base||{}; local=local||{}; remote=remote||{};
+  const allMonths=new Set([...Object.keys(base),...Object.keys(local),...Object.keys(remote)]);
+  const merged={}; const conflicts=[];
+  for(const mo of allMonths){
+    const b=base[mo]||{}, l=local[mo]||{}, r=remote[mo]||{};
+    const allEmp=new Set([...Object.keys(b),...Object.keys(l),...Object.keys(r)]);
+    const moMerged={};
+    for(const empId of allEmp){
+      const res=mergeScalar(b[empId], l[empId]!==undefined?l[empId]:b[empId], r[empId]!==undefined?r[empId]:b[empId]);
+      if(res.value!==undefined) moMerged[empId]=res.value;
+      if(res.conflict) conflicts.push({month:mo,employeeId:empId,local:l[empId],remote:r[empId]});
+    }
+    merged[mo]=moMerged;
+  }
+  return {merged,conflicts};
+}
+
 async function cloudPull(){
   if(!currentCompanyId) return null;
   try{
@@ -2505,6 +2624,70 @@ async function cloudPull(){
 }
 async function cloudPush(){
   if(!currentCompanyId) return false;
+  try{
+    // ── Перед відправкою перевіряємо, чи хтось інший вже зберіг зміни після нашого
+    //    останнього відомого стану. Якщо так — зливаємо по кожному розділу окремо
+    //    (а не тихо переписуємо все чужі зміни своїми).
+    if(baseSnapshot){
+      const rc=await sbFetch(SB_URL+'/rest/v1/jsm_state?company_id=eq.'+currentCompanyId+'&select=data,updated_at');
+      if(rc.ok){
+        const rows=await rc.json();
+        const remoteRow=rows[0];
+        if(remoteRow && remoteRow.updated_at!==lastCloudUpdatedAt){
+          const rd=remoteRow.data||{};
+          let anyConflicts=[];
+          const dealsRes=mergeArrayByKey(baseSnapshot.deals,deals,rd.deals,x=>x.id);
+          deals=dealsRes.merged; anyConflicts.push(...dealsRes.conflicts.map(c=>({...c,section:'Угоди'})));
+
+          const archRes=mergeArrayByKey(baseSnapshot.archiveDeals,archiveDeals,rd.archiveDeals,x=>x.id);
+          archiveDeals=archRes.merged; anyConflicts.push(...archRes.conflicts.map(c=>({...c,section:'Архів угод'})));
+
+          const txRes=mergeArrayByKey(baseSnapshot.bank?.transactions,bank.transactions,rd.bank?.transactions,x=>x.date+'|'+x.num+'|'+x.counterpart);
+          const openingRes=mergeScalar(baseSnapshot.bank?.opening, bank.opening, rd.bank?.opening);
+          bank={opening:openingRes.value, transactions:txRes.merged};
+          anyConflicts.push(...txRes.conflicts.map(c=>({...c,section:'Банк'})));
+          if(openingRes.conflict) anyConflicts.push({section:'Банк',key:'початковий залишок',local:bank.opening,remote:rd.bank?.opening});
+
+          managers=mergeStringSet(baseSnapshot.managers,managers,rd.managers);
+
+          const midRes=mergeArrayByKey(baseSnapshot.closedMIDs,closedMIDs,rd.closedMIDs,x=>x.month);
+          closedMIDs=midRes.merged; anyConflicts.push(...midRes.conflicts.map(c=>({...c,section:'Закриття МІД'})));
+
+          const empRes=mergeArrayByKey(baseSnapshot.employees,employees,rd.employees,x=>x.id);
+          employees=empRes.merged; anyConflicts.push(...empRes.conflicts.map(c=>({...c,section:'Співробітники'})));
+
+          const advRes=mergeKeyedObjectOfScalarMaps(baseSnapshot.payrollAdvances,payrollAdvances,rd.payrollAdvances);
+          payrollAdvances=advRes.merged; anyConflicts.push(...advRes.conflicts.map(c=>({...c,section:'Аванси'})));
+
+          const parchRes=mergeArrayByKey(baseSnapshot.payrollArchive,payrollArchive,rd.payrollArchive,x=>x.id);
+          payrollArchive=parchRes.merged; anyConflicts.push(...parchRes.conflicts.map(c=>({...c,section:'Архів відомостей'})));
+
+          const pnlrRes=mergeArrayByKey(baseSnapshot.pnlRecurring,pnlRecurring,rd.pnlRecurring,x=>x.id);
+          pnlRecurring=pnlrRes.merged; anyConflicts.push(...pnlrRes.conflicts.map(c=>({...c,section:'П&Л постійні'})));
+
+          const pnloRes=mergeKeyedObjectOfArrays(baseSnapshot.pnlOneOff,pnlOneOff,rd.pnlOneOff,x=>x.id);
+          pnlOneOff=pnloRes.merged; anyConflicts.push(...pnloRes.conflicts.map(c=>({...c,section:'П&Л разові'})));
+
+          const pnlaRes=mergeArrayByKey(baseSnapshot.pnlArchive,pnlArchive,rd.pnlArchive,x=>x.id);
+          pnlArchive=pnlaRes.merged; anyConflicts.push(...pnlaRes.conflicts.map(c=>({...c,section:'Архів П&Л'})));
+
+          captureBaseSnapshot();
+          try{ renderDeals(); }catch(e){}
+          try{ renderBank(); }catch(e){}
+          try{ renderArchive(); }catch(e){}
+          try{ rebuildSelects(); }catch(e){}
+
+          if(anyConflicts.length){
+            toast('⚠ Дані об\'єднано, але '+anyConflicts.length+' запис(и) змінили одночасно і ви, і колега — перевірте розділи: '+[...new Set(anyConflicts.map(c=>c.section))].join(', '),'e');
+            console.warn('Конфлікти злиття:', anyConflicts);
+          }else{
+            toast('Дані колеги об\'єднано з вашими автоматично','i');
+          }
+        }
+      }
+    }
+  }catch(e){ /* якщо перевірка конфліктів не вдалась — все одно продовжуємо звичайне збереження нижче */ }
+
   const payload={company_id:currentCompanyId, data:{deals,bank,managers,archiveDeals,closedMIDs,employees,payrollAdvances,payrollArchive,pnlRecurring,pnlOneOff,pnlArchive}, updated_at:new Date().toISOString(), updated_by:currentUserEmail};
   try{
     // upsert: on_conflict=company_id ЯВНО вказує, яку колонку вважати "тим самим записом" —
@@ -2526,6 +2709,7 @@ async function cloudPush(){
     }
     const rows=await r.json();
     if(rows[0]) lastCloudUpdatedAt=rows[0].updated_at;
+    captureBaseSnapshot();
     lastSavedAt=new Date();
     updateSaveBtn();
     setConnStatus(true);
@@ -2719,6 +2903,7 @@ function applyCloudData(data){
   if(document.getElementById('pg-dashboard').classList.contains('on')) renderDashboard();
   hasChanges=false; updateSaveBtn();
   idbSave(); // тримаємо локальний кеш свіжим теж
+  captureBaseSnapshot(); // фіксуємо стан "як щойно завантажено" — точка відліку для майбутнього злиття
 }
 
 const IDB_NAME='jsm_db', IDB_STORE='data';
@@ -2854,11 +3039,11 @@ function updateSaveBtn(){
 
 
 // ── NAV ──────────────────────────────────────────────
-const PAGES=['dashboard','deals','bank','debts','mid','rentab','svirka','managers','archive','patchnotes','import','admin','pnl','approvals'];
+const PAGES=['dashboard','deals','bank','debts','mid','rentab','svirka','managers','archive','patchnotes','import','admin','pnl','approvals','invoices','invreq','dealact'];
 const TITLES={dashboard:'Дашборд',deals:'Журнал угод',bank:'Банк — виписка',debts:'Заборгованість',
   mid:'МИД / Дельти',rentab:'Рентабельність у динаміці',svirka:'Звірка (ПД)',managers:'Менеджери',
   archive:'Архів',patchnotes:'Версії / Патч-нот',import:'Імпорт / Експорт',admin:'Адміністрування',pnl:'P&L (прибуток компанії)',
-  approvals:'Підтвердження'};
+  approvals:'Підтвердження',invoices:'Рахунки на оплату',invreq:'Запити на рахунки',dealact:'Дії по угодах'};
 // ── РОЛІ: Менеджер працює лише в CRM (окрема повноекранна оболонка),
 //    Директор/Гол.бух/Бухгалтер працюють в ЖСМ і можуть перемкнутись у CRM ──
 const ROLE_LABELS={director:'Директор',chief_accountant:'Гол. бухгалтер',accountant:'Бухгалтер',manager:'Менеджер',sales_head:'Керівник відділу продажів',senior_accountant:'Старший бухгалтер'};
@@ -2881,7 +3066,7 @@ function applyRoleVisibility(){
   if(whitelist){
     document.querySelectorAll('.app .sb-nav .nav-i[data-page]').forEach(el=>{
       const p=el.dataset.page;
-      if(p==='admin'||p==='pnl'||p==='approvals') return; // керуються окремо вище
+      if(p==='admin'||p==='pnl'||p==='approvals'||p==='invoices'||p==='invreq'||p==='dealact') return; // керуються окремо вище
       el.style.display = whitelist.includes(p) ? '' : 'none';
     });
   }
@@ -3959,21 +4144,55 @@ async function invUpload(){
     invRender();
   }catch(e){ toast(e.message||'Помилка завантаження','e'); }
 }
+async function invFetchCache(){
+  const r=await sbFetch(SB_URL+'/rest/v1/invoices?company_id=eq.'+currentCompanyId+'&select=*&order=created_at.desc');
+  if(!r.ok) throw new Error();
+  invCache=await r.json();
+  const ids=invCache.map(x=>x.id);
+  if(ids.length){
+    const rf=await sbFetch(SB_URL+'/rest/v1/invoice_files?invoice_id=in.('+ids.join(',')+')');
+    const extraFiles=rf.ok?await rf.json():[];
+    invExtraFiles={};
+    extraFiles.forEach(f=>{ if(!invExtraFiles[f.invoice_id])invExtraFiles[f.invoice_id]=[]; invExtraFiles[f.invoice_id].push(f); });
+  }else invExtraFiles={};
+}
+function renderInvoiceCard(inv){
+  const stLabel={pending:'⏳ На підтвердженні',approved:'✅ Підтверджено (очікує оплати)',rejected:'❌ Відхилено',paid:'💰 Оплачено'};
+  const stColor={pending:'var(--amb)',approved:'var(--acc)',rejected:'var(--red)',paid:'var(--grn)'};
+  const canReview = (myRole==='sales_head' || myRole==='director');
+  const canMarkPaid = (myRole==='accountant' || myRole==='senior_accountant' || myRole==='chief_accountant' || myRole==='director');
+  const allFiles=[{file_path:inv.file_path,file_name:inv.file_name,file_type:inv.file_type},...(invExtraFiles[inv.id]||[])];
+  const filesHTML=allFiles.map(f=>{
+    const isImg=(f.file_type||'').startsWith('image/');
+    return `<button onclick="invOpenFile('${esc(f.file_path)}','${esc((f.file_name||'file').replace(/'/g,"\\'"))}')" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);background:none;border:1px solid var(--brd2);border-radius:8px;padding:6px 10px;cursor:pointer;font-family:inherit">${isImg?'🖼':'📄'} ${esc(f.file_name||'Файл')}</button>`;
+  }).join('');
+  return `<div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
+    <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span class="crm-pc-name" style="font-size:13px">Рахунок №${inv.id}${allFiles.length>1?' ('+allFiles.length+' файли)':''}</span>
+          <span style="font-size:10.5px;font-weight:600;color:${stColor[inv.status]}">${stLabel[inv.status]}</span>
+        </div>
+        <div style="font-size:11px;color:var(--txt3);margin-top:3px">${crmMgrEmail(inv.uploaded_by)} · ${new Date(inv.created_at).toLocaleString('uk-UA')}</div>
+        ${inv.description?`<div style="font-size:12px;color:var(--txt2);margin-top:4px">${esc(inv.description)}</div>`:''}
+        ${inv.amount?`<div style="font-size:13px;font-weight:700;margin-top:4px">₴${Number(inv.amount).toLocaleString('uk-UA')}</div>`:''}
+        ${inv.reject_reason?`<div style="font-size:11px;color:var(--red);margin-top:4px">Причина відхилення: ${esc(inv.reject_reason)}</div>`:''}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0">${filesHTML}</div>
+    </div>
+    ${inv.status==='pending' && canReview?`<div style="display:flex;gap:6px;margin-top:10px">
+      <button class="crm-btn-sub" style="padding:0 12px" onclick="invReview(${inv.id},'approved')">✔ Підтвердити</button>
+      <button class="crm-btn-can" onclick="invReview(${inv.id},'rejected')">✕ Відхилити</button>
+    </div>`:''}
+    ${inv.status==='approved' && canMarkPaid?`<div style="margin-top:10px">
+      <button class="crm-btn-sub blue" style="padding:0 12px" onclick="invMarkPaid(${inv.id})">💰 Позначити оплаченим</button>
+    </div>`:''}
+  </div>`;
+}
 async function invRender(){
   const box=document.getElementById('inv-list'); if(!box) return;
   box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px">Завантаження...</div>';
-  try{
-    const r=await sbFetch(SB_URL+'/rest/v1/invoices?company_id=eq.'+currentCompanyId+'&select=*&order=created_at.desc');
-    if(!r.ok) throw new Error();
-    invCache=await r.json();
-    const ids=invCache.map(x=>x.id);
-    if(ids.length){
-      const rf=await sbFetch(SB_URL+'/rest/v1/invoice_files?invoice_id=in.('+ids.join(',')+')');
-      const extraFiles=rf.ok?await rf.json():[];
-      invExtraFiles={};
-      extraFiles.forEach(f=>{ if(!invExtraFiles[f.invoice_id])invExtraFiles[f.invoice_id]=[]; invExtraFiles[f.invoice_id].push(f); });
-    }else invExtraFiles={};
-  }catch(e){
+  try{ await invFetchCache(); }catch(e){
     box.innerHTML='<div style="padding:16px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 14/15 SQL-файли в Supabase.</div>';
     return;
   }
@@ -3981,39 +4200,32 @@ async function invRender(){
   let list=filter?invCache.filter(x=>x.status===filter):invCache;
   const cntEl=document.getElementById('inv-cnt'); if(cntEl) cntEl.textContent='Рахунків: '+list.length;
   if(!list.length){ box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px;text-align:center">Немає рахунків</div>'; return; }
-  const stLabel={pending:'⏳ На підтвердженні',approved:'✅ Підтверджено (очікує оплати)',rejected:'❌ Відхилено',paid:'💰 Оплачено'};
-  const stColor={pending:'var(--amb)',approved:'var(--acc)',rejected:'var(--red)',paid:'var(--grn)'};
-  const canReview = (myRole==='sales_head' || myRole==='director');
-  const canMarkPaid = (myRole==='accountant' || myRole==='senior_accountant' || myRole==='chief_accountant' || myRole==='director');
-  box.innerHTML=list.map(inv=>{
-    const allFiles=[{file_path:inv.file_path,file_name:inv.file_name,file_type:inv.file_type},...(invExtraFiles[inv.id]||[])];
-    const filesHTML=allFiles.map(f=>{
-      const isImg=(f.file_type||'').startsWith('image/');
-      return `<button onclick="invOpenFile('${esc(f.file_path)}','${esc((f.file_name||'file').replace(/'/g,"\\'"))}')" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);background:none;border:1px solid var(--brd2);border-radius:8px;padding:6px 10px;cursor:pointer;font-family:inherit">${isImg?'🖼':'📄'} ${esc(f.file_name||'Файл')}</button>`;
-    }).join('');
-    return `<div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
-      <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
-        <div style="flex:1;min-width:200px">
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            <span class="crm-pc-name" style="font-size:13px">Рахунок №${inv.id}${allFiles.length>1?' ('+allFiles.length+' файли)':''}</span>
-            <span style="font-size:10.5px;font-weight:600;color:${stColor[inv.status]}">${stLabel[inv.status]}</span>
-          </div>
-          <div style="font-size:11px;color:var(--txt3);margin-top:3px">${crmMgrEmail(inv.uploaded_by)} · ${new Date(inv.created_at).toLocaleString('uk-UA')}</div>
-          ${inv.description?`<div style="font-size:12px;color:var(--txt2);margin-top:4px">${esc(inv.description)}</div>`:''}
-          ${inv.amount?`<div style="font-size:13px;font-weight:700;margin-top:4px">₴${Number(inv.amount).toLocaleString('uk-UA')}</div>`:''}
-          ${inv.reject_reason?`<div style="font-size:11px;color:var(--red);margin-top:4px">Причина відхилення: ${esc(inv.reject_reason)}</div>`:''}
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0">${filesHTML}</div>
-      </div>
-      ${inv.status==='pending' && canReview?`<div style="display:flex;gap:6px;margin-top:10px">
-        <button class="crm-btn-sub" style="padding:0 12px" onclick="invReview(${inv.id},'approved')">✔ Підтвердити</button>
-        <button class="crm-btn-can" onclick="invReview(${inv.id},'rejected')">✕ Відхилити</button>
-      </div>`:''}
-      ${inv.status==='approved' && canMarkPaid?`<div style="margin-top:10px">
-        <button class="crm-btn-sub blue" style="padding:0 12px" onclick="invMarkPaid(${inv.id})">💰 Позначити оплаченим</button>
-      </div>`:''}
-    </div>`;
-  }).join('');
+  box.innerHTML=list.map(renderInvoiceCard).join('');
+}
+
+// ── ЖСМ-сторінка "Рахунки на оплату" (для бухгалтерів) — з розділенням Активні/Архів ──
+let zhInvTab='active';
+async function zhInvRender(){
+  const box=document.getElementById('zhinv-list'); if(!box) return;
+  box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px">Завантаження...</div>';
+  try{ await invFetchCache(); }catch(e){
+    box.innerHTML='<div style="padding:16px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 14/15/17 SQL-файли в Supabase.</div>';
+    return;
+  }
+  zhInvRenderList();
+}
+function zhInvSetTab(tab){
+  zhInvTab=tab;
+  document.getElementById('zhinv-tab-active').classList.toggle('active',tab==='active');
+  document.getElementById('zhinv-tab-archive').classList.toggle('active',tab==='archive');
+  zhInvRenderList();
+}
+function zhInvRenderList(){
+  const box=document.getElementById('zhinv-list'); if(!box) return;
+  const activeSt=['pending','approved'], archiveSt=['rejected','paid'];
+  const list=invCache.filter(x=>(zhInvTab==='active'?activeSt:archiveSt).includes(x.status));
+  const cntEl=document.getElementById('zhinv-cnt'); if(cntEl) cntEl.textContent=list.length+(zhInvTab==='active'?' активних':' в архіві');
+  box.innerHTML=list.length?list.map(renderInvoiceCard).join(''):'<div style="padding:16px;color:var(--txt3);font-size:13px;text-align:center">'+(zhInvTab==='active'?'Немає активних рахунків':'Архів порожній')+'</div>';
 }
 async function invReview(id,status){
   let reject_reason=null;
@@ -4081,46 +4293,72 @@ async function invreqSubmit(){
     invreqRender();
   }catch(e){ toast('Помилка: '+e.message,'e'); }
 }
+function renderInvReqCard(rq){
+  const canRespond=['accountant','senior_accountant','chief_accountant','director'].includes(myRole);
+  const itemsHTML=(rq.items||[]).map(it=>`<tr style="border-top:1px solid var(--brd)"><td style="padding:5px 8px">${esc(it.name)}</td><td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${it.qty||''} ${esc(it.unit||'')}</td><td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${it.price?Number(it.price).toLocaleString('uk-UA'):''}</td></tr>`).join('');
+  return `<div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div class="crm-pc-name" style="font-size:13px">Запит №${rq.id} — ${crmMgrEmail(rq.requested_by)}</div>
+      <span style="font-size:10.5px;font-weight:600;color:${rq.status==='new'?'var(--amb)':'var(--grn)'}">${rq.status==='new'?'⏳ Новий':'✅ Виконано'}</span>
+    </div>
+    <div style="font-size:11px;color:var(--txt3);margin:3px 0 8px">${new Date(rq.created_at).toLocaleString('uk-UA')}</div>
+    ${rq.comment?`<div style="font-size:12px;color:var(--txt2);margin-bottom:8px">${esc(rq.comment)}</div>`:''}
+    <div style="border:1px solid var(--brd);border-radius:8px;overflow:hidden">
+      <table style="width:100%;font-size:11px;border-collapse:collapse">
+        <thead><tr style="background:var(--bg3)"><th style="text-align:left;padding:5px 8px">Позиція</th><th style="text-align:right;padding:5px 8px">К-сть</th><th style="text-align:right;padding:5px 8px">Ціна</th></tr></thead>
+        <tbody>${itemsHTML}</tbody>
+      </table>
+    </div>
+    ${rq.status==='fulfilled'?`<div style="margin-top:10px">
+      <button onclick="invOpenFile('${esc(rq.response_file_path)}','${esc((rq.response_file_name||'invoice').replace(/'/g,"\\'"))}')" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);background:none;border:1px solid var(--brd2);border-radius:8px;padding:7px 11px;cursor:pointer;font-family:inherit">📄 ${esc(rq.response_file_name||'Рахунок')}</button>
+    </div>`:''}
+    ${rq.status==='new' && canRespond?`<div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input type="file" id="invreq-resp-file-${rq.id}" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.csv" style="font-size:11px">
+      <button class="crm-btn-sub" style="padding:0 12px" onclick="invreqRespond(${rq.id})">⬆ Завантажити рахунок і завершити</button>
+    </div>`:''}
+  </div>`;
+}
+async function invreqFetchCache(){
+  const r=await sbFetch(SB_URL+'/rest/v1/invoice_requests?company_id=eq.'+currentCompanyId+'&select=*&order=created_at.desc');
+  if(!r.ok) throw new Error();
+  invreqCache=await r.json();
+}
 async function invreqRender(){
   const box=document.getElementById('invreq-list'); if(!box) return;
   box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px">Завантаження...</div>';
-  try{
-    const r=await sbFetch(SB_URL+'/rest/v1/invoice_requests?company_id=eq.'+currentCompanyId+'&select=*&order=created_at.desc');
-    if(!r.ok) throw new Error();
-    invreqCache=await r.json();
-  }catch(e){
+  try{ await invreqFetchCache(); }catch(e){
     box.innerHTML='<div style="padding:16px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 15_multifile_roles_requests.sql в Supabase.</div>';
     return;
   }
   const filter=document.getElementById('invreq-filter')?.value||'';
   let list=filter?invreqCache.filter(x=>x.status===filter):invreqCache;
   const cntEl=document.getElementById('invreq-cnt'); if(cntEl) cntEl.textContent='Запитів: '+list.length;
-  const canRespond=['accountant','senior_accountant','chief_accountant','director'].includes(myRole);
   if(!list.length){ box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px;text-align:center">Немає запитів</div>'; return; }
-  box.innerHTML=list.map(rq=>{
-    const itemsHTML=(rq.items||[]).map(it=>`<tr style="border-top:1px solid var(--brd)"><td style="padding:5px 8px">${esc(it.name)}</td><td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${it.qty||''} ${esc(it.unit||'')}</td><td style="padding:5px 8px;text-align:right;font-family:var(--mono)">${it.price?Number(it.price).toLocaleString('uk-UA'):''}</td></tr>`).join('');
-    return `<div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <div class="crm-pc-name" style="font-size:13px">Запит №${rq.id} — ${crmMgrEmail(rq.requested_by)}</div>
-        <span style="font-size:10.5px;font-weight:600;color:${rq.status==='new'?'var(--amb)':'var(--grn)'}">${rq.status==='new'?'⏳ Новий':'✅ Виконано'}</span>
-      </div>
-      <div style="font-size:11px;color:var(--txt3);margin:3px 0 8px">${new Date(rq.created_at).toLocaleString('uk-UA')}</div>
-      ${rq.comment?`<div style="font-size:12px;color:var(--txt2);margin-bottom:8px">${esc(rq.comment)}</div>`:''}
-      <div style="border:1px solid var(--brd);border-radius:8px;overflow:hidden">
-        <table style="width:100%;font-size:11px;border-collapse:collapse">
-          <thead><tr style="background:var(--bg3)"><th style="text-align:left;padding:5px 8px">Позиція</th><th style="text-align:right;padding:5px 8px">К-сть</th><th style="text-align:right;padding:5px 8px">Ціна</th></tr></thead>
-          <tbody>${itemsHTML}</tbody>
-        </table>
-      </div>
-      ${rq.status==='fulfilled'?`<div style="margin-top:10px">
-        <button onclick="invOpenFile('${esc(rq.response_file_path)}','${esc((rq.response_file_name||'invoice').replace(/'/g,"\\'"))}')" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);background:none;border:1px solid var(--brd2);border-radius:8px;padding:7px 11px;cursor:pointer;font-family:inherit">📄 ${esc(rq.response_file_name||'Рахунок')}</button>
-      </div>`:''}
-      ${rq.status==='new' && canRespond?`<div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <input type="file" id="invreq-resp-file-${rq.id}" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.csv" style="font-size:11px">
-        <button class="crm-btn-sub" style="padding:0 12px" onclick="invreqRespond(${rq.id})">⬆ Завантажити рахунок і завершити</button>
-      </div>`:''}
-    </div>`;
-  }).join('');
+  box.innerHTML=list.map(renderInvReqCard).join('');
+}
+
+// ── ЖСМ-сторінка "Запити на рахунки" (для бухгалтерів) — Активні/Архів ──
+let zhInvreqTab='new';
+async function zhInvreqRender(){
+  const box=document.getElementById('zhinvreq-list'); if(!box) return;
+  box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px">Завантаження...</div>';
+  try{ await invreqFetchCache(); }catch(e){
+    box.innerHTML='<div style="padding:16px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 15_multifile_roles_requests.sql в Supabase.</div>';
+    return;
+  }
+  zhInvreqRenderList();
+}
+function zhInvreqSetTab(tab){
+  zhInvreqTab=tab;
+  document.getElementById('zhinvreq-tab-active').classList.toggle('active',tab==='new');
+  document.getElementById('zhinvreq-tab-archive').classList.toggle('active',tab==='fulfilled');
+  zhInvreqRenderList();
+}
+function zhInvreqRenderList(){
+  const box=document.getElementById('zhinvreq-list'); if(!box) return;
+  const list=invreqCache.filter(x=>x.status===zhInvreqTab);
+  const cntEl=document.getElementById('zhinvreq-cnt'); if(cntEl) cntEl.textContent=list.length+(zhInvreqTab==='new'?' активних':' в архіві');
+  box.innerHTML=list.length?list.map(renderInvReqCard).join(''):'<div style="padding:16px;color:var(--txt3);font-size:13px;text-align:center">'+(zhInvreqTab==='new'?'Немає активних запитів':'Архів порожній')+'</div>';
 }
 async function invreqRespond(id){
   const fileInp=document.getElementById('invreq-resp-file-'+id);
@@ -4142,37 +4380,64 @@ async function invreqRespond(id){
 
 // ── ДІЇ ПО УГОДАХ: менеджер замовляє документи по конкретній угоді → бухгалтер виконує ──
 let dealactCache=[];
+function renderDealActCard(a){
+  const canRespond=['accountant','senior_accountant','chief_accountant','director'].includes(myRole);
+  return `<div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div class="crm-pc-name" style="font-size:13px">${esc(a.deal_label||('Угода #'+a.deal_id))} — ${crmMgrEmail(a.requested_by)}</div>
+      <span style="font-size:10.5px;font-weight:600;color:${a.status==='new'?'var(--amb)':'var(--grn)'}">${a.status==='new'?'⏳ Нова':'✅ Готово'}</span>
+    </div>
+    <div style="font-size:11px;color:var(--txt3);margin:3px 0 8px">${new Date(a.created_at).toLocaleString('uk-UA')}</div>
+    <div style="font-size:12px;color:var(--txt2);margin-bottom:6px">${(a.actions||[]).map(x=>CRM_DEAL_ACTION_LABELS[x]||x).join(', ')}</div>
+    ${a.notes?`<div style="font-size:12px;color:var(--txt2);background:var(--bg3);border-radius:7px;padding:7px 10px;margin-bottom:8px">${esc(a.notes)}</div>`:''}
+    ${a.status==='done'?`<button onclick="invOpenFile('${esc(a.response_file_path)}','${esc((a.response_file_name||'file').replace(/'/g,"\\'"))}')" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);background:none;border:1px solid var(--brd2);border-radius:8px;padding:7px 11px;cursor:pointer;font-family:inherit">📄 ${esc(a.response_file_name||'Файл')}</button>`:''}
+    ${a.status==='new' && canRespond?`<div style="margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input type="file" id="dealact-resp-file-${a.id}" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.csv" style="font-size:11px">
+      <button class="crm-btn-sub" style="padding:0 12px" onclick="dealactRespond(${a.id})">⬆ Завантажити і завершити</button>
+    </div>`:''}
+  </div>`;
+}
+async function dealactFetchCache(){
+  const r=await sbFetch(SB_URL+'/rest/v1/deal_action_requests?company_id=eq.'+currentCompanyId+'&select=*&order=created_at.desc');
+  if(!r.ok) throw new Error();
+  dealactCache=await r.json();
+}
 async function dealactRender(){
   const box=document.getElementById('dealact-list'); if(!box) return;
   box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px">Завантаження...</div>';
-  try{
-    const r=await sbFetch(SB_URL+'/rest/v1/deal_action_requests?company_id=eq.'+currentCompanyId+'&select=*&order=created_at.desc');
-    if(!r.ok) throw new Error();
-    dealactCache=await r.json();
-  }catch(e){
+  try{ await dealactFetchCache(); }catch(e){
     box.innerHTML='<div style="padding:16px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 16_deal_actions.sql в Supabase.</div>';
     return;
   }
   const filter=document.getElementById('dealact-filter')?.value||'';
   let list=filter?dealactCache.filter(x=>x.status===filter):dealactCache;
   const cntEl=document.getElementById('dealact-cnt'); if(cntEl) cntEl.textContent='Заявок: '+list.length;
-  const canRespond=['accountant','senior_accountant','chief_accountant','director'].includes(myRole);
   if(!list.length){ box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px;text-align:center">Немає заявок</div>'; return; }
-  box.innerHTML=list.map(a=>`
-    <div class="crm-plan-card" style="margin-bottom:8px;padding:14px">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <div class="crm-pc-name" style="font-size:13px">${esc(a.deal_label||('Угода #'+a.deal_id))} — ${crmMgrEmail(a.requested_by)}</div>
-        <span style="font-size:10.5px;font-weight:600;color:${a.status==='new'?'var(--amb)':'var(--grn)'}">${a.status==='new'?'⏳ Нова':'✅ Готово'}</span>
-      </div>
-      <div style="font-size:11px;color:var(--txt3);margin:3px 0 8px">${new Date(a.created_at).toLocaleString('uk-UA')}</div>
-      <div style="font-size:12px;color:var(--txt2);margin-bottom:6px">${(a.actions||[]).map(x=>CRM_DEAL_ACTION_LABELS[x]||x).join(', ')}</div>
-      ${a.notes?`<div style="font-size:12px;color:var(--txt2);background:var(--bg3);border-radius:7px;padding:7px 10px;margin-bottom:8px">${esc(a.notes)}</div>`:''}
-      ${a.status==='done'?`<button onclick="invOpenFile('${esc(a.response_file_path)}','${esc((a.response_file_name||'file').replace(/'/g,"\\'"))}')" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);background:none;border:1px solid var(--brd2);border-radius:8px;padding:7px 11px;cursor:pointer;font-family:inherit">📄 ${esc(a.response_file_name||'Файл')}</button>`:''}
-      ${a.status==='new' && canRespond?`<div style="margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <input type="file" id="dealact-resp-file-${a.id}" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.csv" style="font-size:11px">
-        <button class="crm-btn-sub" style="padding:0 12px" onclick="dealactRespond(${a.id})">⬆ Завантажити і завершити</button>
-      </div>`:''}
-    </div>`).join('');
+  box.innerHTML=list.map(renderDealActCard).join('');
+}
+
+// ── ЖСМ-сторінка "Дії по угодах" (для бухгалтерів) — Активні/Архів ──
+let zhDealactTab='new';
+async function zhDealactRender(){
+  const box=document.getElementById('zhdealact-list'); if(!box) return;
+  box.innerHTML='<div style="padding:16px;color:var(--txt3);font-size:13px">Завантаження...</div>';
+  try{ await dealactFetchCache(); }catch(e){
+    box.innerHTML='<div style="padding:16px;color:var(--red);font-size:13px">Помилка завантаження. Перевірте, чи виконано 16_deal_actions.sql в Supabase.</div>';
+    return;
+  }
+  zhDealactRenderList();
+}
+function zhDealactSetTab(tab){
+  zhDealactTab=tab;
+  document.getElementById('zhdealact-tab-active').classList.toggle('active',tab==='new');
+  document.getElementById('zhdealact-tab-archive').classList.toggle('active',tab==='done');
+  zhDealactRenderList();
+}
+function zhDealactRenderList(){
+  const box=document.getElementById('zhdealact-list'); if(!box) return;
+  const list=dealactCache.filter(x=>x.status===zhDealactTab);
+  const cntEl=document.getElementById('zhdealact-cnt'); if(cntEl) cntEl.textContent=list.length+(zhDealactTab==='new'?' активних':' в архіві');
+  box.innerHTML=list.length?list.map(renderDealActCard).join(''):'<div style="padding:16px;color:var(--txt3);font-size:13px;text-align:center">'+(zhDealactTab==='new'?'Немає активних заявок':'Архів порожній')+'</div>';
 }
 async function dealactRespond(id){
   const fileInp=document.getElementById('dealact-resp-file-'+id);
@@ -4420,6 +4685,9 @@ function nav(id){
   if(id==='rentab') renderRentab();
   if(id==='pnl') renderPnl();
   if(id==='approvals') renderApprovalsPage();
+  if(id==='invoices') zhInvRender();
+  if(id==='invreq') zhInvreqRender();
+  if(id==='dealact') zhDealactRender();
   if(window.innerWidth<=768) toggleSidebar(false); // на телефоні меню закривається після вибору розділу
 }
 
