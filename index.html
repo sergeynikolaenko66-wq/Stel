@@ -254,6 +254,11 @@ tr:hover td{background:rgba(255,255,255,.018);color:var(--txt)}
   --radius:var(--r);--mono:'JetBrains Mono',monospace;
   display:flex;flex-direction:column;overflow:hidden;flex:1;min-height:0;background:var(--bg);
 }
+/* Коли .crm-vars використовується РАЗОМ з .pg (сторінки ЖСМ: Рахунки/Запити/Дії) —
+   правило видимості .pg (показ лише при .on) має перемагати завжди, інакше сторінка
+   висить видимою постійно незалежно від того, яка вкладка зараз активна. */
+.pg.crm-vars{display:none}
+.pg.crm-vars.on{display:flex}
 .crm-vars .crm-gsearch-bar{padding:.5rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);}
 .crm-vars .crm-gsearch-wrap{position:relative;max-width:500px;}
 .crm-vars .crm-gsearch-wrap .crm-gsi{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text3);pointer-events:none;}
@@ -3183,7 +3188,7 @@ async function crmLoadAll(){
   crmApplyManagerColumnVisibility();
   const mdBtn=document.getElementById('crm-tabbtn-mydeals'); if(mdBtn) mdBtn.style.display = (myRole==='manager'||myRole==='sales_head') ? '' : 'none';
   const tmBtn=document.getElementById('crm-tabbtn-teammid'); if(tmBtn) tmBtn.style.display = (myRole==='sales_head') ? '' : 'none';
-  const irBtn=document.getElementById('crm-tabbtn-invreq'); if(irBtn) irBtn.style.display = (myRole==='manager') ? '' : 'none';
+  const irBtn=document.getElementById('crm-tabbtn-invreq'); if(irBtn) irBtn.style.display = (myRole==='manager'||myRole==='sales_head') ? '' : 'none';
   const ivBtn=document.getElementById('crm-tabbtn-invoices'); if(ivBtn) ivBtn.style.display = (myRole==='manager'||myRole==='sales_head') ? '' : 'none';
   crmUpdateStats();
   crmRenderLeads(); crmRenderClients(); crmRenderArchive();
